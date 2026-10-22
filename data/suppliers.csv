@@ -1,0 +1,9 @@
+supplier_id,supplier_name,country,part_category
+S001,Formosa Silicon Forge Ltd,Taiwan,GPU chips
+S002,Hanseong Memory Works,South Korea,HBM memory
+S003,Kanto Substrate Co,Japan,chip substrates
+S004,Shenzhen Circuit Peak,China,server PCBs
+S005,Guangdong PowerForge,China,power supply units
+S006,Bavaria Thermal Systems GmbH,Germany,liquid cooling units
+S007,Jiangxi Rare Element Materials,China,gallium/rare earth components
+S008,Penang Chassis & Rack Industries,Malaysia,chassis and racks

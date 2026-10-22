@@ -1,0 +1,9 @@
+part_id,part_name,category,supplier_id
+P001,GangaAccel GA100 GPU Chip,GPU chips,S001
+P002,GangaHBM-8H Memory Stack,HBM memory,S002
+P003,GangaCore ABF Substrate,chip substrates,S003
+P004,GangaBoard 8-Layer Server PCB,server PCBs,S004
+P005,GangaPower 3kW PSU,power supply units,S005
+P006,GangaCool Direct-to-Chip Loop,liquid cooling units,S006
+P007,GangaRare GaN Power Die Mix,gallium/rare earth components,S007
+P008,GangaFrame 42U Chassis Rack,chassis and racks,S008
