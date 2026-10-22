@@ -1,0 +1,582 @@
+{
+ "query": "South Korea HBM memory supply chain",
+ "fetched_at": "2026-10-22T17:07:34+00:00",
+ "articles": [
+  {
+   "title": "Complete Guide to Semiconductor Leader",
+   "publisher": "XTB.com",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9tOTR1dnNYWkJGcmRMM0dvMXJrN1NTdnVJSGMzN3p3LUJEWlYyOVRyUW1nTHByaVpvN213T2hldFhmYkk5a0JzWGJXa0lCd2RsY19hdHVpWFRENE1rU2JmbmlZMjM0dTA?oc=5",
+   "published": "2026-10-11T09:57:57+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung HBM4 Pricing Surges More Than Threefold, Starting at $4.50 per Gb; Memory Supply to Remain Tight Through 2027",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE8wZHlEcGY0dHJoYVk3dFRRZFhSZzZwTW5CNnlaNUZoWDRINW1kRVNoUURSUl8wUFdxTjNDSDUwS091bS1KVEtvN3VtaFJwWmJUYWpJN21nY251amdiVURXUzR6V194a3NwNDQxVWF4bGdQM1QwOGc?oc=5",
+   "published": "2026-10-02T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung Appears to Be a Good Bet Ahead of Q3: ETFs in Focus",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNWS14Zm82NGxaZ3hYNVk1blhQQ2g2bzN5MnZmXzBQNHZ2TlFsVW9DV292WXRoem02S0JUX0tNSGpvdmlHS2pObXFwbnVvbjRJNkVzbkcxOXI3ZEVYeTFoU0lFdE5rYUhfbUYzRFhFdk9zRUtGdjZ6T2ZkczJCWURSWHpLdEZEbWtxbDFSenM3VlNZUFJ0bmhSdHdBX3FaMl8zQ2NwT3FtS2RhbHg4a0RkVXg0TF8?oc=5",
+   "published": "2026-10-19T15:50:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "DRAM Market: Can China Challenge the Big Three?",
+   "publisher": "Kings Research",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPWGthNlVKSGhNV0ZiNFFoYkkxSEFFVXZUNkk5eElHdFdQV1luRlY3em5Za0hvNC1jbnlxb2RSTjhhWU5NaUZDQ3A5c3RCUnpjUS15S19rdnV3R1NLTUVjVHZqQ2pWMG9pS3ltcmpzSm9vUTBBaUNqenpRd0w2Z1g4R0N3?oc=5",
+   "published": "2026-10-15T11:05:01+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "SK hynix, gov't to provide 2 trillion won in loan guarantees to semiconductor suppliers",
+   "publisher": "Korea JoongAng Daily",
+   "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQSjhsQmZyNnVITDRKWnN6UDRYVkN4RnJiLWwwOWU4VUJUMUxzMVpQWkxKZ1VtbWxtdnRsbGl2UEMyM05FZE1haF9sRVMtZUFtYjBlRFNvd25uVldGWVhhbU8zQjJjX29EdDhKeHk2WTJfMGhDLW5tNDFQajNVY2N4U3VzbzAzMHFfVUpLN1lraUJjX2FXZVFvVVJtQkZkSUlSQ1llRmlyMEJheThXbFg0ckt6R25taGV5ZzFic19ERzZWSC1SVkFKNWx5YmdnMWZERElXXw?oc=5",
+   "published": "2026-10-19T07:53:49+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD’s Lisa Su Visits South Korea, Reportedly Discusses AI Collaboration With Samsung, SK Hynix",
+   "publisher": "Yahoo Finance",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNcmFjWHpWU2p3dGZoQnRmOERWYkNkTEUyX2JHTGxUdVNKN2dBWUdKUTBRWXUxY3N1QWxmcF9RVUZjSF9yOVA1Um53YlZRNjNUMzRFb0JPMERqWFgtM1hDRFp4ekRDRW5xbENsQUI5aGEybnoxYWlQQ2ZPSV9pWHBKN0RyNkUtaHZDRW1hLVR3R2pZUQ?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Serenity’s 10x Korean AI Small Caps: Tiny Suppliers to Samsung, SK Hynix, and Micron",
+   "publisher": "KuCoin",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1aWXFDYjlDcmEwYnRYQmVGb1o0VmJxekp1LXM0U2x1S25uLWxKclRFNVB1Q0Zia3B2RjRxM05HSFFSRHVMTTZkQ3dJem43cVhSekMwODZrWFJBMHdtcHZsNmhQOHVVeW03VmJjRUpESGJxNklFaTR5eDlB?oc=5",
+   "published": "2026-09-25T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "SK hynix Supplier Financing Turns AI Memory Demand Into a Supply-Chain Test",
+   "publisher": "remio",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQd2l5c3liV2hwa2lRR0Q2dkpHUm1vWXNjTVhlRDJoSzRYTVp4NlV3VjU1RWJVbm9mdHJfY3owcXNWRWxNZ0JVTHk0em1yMzdTbk0zT082Y014SGNjUG1yZVhzaVhwLWNhaURzaGMyWU1jUlctMWtMZFpSU1BTQjlnU2ZDQTJRM3JiQkNTWkFsZEs0OEp6cER3T0dmV20ycFBqbGZv?oc=5",
+   "published": "2026-10-21T11:41:05+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Memory Prices Set to Rise Again in Q4 as Samsung and SK Hynix Race to Expand Capacity",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5hTkVNS0k0ZVd0Q2xLZ2tKQWZjVFN6TlludUhKei1ON0s0QUcxRmNjNktia0pkSXFOWFJwNm94ekJuVVBnR0RZU281T3ZDWnNzYWJhUXlIMm55MUV4TmtXWWt1ZjI3dVhyVG1VbUlVTkw3aGZycEE?oc=5",
+   "published": "2026-10-11T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "SKHY Likely to Gain From a Potential Intel Partnership: Worth a Buy?",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNMGZLWDdWdDBlbWNKTEI3cFRscWpsaWhUejdISXlsdEVSV2IxNklzWnZNa09iTmt5WDNHM3NPWlRRVF9qaVFoc3FPMFA4WFBqQTBIdTctbFhYWkZCbjJZSERwWVVyc2dqbVVQWHVidUU5U0VKMnRIUll6ZDJGbTg1LW1Qc2ozWU9NcndqM2xhNzhNVy1pYjVwMlJ2Y2FXZGI2RXEtaWNRNUZKdjhqTXQ4UXoxc2pzSGVZaWdfWW9B?oc=5",
+   "published": "2026-09-28T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AI Data Center Component Shortage to Persist Through 2028",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5ncUhVUDVQTUZLSjI1TmoyNE9wTmh3UUlNcEVTd1MxSUhUdXdXZXU4bjljbGxhaldYUklaRW1hUnRYdlA5X0FKR2E0SEJ1QmYtNG9iODQ3QUJ0TEJ1MXJyTnZqOW5pdnFCbTFIWUQzeUVHLXhGc0E?oc=5",
+   "published": "2026-10-02T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung Locks Up 80% of Next Year's Memory Capacity in Long-Term Deals; Tech Giants Scramble for the Rest",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFB1NmpJV0tiNE9lTVI0LW1ab3c4U2Iwc2ZaOUZDYUUzbnd0ckJwaVljRHFVMEpBbUw3aE9fcXV5N1RiWEYxRnV0TXdueWhHdC1rUmZCdDMwbWpPS2tua0dhdmFRMW9yeGY4Y0dYcFpoUXUtNEpZX3c?oc=5",
+   "published": "2026-10-10T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korea's Top Fund Manager: AI Rally Set to Broaden — MLCC and Substrate Stocks Offer Greater Upside Than Memory Giants",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE84QjJ0bUx1Q2gtMXRsUFpFdEE0bXRuWFNlb2ZIR0RjckRQNGt4cnFiNGR2dktEcjRnUUR0bVhOQVhmam9XeHI4dC0zR0k4b0duZ3ZwRkNNQjZDS3dZS0o3YkhiR0p1Q002Z3NtOHltcWpGX2tWMXc?oc=5",
+   "published": "2026-10-16T09:06:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Jensen Huang Holds Private Meetings with Samsung and SK Leaders in New York; 8th-Generation HBM and AI Factories Take Center Stage",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE90SHhTb3h5c1Z1ZzRaWFY3czhuczF5NW5jTEZ4aWdCSDJMWmZnNmFmZ29vN2wtUXhpcFNjUG9TWFFTSFRqVkRzWmk3LWFrMXJjamRIWlBQX3JEMS14ZjBwLWo4bU5GTjZiRy1MR3dKbXZJdWdNVEE?oc=5",
+   "published": "2026-09-28T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Lee Jae-yong, Chey Tae-won, and Jensen Huang to Meet in New York After Two Months — HBM and AI Infrastructure Cooperation on Agenda",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFA4MEROcWItbWs1UU8xUy05VWlWckIzR2ZCR3Fxb2NGRkZLdHY4LUFxTFU3VmdGZ1lpdl83UERTeU9maUtEQWVOaGdaS0tRVXdCYkJHM21fcENscmg4a2NjWmJvd1NTRTExdkdVUVBtU2hmT0dJYXc?oc=5",
+   "published": "2026-09-27T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Merck Opens Molybdenum Precursor Plant in Eumseong, South Korea, Aiming to Build Key Hub in Memory Materials Supply Chain",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5JTGdOeEpsSU93bmY2WEpyRHFRX0pLQktTVlNjUjE0OGE3ckMwc0F5NHBKWE9OMXh6cThJbjdGZFU4ZnNNS2ZIdUpoOTd6Mjhsa0QyczBwU1NSdFN5bUI0T2JEWG5ieDZLcmxDSDB3b1dvQzRacGc?oc=5",
+   "published": "2026-10-22T01:05:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "NVIDIA's Unified Spec Forces South Korea's Samsung to Bend, Using TSMC 3nm for HBM Base Die for the First Time",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1STzRNME54VWR5U2x3WXUzSFQ3OU1ja0ZBWU56dVNUcVdqOF9QeWpCd2lndzZGQlRxZWY5cHVaUU9Lb18yeTIwU1ZmNHpLTWRkYlBwRHQyUGFpVlJidkJVcEprbEZhc0hFSnBYWHNMQUtjOFA1bEE?oc=5",
+   "published": "2026-10-19T00:35:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AI-Driven Memory Shortage Spreads to Autos and Appliances — Supply Crunch Seen Lasting Through 2028",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFB0eG9yUWdaME9fYjJUb3FaQmQxSTRER2RuWG9OOEJocVFjVzZHeDQ3OHJoY19PaGQwUnV0aG5PT2dLNG1pR2xrR0Y1N0dqVjlwRUdVWmJJRDZJZUxBMDFGXzVibGlVZVE5TTEzaEMyS1o1YXRKSmc?oc=5",
+   "published": "2026-10-16T18:05:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Korea Institute for Industrial Economics & Trade: \"₩1,600 Trillion Mega Projects Must Capture AI Bottlenecks to Reshape Industrial Landscape\"",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFAxZ2Y2T0FfMXdhOG5ZWDZfbkJKbFNncURQV0cxcnp2SkxsLTVFdnVSM2theEt5MDBvRFp4SFJtdjg5bm5PZXp5YjlULVFMVVJtSWduQ056cUQ0dzhrUGk5UmhkTVZMUU1hUE42Z0VkQnJUcXBzUGc?oc=5",
+   "published": "2026-10-16T02:26:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Foreign Capital Exodus Meets Earnings Upgrades: South Korea's Memory Chip Sector at a 4.7x P/E Crossroads",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9SaTk0MnNCVnZMaU1Ea2hEaTBETWs5M3F0RTRFSUZTa0hoNXlXY3l2STdHN1RUcTRlVDNsS2Fld2pEU2pUSkloX3djYTVZQ2VGb0lmWWpobi1xRVhHMk5RaEJUUG8yQkJhZ1RDbWw4TVpycUtQb1E?oc=5",
+   "published": "2026-09-29T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korea Launches 'K-Moonshot' Next-Generation Semiconductor Program to Eliminate Memory Bottlenecks",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5WS1p1Z3FWcUczMGFDZzNvRVpKWW9FVDdYNWo2Y1NucERaUkxKSG96US1kV1daQ2NQdUFSM1BmYVczSHdPcDRtTnp0eUdreE1TRldnMlZKTWxFV29GSXZLVzNTOVRYcWJ2Q0tnRUt1T0I1SkZKcXc?oc=5",
+   "published": "2026-10-14T02:06:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD Keeps Samsung Foundry Option Open as HBM4 Supply Tightens",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9uX3FoZmFkVnhlSktaNWlZZjUtem9aUi0tWDd2Nkh6c1NxYTRaR2wtY0ZhYnNzSnhWcFExQjBOUjFzbGNkdUlqVDZBU3BHMG1Mem1fTlVVV0FGaU1MTEMwemp5bkMzSnBBY1d2V2VwM016bWtjNEE?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Zhu Yiming's Two Ventures: GigaDevice and CXMT Forge the Twin Pillars of China's Memory Chip Industry",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1ncW1Vci1QREFlX0hQMmlLd041ci1DVERPa3hSem1ZR2UwSEZhbzMwVGY1SjcwMmIyTUF4RlJya2NGSFFEZU5TTTFVTHJ2VmdvVmlVSmpBelB6ZWRILVJHVDNDX0JSeWRTVGZHbkdlaGkxcXhkcEE?oc=5",
+   "published": "2026-10-08T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Lisa Su aims to secure South Korea's supply chain, with AMD seeking partnerships with Samsung and SK Hynix for a period of three to five years or longer.",
+   "publisher": "富途牛牛",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNVFA0RTBXTHExeVREOFQyUFZoX0pmTE9YNGZ4ckc5bGl1WEQ0dE5BalBPVGdXVUJFQ1JRM0dqcVV1YnMwY2tEcjBMa2pZVUU1SnJpNE9kbWlubUJiM2FHc0huU0taMkcwaWNhUkM2ZGtlTThvXzFQYnBnY3NuY2N0NXZXNDQtbjZWXzdPT2QyTUdTWWp0M3NR?oc=5",
+   "published": "2026-10-08T01:07:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Vietnam begins to benefit from race to expand AI chip production",
+   "publisher": "Theinvestor",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQMF9ib2pROHhsMEdNSWpnaWRDMmsycU5fal9LQWVlZnR3RklIQmJWZVdEbzEwT3V3V1hDRGdfNWNRdjRfTmhkbW84dW9TSnNiYTZoeC1UNjl2TmVhWVRkbFVJWGNya0lnLU9ZNDBtejc1RHJzOFhsZ0FXQ3VvenBab2ZoVExDRlRURVIxNVdaZ1lyZzhKcTh3c0dsc3hXYTdC?oc=5",
+   "published": "2026-10-02T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Lisa Su: \"Semiconductors Are a Team Sport\"... Emphasizes Long-Term Cooperation with Samsung and SK",
+   "publisher": "Inven Global",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPR3RKcXg3WXJHNm5tQTJMWS10ZUZkTHNmMVQzNk5nUkpGeTY5Zy0zRERUNUQ5MGxnbmx4bW8tY2loODZGc011V29NdDJFMUg4cWJWenhIZ2ZXeEYtWFZ6THU4emRLcDFMcEFiMF9TV1JSRlpBc3ViNFBBS2JGZGVqSndSandYUGd0MzNrNEF0WWVjdkUweG9Dd3VWZ1QwZDU5NHhFS2d2amlZUnVUM0JLU01pTlRRam1kNnNhcTRfY0hkeE9aLWs0LXg1UzZZY2pw?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Introducing ACHP: Investing in Asia’s Semiconductor Leadership",
+   "publisher": "Global X ETFs",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPX09MWWxrOWlLenFZdlh0SzZRNEtZMlFGUTdhNE02S2JybFVmTXRaTWUxU3U5NGpvVzRUWTlNSjdjazFlekhaanU2QmVIYU14RzUtQ3ZOM2VkQ2txVWd4dVpfcXM4Ny1RREluMHVpMjM3Q0c2VVFEMGNRcVhhRU9aUWNqNy1XX29pYmxzVi1neWRsNmZmdTlWVlREejJIM1luaEZjVjQxUVo5S2k3akZEUGxOYmU?oc=5",
+   "published": "2026-10-14T13:35:05+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AI giants go straight to memory makers",
+   "publisher": "Aju Press",
+   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9qMEJ4OFNSdHZwSmJSM2NGc2FDMGRJR1oyaGRqNEZ4ZDhLbDR4bVFJNV8zTVQwbkpJd1kybmVuUDU5MHFNN296aXhlMVo0TU5wR1ZiNUhCT2dEdm_SAVdBVV95cUxQa1ZhbmVGcWhOWkxpLUtBbmhUUVdCUlFlREp6U2NuX3NOZ1FaYUNIdjliNGd6ZTJxek1GbnI5c1ZpRHd3MUxGSTBCeExKRUp0V2dmZFZ3QW8?oc=5",
+   "published": "2026-09-23T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan vs. South Korea: Diverging Paths in the Global AI Boom",
+   "publisher": "Vocal",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQUmIyWlJCSDFiclQ5ZFZsd0xNV0k5NlFzeWR5RnNsVGlxQVhTVm02OWxKQUItX2NXVzZ3WExQa2dycjVkMkJZU2xFNko5S2dDUkRRQlhJY0dmOTdDZ0NyMllJLUxjSHZyVmN2S2dadjFYbWhMOXZoaWVDTnhqZGFNY0J0aDdpUXBMNkE?oc=5",
+   "published": "2026-10-21T12:10:43+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "HBM, Advanced Packaging and Cooling Market Set for Growth Through 2037",
+   "publisher": "I-Connect007",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPMVJ6UUtWdlBUNF80ajUxbXdBZTlRLTBBNFQxR0t1VF9GeWp1UDhXMEpBOVFsay15U3RwRUE3RzRYTEhVTmpDV0dHM3hoLTVQa1ptZ0x0cFZxUHUyM214RkV6S0czM1A5LXFIeW1PUF9WWk0wNHVyNHprY0h6dXlkTXdQX3FBU2RnSWFiSFVfdEtidkpoYllPZHEtbkJZaWcxeFUza0NNendYMG90b3hDRmtGMFp2LVpWQThF?oc=5",
+   "published": "2026-09-30T07:15:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD Samsung HBM Partnership Widens as Memory Supply Meets a Foundry Test",
+   "publisher": "remio",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPc2trOUUwUWJ2NURtMVhFWW5jWjljMkI1aDhMRTBPRkdpWDRuMnNzWGdlcU8tSHBkeTY1V1lWVVJoREFYM25SdDJ0cmFTZUdKVGRCbTN1czBwbDFnQTAxRHdJanhWLVM4RmktWS1JaGJBY3YzdEFvUXlfeFotOEdBWW5CQ1lkV19kUTJoLXdIY19fLWZEQS1fXzFPbE5CeWM?oc=5",
+   "published": "2026-10-09T02:21:03+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung Reportedly Adopts TSMC 3nm Solution for Nvidia HBM: Will SK Hynix and Micron Follow?",
+   "publisher": "TradingKey",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQVU5mcUlIRDBBa3dZQ0d3cmhiT25yR3pnLVFKeTVMUEswUXVVbXV3anZmblhtTG42VU81RHFSaktucXVIaGNLRjFiNnNKSkFicUJMNjlZMmZFUWNBaGxZRERINDRWS3NnSUJkY3k2WThmbW5zNmpTX0Q0MjF6Zjk3Z1lqeDhNTEhlaEtyaDlLSVdRRHhIMjBqZEF3VmVzNVk3SmtBdHl3?oc=5",
+   "published": "2026-10-19T02:38:39+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "JPMorgan: AI to Drive 70% of Asian Stock Market Earnings Growth Next Year; Maintains Overweight on South Korea, Taiwan",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5fbklVSnJOcnJ2ai1ub1RHaDctY3NDNGYtWmhWNTE5WXkyS3E3b1dNRUJYR2o1OVVLOU9ZeGVnSlNNV1VUeHBUaVZzWkRSV0xlcUpoRHlWUS1Cd1MxWmZ6RzdkcDF4b1lrdm16SFlsemtCSDk4MkE?oc=5",
+   "published": "2026-10-12T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korea Sets Five-Year Push to Double Semiconductor Production, Seeks U.S. Investment for AI Supply Chains",
+   "publisher": "Spherical Insights",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQczhJdHVHcTBDRzJLR1B5aUMtRmtWVHJjSzcxR0NnNnRJdVdJN1RrZ3hSUHFldHBxNDQwTEY2SHdKUTJiVFFxU2pTOVNfdmVIY3Z3MF9QWTIwWWtVSzRHY0hFak5QUGVRbUF1aUcwYUNXc05SOWtVc1cxeEwyVW9hcHlYZmRacmtxMm16LUUzRnA5OWpLV2MzbnFUcVVCZlA3Q1l5RTFlS0NZeFc3SloxdnE5UDJnNlpNSmpkX1pxSko2YU91UHFwRFpBTlBTRDlkak9HZ2NBaDRRcldDYnptV2gxMA?oc=5",
+   "published": "2026-09-23T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "​Korean Semiconductor Suppliers to Attend SEMICON West 2026",
+   "publisher": "THE ELEC, Korea Electronics Industry Media",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9acnFaWmY0MGFzanI5dmJsdFA1ZFBPRVctV2tvQVpCNXVhWW9LMmhyX3BGd1lCX2FPOE5FQTV0ZnZKNlJyTVZwbldoZ1JzNUViR3oxZ09zUTVISXRtQ2Utalpqem1UVjQ?oc=5",
+   "published": "2026-10-12T09:03:57+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "DRAM Shortage Drives Chinese Smartphones to Recycle Used Chips — Even Weighing All-Recycled Budget Models",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE44WHBXcEhNYnJna2VjX0hxYnJ0NVNnakgzdUFtbFRSTVlEZkJiNzJQcV9uX0NSVnFZWW5BMnNFYWJ6dTV1R29YeTdKVV9KRGJvV1ptcjFTZ282S09RVkdLMl9Ra2JSc0x1V2tNLUxmWEt6QVJJOWc?oc=5",
+   "published": "2026-10-20T10:25:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Discusses AI with Samsung, SK Hynix",
+   "publisher": "조선일보",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOZWpSdnVDUzBvT3lwbnRtZkZacGczM3VfZllMZmZvdTk5dGl4VUNDa2haME9seWFqNF9Sb1Zpa3ozQXNFTW05Tm5nTFNuWjl2bjNPcmFTX2NoY241aWl5dHc5RDBTV2E4YTVCYUY3VXJVbUZqX0wyN1I1X1lqYWpLajh2OUN4OHc3?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "STARTRADER Adds 20 Stock and ETF CFDs to Its 24/7 Trading Range",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOby1PRlBaYmtUQkRpMjB3aWhTZzRlSXVSclJiVzhWek5hRFRzUWFtQmU3VTJYeHZvSTRvMTNiczZwOC1nTUZmVmVVbUl0OUhDbzJzejNTTFpETmhBNFdtZ3lpUE92VUtZbHZMQVFJSFNuaHhuRzNaTEZXbERNYWMyN3A1QW40Nk9HSDI0X2pEV1NVQWJBRG1GaElvTFlWdVdUYjktNGhqSEhYbGw1RUNtNXl6bmF1ZE5pNjY4Y2RnQ2hDazg?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korea Overtakes Japan in Global Export Rankings",
+   "publisher": "조선일보",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPSTEydkQxNnVnQmJLTUM3enJaNXhhSmdTOGFfQzhnVXctRzg2emExNm0tZzN1clliZDRhTXVmVWRkTmhhdWUxclMyd2dYTVNXOU5HVHpVeTkzRWZBbXItN0NvOHNXU3VDNFhrQXZzMDNFNDZuZE1xWkVqNFFSM25PbHdXUHkxOFhZ?oc=5",
+   "published": "2026-10-22T00:47:32+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Huang’s 2x Chip Vow Locks Up 37% of HBM Supply [2026]",
+   "publisher": "shattered.io",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE45QXRUYlFWTmZ0QlhPM2ZfRG1mQXdqckd5OTBsU0FKZDBuTGhVbkNvckVSZGFEQVlDaUtUanhGYzAwTlZoTy0xYVh6SHNXcFFudzZmSDNrb0toWGdZcW4wYUVEQjRUc3h5dmhFcg?oc=5",
+   "published": "2026-09-25T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Discusses AI Collaboration with Samsung, SK Hynix",
+   "publisher": "조선일보",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQQV9TZGlsaGhKbmZsdmItbk10QktvU1pad1pyVTgzVWpQb05WYXB3OFR4MHEydlc1N0JYM2NKaG5OZUstLVAwV0drZ2t2Z1g1UmlPZW9vUmw0RS14QXY0SXlsWmUzcWw3OWJHOVhaM1hyQ3hONFlYeDU4SXFSbDJvbnVCZjZXdTdh?oc=5",
+   "published": "2026-10-08T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korea's Kospi Slumps While Taiwan's Taiex Soars",
+   "publisher": "조선일보",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPeURaeUh6MlV6NTNsNldXTG5KLTlnQmptdjZPX2VDLThFaWFkMXlfR0tycXdwOWctM3lxVWl6eEk1ODZpeHptRWI4a3JhNTFtOWFXUzJVdFU5cXdQSk1SU3Q2azdSc1V2QTAxcndaMnFCakpWTl8wOHNCLUowUGNyR1hDcDlSTE5TRElpbHFR?oc=5",
+   "published": "2026-10-22T15:37:34+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korean AI Stocks Plunge as Kospi Tumbles 7% Below 6,000, SK Hynix Slumps Over 9%",
+   "publisher": "TradingKey",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNbE9ZUXUtV3lzY0ZnSUw5a0xhZC0xakllV0JwbVJ1aF9FRGZkbm5OanJiazJPNXMwME9Xdy1lNVVhUjVDc1pndmxqYTlzekluNDRaVHJFTmstd0VnYU1yNWo2RHg0ZEpKRmZsckdBTHhjVHRDenYzTWtxejliQ1NKamtGeEZ2RFQ2eldZT0drc3dsMlBYS0Iyd0gwYTN0UFRWbnNlRllYc3dlZVRWOXlDNVJoQUp5elJLNGRCQTJHX3FOWG5MQkE?oc=5",
+   "published": "2026-10-12T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD's Lisa Su Makes Whirlwind Taiwan Visit to Lock in Capacity, Reportedly Meets TSMC and Top Server ODMs",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9GODg5STZibGtHZFJOUjRhR19OTjFUQkluVjhFbFBHRzd3X1cyUUxlWktGQmFwdF9CLTFiZUNMQm94TzJiZ3FnSGJhOGlwV1Zla1U5TmZUNEJhWlh1MzZrdDlERXdnbDVKRDRIYkxlWF9jUzhCaUE?oc=5",
+   "published": "2026-10-05T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Memory chip profits are surging, so why did the South Korean stock market hit the brakes first? Morgan Stanley reveals the “stock price inflection point” in the supercycle.",
+   "publisher": "富途牛牛",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNaXR0YTRnX1BKbzFGd3lwZjlIQl9vaHA5Rk5kcVJ1YXhsdmI0VWsxWU04OVZfelZlOS1sQ3phZWZqSE5zTzExYkVlckFvcVVQOVJONmlVaURUemdiYThrTmVRcEU5RHZtVzd6SVdVLTlaLS00akhNT2NBNmZEclJUeTdUX1haQnNWV3RDd2EwUHFLUjRDR1pJQkFqQQ?oc=5",
+   "published": "2026-10-12T03:40:43+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD pushes HBM as Samsung courts foundry deals in South Korea - CHOSUNBIZ",
+   "publisher": "Chosunbiz",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTFAyVy1sbTdUM3RreThnWDYwdHY2M2prTUllNVNpTmc1ZG4xNVRMR2g1cllFc3ctb01zbko5Ni1FcUxUY29maGFVbHRBTTJ1dDdQZ0hTNDYxbWNTeGo0SXhPT3RXOHZQaHFoRVJXMktfbE5HZmpxekpGTDJB0gGOAUFVX3lxTE5palA1WVdHYTZqSkNiU3JCRW5qVFp1b1h6Y1VfTUJZS0JtelVsNUdXYVNsMGVRU2FBaEhDWUFhUm5iQ0NqVm9qZkVqQmJXOUlJalR3aUZFOHNjdFc5bUJNcUpZVUJVU2JCWHM5RENxU19aX1FGSy1jZTNUSWpHc2lnV3lTUjlmWTYzWjRkRXc?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korea Aims to Create 'Korean Version of CES' Through Consolidated Exhibitions",
+   "publisher": "조선일보",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQcFlLbklSU0R1emYtYTNpVnFlQU1BVlEtT21oMFBjRjFySVg2TTkyWmVqZnJzUFhoandxRnlvNVNBUkhGb2hvakpmWmZrVlNtLUl3OE9IU1ZQeXZXdUwxRTNaNDR0V0dSZjJ0TTZuUy1EZVBrZzBPR2FRb3VqWWl0NmlESnVEUzNHX1g0bEtB?oc=5",
+   "published": "2026-10-15T22:43:43+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Fidelity's Mooney Urges Focus on AI Monetization",
+   "publisher": "조선일보",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOZGxXWjh3cEN5NU9hcHlSOTR6NjVtQXc1TVZ6RFhpOHpTbk00NVdXbTc2aVlDcnNDSi1ja2VmbnVTRzIzbGRscm5wSkZocG1WTzZaTDZhNVJTVXpvYUpvSEtoZDY2SWQxZXl1RGcwajdocGp5SjVzOFlEWElBdmFVVDBJRFhkVGl4eHBMaUVn?oc=5",
+   "published": "2026-10-05T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "SKHY Likely to Gain From a Potential Intel Partnership: Worth a Buy?",
+   "publisher": "The Globe and Mail",
+   "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOZHhsM2RkZFlZQnNHVVh2RHpNbFFMS1p1Z3piZklMSDZwUnd1YWdDLUpETm1SakE2UTE4UmU4bU1WdXhHTlFSbVVrWEgxX05ERnBlenAwcHNVRkFQT3NUb05DR2VodHI5ZkV2aU5Ib1JwOGx1U1NkMlM4VnJJbkZVdzNrVHF2M3ZCSW8zc1VXMnEwTjU3bnFNVEJncEhNTmJuQThDZFFib3I3NWlRTEQzZXB0VktiUk14TXVDcVVvQUhFM1F3N192cDJpT1k1NmhXS3BON2JxRUxkRTJ6SUZoQU80V0FKQQ?oc=5",
+   "published": "2026-09-28T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AI cycle splits Korea and Taiwan as Taiwan gains on breadth and payouts - CHOSUNBIZ",
+   "publisher": "Chosunbiz",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOcTY2WHJ1UDI3MHc0WFZTVHM4SFd5bFp3bWNoR0JCRUl4QTcwdHhRLTF2WUYtWDR3NEh2dmFzYnV0elk1V3MzeXl3RktDRXRhT3dWSFRqcjJuTFU5akNnNTJQLTZWWFQ0MUtfdXpEa2k3VjdrUlJRb1ZEQ21QNThMbXJxYXRvay1aUTh5X0J0b3h4dV850gGUAUFVX3lxTE5xNjZYcnVQMjcwdzRYVlNUczhIV3lsWndtY2hHQkJFSXhBNzB0eFEtMXZZRi1YNHc0SHZ2YXNidXR6WTVXczN5eXdGS0NFdGFPd1ZIVGpyMm5MVTlqQ2c1MlAtNlZYVDQxS191ekRraTdWN2tSUlFvVkRDbVA1OExtcnFhdG9rLVpROHlfQnRveHh1Xzk?oc=5",
+   "published": "2026-10-21T06:54:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Why Advanced Packaging Is the New Bottleneck for AI Chips in Asia?",
+   "publisher": "Asia Business Outlook",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNSlpMbEJYZXltbjk2dnB2Zk5hbTdRdXh1MzVoV1ZyWmNlTjJaVFRveGRaaFVLdHd4dGlpcElKNXI3bnBSU0hsVlA2ZUcwTDZvTUE3MUxvcVFWamlja2wyZDE1RlgzaVBlVlUtYnZhMWZvRDVfX2lOaGFhc2wzR29id3lpVzhFbTQyRU1SUWdRVUU2WldaYUhiZHpRYlc5YVpmeG1jNnk3bjdnMTBOck9QcFZPblM3TXNSbGwtOG9RQjR6MW54ZFRJZg?oc=5",
+   "published": "2026-10-09T11:28:43+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung vs SK hynix: AI Memory Chip Race 2026",
+   "publisher": "SNS Insider",
+   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE4yT21ZdjlQSXlhMkx4aF93Z0JMM0VYQkowdmVuUThYSG8zU1Zrc21Jcml0QjVEcy1hZ3BpdFhYYmRuTmZVNlQxNWpLT0FfS0RyN3R4Mi1PT0tJSFpwQklacWpB?oc=5",
+   "published": "2026-10-02T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "TSMC taps U.S. interposers to speed AI chip packaging shift, pressure Korea - CHOSUNBIZ",
+   "publisher": "Chosunbiz",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1mVWI3MXB5aElUdEhFRTJEUEp3c0UzVUZJQkcyakgzN0haSTdlSE16YWpEZHRrSzJXZElqN3FGM243blY4NDJiN2x5eS1jNERyX1d6S1hQWmlwMWIwWHFzMS1iY1Q0OGN4b2RZVFhYM0F1M1JWUnFNTXB30gGOAUFVX3lxTE85QjYzRVBONWM3ZTZkTUM1WjkzZzBsbEZHeWZFdWg4dXBWN21nWm5XbE9zU2dzV05vTHhUQnJRVHh6UFBwY2NqSjJ1SnJJZXdTV1RhMEJQUFc4ZWFwdHd4NFNQREc0QzJISHNXUXJ3NTRmOElYMTBNclEwSFF5RExGOFVrNmotNm40Z2lTMHc?oc=5",
+   "published": "2026-10-12T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su Explores Partnerships with South Korean AI Chipmakers to Challenge Nvidia",
+   "publisher": "CXO Digitalpulse",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPTG1sWk5TSWUzV1JBV1dWVG1TZDB0M0VlTUJNd2V3MG9taUtmbHpmZnBwVmxkWEtRSjZ3Y1ZRdUJFc3RpWlo5OTNTY0VCRTZCTmxyUTB6bER6N3lHWUtFQTBCTjNaYUdTX3htNVo4YmtVMVBXMFExY1BKU2o2LTJ0b1VVUmVUUTA4RU9Qdk42WjBBN3hlMEJmbzE2cU16cGlWNnNOOTJXVEZndldqcFdWb0NSVjVkMUpuUHlMVmd6bw?oc=5",
+   "published": "2026-10-08T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "High-Bandwidth Memory and Advanced Memory Market Size, 2034",
+   "publisher": "Fortune Business Insights",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPVV9FQTJyZU9WWjJDbkFmWnYwQ2g1WkJoNVA4TG1RTURGMEFwMW94d0FCdnZ4alFUZTZWZFpzSDc4d2JCN0VuYmlVXzh4MG1JR0VxVjFWYkRKcDN5Z2YxVUpiMHlDb2xULTNVZl9rdER3Y1A3dlFGZzYyZmZPcjAzNUxzd040aEdIQkFnMjhVcG9qYUcyYnFGRGlqQQ?oc=5",
+   "published": "2026-09-28T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su, visiting Korea: \"Collaboration with Samsung and SK Hynix across multiple generations\"",
+   "publisher": "머니투데이",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1ORzA0Z0pLV2tsbkJkTksyWHl3M2tnTnNHazBiWjFTbVpDbjB6ZExrLS1wYkVpRW1COHQtMWNrcWpMbFVhMGhPQ1hiN2NNYUJjeUdBV0R0ang1LVVHVG9ENmNsYVlVQTd4TlBR?oc=5",
+   "published": "2026-10-07T08:32:02+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung Electronics spreads semiconductor bases to prepare for order battles after supply crunch",
+   "publisher": "디지털투데이",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxObTJwSGFITTFsdnV0S2NEWFhFZmpCUVBvUkdpWGZMbFBRQmhfeFgzWlNfTHhvbHFNcjVDLWRfa2pNaVZ6QzYwX2hsVGFGaGlWZnBzd1BCbHhwajVLVnJVekdjWDNxbmtaTW5vV0oxQXBQNjF4QkF4RW9uV19pUXJtR1htTlg4M1hyamU5enE3VFVzSVRWcEpCZXpka2ROZFVNVnNuY0RVV1FNX0RxOXRscWVKR0FjcjlXblg3X0l5VU5mZFNXb0lMckFXSXd2Y05Nb0RVWUs0bTE3Zw?oc=5",
+   "published": "2026-10-12T22:30:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Cathie Wood rejects ‘Sell Korea’, calls semiconductor bottom and urges rotation - CHOSUNBIZ",
+   "publisher": "Chosunbiz",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPMGdyc3JSbDdERHB2VUEwWmJUSktpZXNYQ0ZoZklubllSSDgzQ0MwUW9ncTVYRi1FVC16WGpCN25XM3pTc3pWSFU0RV9zYm9vVTd3QXJScHpmTFhEV3pibW9TVFE1Qk9HOXdiY2Q5TTJPamc4bEZjOTF4aHhzcTdvX9IBlAFBVV95cUxQcEh0RWFDQ1VTNW4yTGppZFV6RnV3MFNORGRyRzZ6cnpQM1BoNlMtang1V2JuT0xxWDhyUnljWVBxM29PTzQ0bmRoYW1lSVMzaGFhZnkyNXRua0hZbDVGTHBKRl9lOWFaQkIxYUZlWno3NnBXWEJreVV2MnhualBFUmlHMHJJS2Iwby0wb2Z2WEU5Zy1y?oc=5",
+   "published": "2026-10-19T00:03:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD Explores Samsung Foundry Deal as AI Chip Demand Drives Supply Expansion",
+   "publisher": "The420.in",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9rY2pvT1VpQkJLMHBpempLRWk3ZTRMLTJRYmNkUDRXZmt4SFNRcjZaQ2xSenNqU05WaXBEMmJaTUJiaGd5Vi1tRlBhRE5TZnNPY0p3VzJEcDVZMGI4VzF4R0EtU3VpOG5PVEhMWUpUWlFJTHlKdHc?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su: Samsung and SK Hynix Are Core Partners, HBM Cooperation to Span Multiple Generations",
+   "publisher": "news.sbs.co.kr",
+   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE44NWJXLUpPa2JJdTQ1eW5Oa29oeVh0eldVSlptczhNVzFINllvaVBHNWctVWlFVksyVW5kLTh2WVpodDVXVDJSQ1Bwbm5rNGpQdDRQMTJKOV9ManJ0a2FqSFJkNlVHTGlCWTlWeUFR?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "As the artificial intelligence (AI) semiconductor market grows rapidly, the competitiveness of Japan..",
+   "publisher": "매일경제",
+   "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5QME9yelBqNkhNemM2YTBUUXdDTndOUXhfX1AwZGpBVkZQdUl5ZXRqNjQtN0hFOWZ6VmtBSXhpLUZUYS1HOVI3NUFQQUY5VWs?oc=5",
+   "published": "2026-10-22T06:47:34+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Huang meets Lee Jae-yong and Chey Tae-won to advance Korea AI chip ties - CHOSUNBIZ",
+   "publisher": "Chosunbiz",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNem9sUThTM0R6bzJ2WWMtdmxWSXdjQTNGZlN4dWpZMnZwaDR3NXhpRU5KV1R3OVJCcHVLS1NfM0RpLWZQTE40cGhqQlV1bjZ6SEFJV2EzaTEwT0trRVBhVjYzOWRKQXpWYzhWMHVFNHBxbmlYQndCZFBhYWttUEFKbUpjNXhPTGxV0gGcAUFVX3lxTE9BMk1kcU1KV2RKWm0xU3pRX0plamg2T0stZEdIcjVVM3hLZ1Y1SEhEajMwYWNZLS1FX0YxaUJvLXFJN1lobllpNXQ1U2tNdE9GX19aQTV3LTdrSXhybDg5cmczNF9RQzl5SVJ6VDNOVGNocWY0dlFiaDVxUl9PNjF4U2J4aUdDMC1fdFoxY0VlX1VGd2hXVmRBY3Z6TQ?oc=5",
+   "published": "2026-09-25T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung Chases Faster HBM4, SK Hynix Goes Taller: Korea’s AI Memory War Begins",
+   "publisher": "Tech Times",
+   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNLWdSbXdFNWh0S0tsSHg4UmF3SEVDSVc4MnNKUnNuX1RNVk5jaU01d1dRYzlZcmFSS1RxRWNMWjZpWkxReENNZngxZmt4TDBrSU4wejVNaXdOeS1qQVlvN3pBVnMxVkM5VWhLcWpfekxEcldqM3ZNcDhGczhDSWtGcUt3eVVmOEoxcTZDcU5BTzNVbmhBX1prbWwtY3AxZVVjc2tjT0x2X2EzYlhxcldLZFA2ZDNjMUxVV0JFWnE3eVY3T19QT1dDN2Nn?oc=5",
+   "published": "2026-10-14T22:38:51+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "South Korea Backs Chip Suppliers with $1.5B Guarantee, Shared Production Lab",
+   "publisher": "Tech Times",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOODRFd1o2TjhCd2Yya2h0TXEzM3FrMERJa1NKUGpRTUdwSEo5V0ZsVWRxUnVWRU1ja2RRMk5URGg0QXc2Tkpuc0tFZm51MF9GMGlLbDJTTUN2c1JmbTBBVVN3NzBKT05IV2VrUVBLSFlRMndjem1iY0lQa0UzNGMwZVBRbW1KTWU2ZndHSnNXNVd6UTFWTlV1eG5qMGJ0WnAweDF1ai1OZlI2WmZrUkl6VGx6T3c2QmxSeVl6QnFmOGc?oc=5",
+   "published": "2026-10-19T22:14:06+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su calls Samsung and SK Hynix important for long-term supply chain",
+   "publisher": "Crypto Briefing",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA1TkVGMnZjNmpuLXJ2Uk5aMXJkY0pLSGw4blRJWjdWZ0RFVTZHRlVrdnRuXzE2OVFVcmNCWG1ZRE1mZUNzeVZnLWZwM2FWeU9sbVdQdndjTHJIWmczRlpTM0V3aDMwcVdWT2hVRXVGa0k?oc=5",
+   "published": "2026-10-07T06:52:28+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Lisa Su Flew to Seoul Twice in Seven Months; AMD’s AI Roadmap Depends on Korea",
+   "publisher": "Tech Times",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPQU5KSjhiN1RlZVd1T0t2WWRwVk13QmRkZF9DV3pTUFZxOF9EbkZKSmhESzFkRUw1SUg1X2Q2VGdCMHkyamZjT3l1S0tTUlA5aHZaMUJLOEVCdWtvNWhLS2g3MUVKVWthUFdBZnZQM2IzU1hFMEx1RkNjS3Mzc3VIYm5uMURSZ0RlMDNvM0hLWHpzVVlfSndESXVtZ083TjRoYzZ1ajRPaFVYc2VMY1pXSVpPbkRxOUFiaU01SDNCQQ?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung vs SK Hynix vs TSMC Stock Comparison: Which Semiconductor Giant to Buy in 2026",
+   "publisher": "International Business Times Australia",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFA4M3pRQUYyYlg2bnUwbnFEcElVUVBrMVlzV3R5eXlfdzJYUUR0bEZ3ZUd0TW9QNmpaaUNCZXR3NzZDU2hKcHc0aHVMZjBmSDhRaS01Tmg1T0ZDQ1lBR2FiUTJxaGhwNENoVFQ5X1BZOXQybjlmQURWX1E4bm15OWM?oc=5",
+   "published": "2026-10-06T06:03:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Hanmi Semiconductor Cements TC Bonder Leadership at SEMICON West as HBM4 Orders Surge",
+   "publisher": "Tech Times",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNZGItOGxzR1NfMTVZdnpiQnJWVzR2VmlkdVBDZzgyaHdyLVdGSWh4NmNoZm1yb3Fkd09rc0hzWmNDV0w4blJnVUR4STJmY3BOVFJHVTdmT05vVnFVcW1OWm1mWF9JSFMzMGdpTkoxcEZQbEZLRktncko4bjV2NmR4WlcwT0NZaUZyaGZmNHhubjZGUGQzeHV1VVFTc3lxTmQtWDZKZTdMS2NRaEI4VHhXY0RvQ3NJTmwzR1pTTmxmZm43R0NtdlltaHpiTGF0bjQ?oc=5",
+   "published": "2026-10-15T08:54:02+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su Expands AI Partnerships in South Korea",
+   "publisher": "SuaraGarut.ID",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5vV0daVUNxdXlRUEFWY3BSZ3lGSE9waXJQWk1FQUROOTRXV1RSQjVhYUl1WnQwQk4tVFBhVEhfRzZwN3BKR0tWZ3BNUWZPUE9oSlpEVXhXdWlMUVg1R0xYNk5DLWNOZ1k?oc=5",
+   "published": "2026-10-10T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Celebrity shark guided out of South Korea canal refuses to swim out to sea",
+   "publisher": "BBC News",
+   "url": "https://www.bbc.co.uk/news/articles/cr3wv99614deo?at_medium=RSS&at_campaign=rss",
+   "published": "2026-10-22T10:16:35+00:00",
+   "summary": "Bukangi the shark became an unlikely sensation after it was spotted in a canal in Busan weeks ago.",
+   "feed": "http://feeds.bbci.co.uk/news/world/rss.xml"
+  },
+  {
+   "title": "North Korea prepares to restart propaganda loudspeakers as ties sour with South",
+   "publisher": "The Guardian",
+   "url": "https://www.theguardian.com/world/2026/oct/22/north-korea-to-restart-propaganda-loudspeakers-south-korea",
+   "published": "2026-10-22T03:56:46+00:00",
+   "summary": "Kim Yo-jong, sister of Kim Jong-un, issues warning after inspecting border fortifications against backdrop of rising tensions Propaganda loudspeakers aimed at South Korea will be ready to restart within days along the entire border, Kim Yo-jong, the powerful sister of North Korean leader Kim Jong-un, has said amid a worsening of ties between the two countries. The statement, carried by the state news agency KCNA on Thursday, came a day after she said the loudspeakers would be in operation along ",
+   "feed": "https://www.theguardian.com/world/rss"
+  },
+  {
+   "title": "Shark returns to South Korea canal after failed rescue attempt",
+   "publisher": "Al Jazeera",
+   "url": "https://www.aljazeera.com/video/newsfeed/2026/10/22/shark-returns-to-south-korea-canal-after-failed-rescue-attempt?traffic_source=rss",
+   "published": "2026-10-22T13:05:42+00:00",
+   "summary": "An endangered shark swam back into a canal in South Korea after rescuers had led it back out to sea.",
+   "feed": "https://www.aljazeera.com/xml/rss/all.xml"
+  }
+ ]
+}
