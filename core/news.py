@@ -130,8 +130,8 @@ def _matches(article, words):
     return sum(1 for w in words if w in haystack) >= min(2, len(words)) if words else True
 
 
-def _fetch_live(query, max_age_days):
-    """Fetch from Google News search and the publisher feeds. Returns (articles, errors)."""
+def _fetch_live(query, max_age_days, publisher_feeds=True):
+    """Fetch from Google News search and (optionally) the publisher feeds. Returns (articles, errors)."""
     articles, errors = [], []
     google_query = quote_plus(f"{query} when:{max_age_days}d")
     try:
@@ -140,7 +140,7 @@ def _fetch_live(query, max_age_days):
         errors.append(f"google-news: {type(exc).__name__}")
 
     words = _keywords(query)
-    for publisher, urls in PUBLISHER_FEEDS.items():
+    for publisher, urls in (PUBLISHER_FEEDS.items() if publisher_feeds else []):
         for url in urls:
             try:
                 found = parse_rss(_get(url), publisher, url)
@@ -168,7 +168,7 @@ def _cache_path(query):
     return CACHE_DIR / f"{slug}_{digest}.json"
 
 
-def fetch_news(query, max_age_days=None, refresh=False):
+def fetch_news(query, max_age_days=None, refresh=False, publisher_feeds=True):
     """Return (articles, info) for a query.
 
     info = {"fetched_at": iso, "from_cache": bool, "errors": [...]}.
@@ -187,7 +187,7 @@ def fetch_news(query, max_age_days=None, refresh=False):
             articles = [Article(**a) for a in cached["articles"]]
             return _recent(articles, max_age_days, now), {"fetched_at": cached["fetched_at"], "from_cache": True, "errors": []}
 
-    articles, errors = _fetch_live(query, max_age_days)
+    articles, errors = _fetch_live(query, max_age_days, publisher_feeds)
     articles = _dedupe(articles)
     fetched_at = now.isoformat(timespec="seconds")
     if articles:  # never overwrite a good cache with an empty result from a network failure
@@ -203,3 +203,22 @@ def _recent(articles, max_age_days, now):
     cutoff = now - timedelta(days=max_age_days)
     kept = [a for a in articles if datetime.fromisoformat(a.published) >= cutoff]
     return sorted(kept, key=lambda a: a.published, reverse=True)
+
+
+# --------------------------------------------------------------------------- ranking
+def rank_articles(articles, keyword_groups, k=8, now=None):
+    """Pick the k most relevant articles, in Python, before any model sees them.
+
+    keyword_groups: [(keywords, weight), ...]. An article scores the weight of each group once per
+    distinct keyword found in its title or summary, plus a recency bonus (up to 3 points, fading
+    linearly over 30 days). Ties go to the newer article.
+    """
+    now = now or datetime.now(timezone.utc)
+
+    def score(a):
+        text = f"{a.title} {a.summary}".lower()
+        points = sum(weight for words, weight in keyword_groups for w in words if w.lower() in text)
+        age_days = max((now - datetime.fromisoformat(a.published)).total_seconds() / 86400, 0)
+        return points + 3 * max(0.0, 1 - age_days / 30)
+
+    return sorted(articles, key=lambda a: (score(a), a.published), reverse=True)[:k]

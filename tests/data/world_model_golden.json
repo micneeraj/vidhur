@@ -1,0 +1,375 @@
+{
+ "normalize": [
+  [
+   "José  García",
+   "jose garcia"
+  ],
+  [
+   "jose garcia",
+   "jose garcia"
+  ],
+  [
+   "Acme Corp",
+   "acme corp"
+  ],
+  [
+   "Acme Corporation",
+   "acme corporation"
+  ],
+  [
+   "TSMC",
+   "tsmc"
+  ],
+  [
+   "Formosa Silicon Forge Ltd",
+   "formosa silicon forge ltd"
+  ],
+  [
+   "a​b c",
+   "ab c"
+  ]
+ ],
+ "entityIds": [
+  [
+   "org",
+   "José  García",
+   "ent_246e34ed409b26ab"
+  ],
+  [
+   "org",
+   "jose garcia",
+   "ent_246e34ed409b26ab"
+  ],
+  [
+   "org",
+   "Acme Corp",
+   "ent_f441105cae478f27"
+  ],
+  [
+   "org",
+   "Acme Corporation",
+   "ent_537921142878fa2c"
+  ],
+  [
+   "org",
+   "TSMC",
+   "ent_5661c609c378945e"
+  ],
+  [
+   "org",
+   "Formosa Silicon Forge Ltd",
+   "ent_b4ce3869ce681414"
+  ],
+  [
+   "org",
+   "a​b c",
+   "ent_cc80f87033bdd19b"
+  ]
+ ],
+ "sha": [
+  [
+   "",
+   "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  ],
+  [
+   "abc",
+   "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+  ],
+  [
+   "héllo",
+   "3c48591d8d098a4538f5e013dfcf406e948eac4d3277b10bf614e295d6068179"
+  ]
+ ],
+ "canonical": [
+  "{\"a\":[2,{\"z\":1}],\"b\":1,\"c\":1,\"d\":\"é\"}"
+ ],
+ "externalId": "claim:vidhur:r1-C1",
+ "relId": "rel_065940cc9bf8751d|rel_3672353c5f6bd9e4",
+ "factId": "fact_15ee9a5e5f63b9ef",
+ "ctxId": "ctx_eca6796227b96281",
+ "sims": [
+  [
+   "Acme Corp",
+   "Acme Corporation",
+   0.5625,
+   "new"
+  ],
+  [
+   "Jerome Powell",
+   "Jerome Powel",
+   0.9230769230769231,
+   "auto-merge"
+  ],
+  [
+   "José García",
+   "Jose Garcia",
+   1,
+   "auto-merge"
+  ]
+ ],
+ "ingestShape": {
+  "contexts": [],
+  "entities": [
+   {
+    "aggregates": {
+     "firstSeenAt": "2026-05-17T14:00:00.000Z",
+     "lastSeenAt": "2026-05-17T18:00:00.000Z",
+     "linkedStoryIds": [
+      "story_29d20d007746"
+     ],
+     "mentionCount": 3
+    },
+    "aliases": [
+     "Jerome Powell"
+    ],
+    "attrs": {},
+    "createdAt": "2026-05-17T14:00:00.000Z",
+    "id": "ent_8f8013f4b04714d2",
+    "name": "Jerome Powell",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T18:00:00.000Z",
+     "kind": "rss"
+    },
+    "state": "active",
+    "type": "person",
+    "updatedAt": "2026-05-17T18:00:00.000Z"
+   },
+   {
+    "aggregates": {
+     "firstSeenAt": "2026-05-17T18:00:00.000Z",
+     "lastSeenAt": "2026-05-17T18:00:00.000Z",
+     "linkedStoryIds": [
+      "story_29d20d007746"
+     ],
+     "mentionCount": 1
+    },
+    "aliases": [
+     "Gold"
+    ],
+    "attrs": {},
+    "createdAt": "2026-05-17T18:00:00.000Z",
+    "id": "ent_a1351896c7c8d419",
+    "name": "Gold",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T18:00:00.000Z",
+     "kind": "rss"
+    },
+    "state": "active",
+    "type": "commodity",
+    "updatedAt": "2026-05-17T18:00:00.000Z"
+   },
+   {
+    "aliases": [
+     "Fed holds rates"
+    ],
+    "attrs": {
+     "title": "Fed holds rates"
+    },
+    "createdAt": "2026-05-17T14:00:00.000Z",
+    "id": "item:ingest:a1",
+    "name": "Fed holds rates",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T14:00:00.000Z",
+     "kind": "rss"
+    },
+    "state": "active",
+    "type": "item",
+    "updatedAt": "2026-05-17T14:00:00.000Z"
+   },
+   {
+    "aliases": [
+     "Powell signals patience"
+    ],
+    "attrs": {
+     "title": "Powell signals patience"
+    },
+    "createdAt": "2026-05-17T16:30:00.000Z",
+    "id": "item:ingest:a2",
+    "name": "Powell signals patience",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T16:30:00.000Z",
+     "kind": "rss"
+    },
+    "state": "active",
+    "type": "item",
+    "updatedAt": "2026-05-17T16:30:00.000Z"
+   },
+   {
+    "aliases": [
+     "Gold rallies"
+    ],
+    "attrs": {
+     "title": "Gold rallies"
+    },
+    "createdAt": "2026-05-17T18:00:00.000Z",
+    "id": "item:ingest:a3",
+    "name": "Gold rallies",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T18:00:00.000Z",
+     "kind": "rss"
+    },
+    "state": "active",
+    "type": "item",
+    "updatedAt": "2026-05-17T18:00:00.000Z"
+   }
+  ],
+  "facts": [],
+  "observations": [
+   {
+    "at": "2026-05-17T14:00:00.000Z",
+    "checksum": "c366ac68f79539b11fa5f4c0377bc5dcb0af69037448fefea5b0e6a8279c282f",
+    "entityId": "item:ingest:a1",
+    "entityIds": [
+     "ent_8f8013f4b04714d2"
+    ],
+    "externalId": "a1",
+    "id": "obs_f55ff16f66f4",
+    "stale": false,
+    "storyId": "story_29d20d007746"
+   },
+   {
+    "at": "2026-05-17T16:30:00.000Z",
+    "checksum": "5a95b4ba0fa4a8f664aa640502b4a0df150fe70b6d4ac3f4c6a2037f9b426a28",
+    "entityId": "item:ingest:a2",
+    "entityIds": [
+     "ent_8f8013f4b04714d2"
+    ],
+    "externalId": "a2",
+    "id": "obs_2c3a4249d770",
+    "stale": false,
+    "storyId": "story_29d20d007746"
+   },
+   {
+    "at": "2026-05-17T18:00:00.000Z",
+    "checksum": "fc5a489a94c26f6cb8170846e96cc17b9e06583ea8791f9404a3299f6a8cc02f",
+    "entityId": "item:ingest:a3",
+    "entityIds": [
+     "ent_8f8013f4b04714d2",
+     "ent_a1351896c7c8d419"
+    ],
+    "externalId": "a3",
+    "id": "obs_f46dd28a5499",
+    "stale": false,
+    "storyId": "story_29d20d007746"
+   }
+  ],
+  "relationships": [
+   {
+    "createdAt": "2026-05-17T18:00:00.000Z",
+    "from": "item:ingest:a3",
+    "id": "rel_455e4b0492ffe693",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T18:00:00.000Z",
+     "kind": "rss"
+    },
+    "to": "ent_8f8013f4b04714d2",
+    "type": "mentions",
+    "validFrom": "2026-05-17T18:00:00.000Z"
+   },
+   {
+    "createdAt": "2026-05-17T16:30:00.000Z",
+    "from": "item:ingest:a2",
+    "id": "rel_8bc7af53e74e37f8",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T16:30:00.000Z",
+     "kind": "rss"
+    },
+    "to": "ent_8f8013f4b04714d2",
+    "type": "mentions",
+    "validFrom": "2026-05-17T16:30:00.000Z"
+   },
+   {
+    "createdAt": "2026-05-17T18:00:00.000Z",
+    "from": "item:ingest:a3",
+    "id": "rel_e49a737c6e6fe5e7",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T18:00:00.000Z",
+     "kind": "rss"
+    },
+    "supersededBy": "rel_455e4b0492ffe693",
+    "to": "ent_a1351896c7c8d419",
+    "type": "mentions",
+    "validFrom": "2026-05-17T18:00:00.000Z",
+    "validTo": "2026-05-17T18:00:00.000Z"
+   },
+   {
+    "createdAt": "2026-05-17T14:00:00.000Z",
+    "from": "item:ingest:a1",
+    "id": "rel_eea32a061760c5aa",
+    "schemaVersion": 1,
+    "source": {
+     "at": "2026-05-17T14:00:00.000Z",
+     "kind": "rss"
+    },
+    "to": "ent_8f8013f4b04714d2",
+    "type": "mentions",
+    "validFrom": "2026-05-17T14:00:00.000Z"
+   }
+  ],
+  "stories": [
+   {
+    "entityIds": [
+     "ent_8f8013f4b04714d2",
+     "ent_a1351896c7c8d419"
+    ],
+    "entityNames": [
+     "ent_8f8013f4b04714d2",
+     "ent_a1351896c7c8d419"
+    ],
+    "firstAt": "2026-05-17T14:00:00.000Z",
+    "id": "story_29d20d007746",
+    "lastAt": "2026-05-17T18:00:00.000Z",
+    "memberIds": [
+     "a1",
+     "a2",
+     "a3"
+    ],
+    "milestones": [
+     {
+      "at": "2026-05-17T16:30:00.000Z",
+      "kind": "multi-source"
+     }
+    ],
+    "sources": [],
+    "title": "a1"
+   }
+  ]
+ },
+ "ingestShapeCanonical": "{\"contexts\":[],\"entities\":[{\"aggregates\":{\"firstSeenAt\":\"2026-05-17T14:00:00.000Z\",\"lastSeenAt\":\"2026-05-17T18:00:00.000Z\",\"linkedStoryIds\":[\"story_29d20d007746\"],\"mentionCount\":3},\"aliases\":[\"Jerome Powell\"],\"attrs\":{},\"createdAt\":\"2026-05-17T14:00:00.000Z\",\"id\":\"ent_8f8013f4b04714d2\",\"name\":\"Jerome Powell\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T18:00:00.000Z\",\"kind\":\"rss\"},\"state\":\"active\",\"type\":\"person\",\"updatedAt\":\"2026-05-17T18:00:00.000Z\"},{\"aggregates\":{\"firstSeenAt\":\"2026-05-17T18:00:00.000Z\",\"lastSeenAt\":\"2026-05-17T18:00:00.000Z\",\"linkedStoryIds\":[\"story_29d20d007746\"],\"mentionCount\":1},\"aliases\":[\"Gold\"],\"attrs\":{},\"createdAt\":\"2026-05-17T18:00:00.000Z\",\"id\":\"ent_a1351896c7c8d419\",\"name\":\"Gold\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T18:00:00.000Z\",\"kind\":\"rss\"},\"state\":\"active\",\"type\":\"commodity\",\"updatedAt\":\"2026-05-17T18:00:00.000Z\"},{\"aliases\":[\"Fed holds rates\"],\"attrs\":{\"title\":\"Fed holds rates\"},\"createdAt\":\"2026-05-17T14:00:00.000Z\",\"id\":\"item:ingest:a1\",\"name\":\"Fed holds rates\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T14:00:00.000Z\",\"kind\":\"rss\"},\"state\":\"active\",\"type\":\"item\",\"updatedAt\":\"2026-05-17T14:00:00.000Z\"},{\"aliases\":[\"Powell signals patience\"],\"attrs\":{\"title\":\"Powell signals patience\"},\"createdAt\":\"2026-05-17T16:30:00.000Z\",\"id\":\"item:ingest:a2\",\"name\":\"Powell signals patience\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T16:30:00.000Z\",\"kind\":\"rss\"},\"state\":\"active\",\"type\":\"item\",\"updatedAt\":\"2026-05-17T16:30:00.000Z\"},{\"aliases\":[\"Gold rallies\"],\"attrs\":{\"title\":\"Gold rallies\"},\"createdAt\":\"2026-05-17T18:00:00.000Z\",\"id\":\"item:ingest:a3\",\"name\":\"Gold rallies\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T18:00:00.000Z\",\"kind\":\"rss\"},\"state\":\"active\",\"type\":\"item\",\"updatedAt\":\"2026-05-17T18:00:00.000Z\"}],\"facts\":[],\"observations\":[{\"at\":\"2026-05-17T14:00:00.000Z\",\"checksum\":\"c366ac68f79539b11fa5f4c0377bc5dcb0af69037448fefea5b0e6a8279c282f\",\"entityId\":\"item:ingest:a1\",\"entityIds\":[\"ent_8f8013f4b04714d2\"],\"externalId\":\"a1\",\"id\":\"obs_f55ff16f66f4\",\"stale\":false,\"storyId\":\"story_29d20d007746\"},{\"at\":\"2026-05-17T16:30:00.000Z\",\"checksum\":\"5a95b4ba0fa4a8f664aa640502b4a0df150fe70b6d4ac3f4c6a2037f9b426a28\",\"entityId\":\"item:ingest:a2\",\"entityIds\":[\"ent_8f8013f4b04714d2\"],\"externalId\":\"a2\",\"id\":\"obs_2c3a4249d770\",\"stale\":false,\"storyId\":\"story_29d20d007746\"},{\"at\":\"2026-05-17T18:00:00.000Z\",\"checksum\":\"fc5a489a94c26f6cb8170846e96cc17b9e06583ea8791f9404a3299f6a8cc02f\",\"entityId\":\"item:ingest:a3\",\"entityIds\":[\"ent_8f8013f4b04714d2\",\"ent_a1351896c7c8d419\"],\"externalId\":\"a3\",\"id\":\"obs_f46dd28a5499\",\"stale\":false,\"storyId\":\"story_29d20d007746\"}],\"relationships\":[{\"createdAt\":\"2026-05-17T18:00:00.000Z\",\"from\":\"item:ingest:a3\",\"id\":\"rel_455e4b0492ffe693\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T18:00:00.000Z\",\"kind\":\"rss\"},\"to\":\"ent_8f8013f4b04714d2\",\"type\":\"mentions\",\"validFrom\":\"2026-05-17T18:00:00.000Z\"},{\"createdAt\":\"2026-05-17T16:30:00.000Z\",\"from\":\"item:ingest:a2\",\"id\":\"rel_8bc7af53e74e37f8\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T16:30:00.000Z\",\"kind\":\"rss\"},\"to\":\"ent_8f8013f4b04714d2\",\"type\":\"mentions\",\"validFrom\":\"2026-05-17T16:30:00.000Z\"},{\"createdAt\":\"2026-05-17T18:00:00.000Z\",\"from\":\"item:ingest:a3\",\"id\":\"rel_e49a737c6e6fe5e7\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T18:00:00.000Z\",\"kind\":\"rss\"},\"supersededBy\":\"rel_455e4b0492ffe693\",\"to\":\"ent_a1351896c7c8d419\",\"type\":\"mentions\",\"validFrom\":\"2026-05-17T18:00:00.000Z\",\"validTo\":\"2026-05-17T18:00:00.000Z\"},{\"createdAt\":\"2026-05-17T14:00:00.000Z\",\"from\":\"item:ingest:a1\",\"id\":\"rel_eea32a061760c5aa\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-05-17T14:00:00.000Z\",\"kind\":\"rss\"},\"to\":\"ent_8f8013f4b04714d2\",\"type\":\"mentions\",\"validFrom\":\"2026-05-17T14:00:00.000Z\"}],\"stories\":[{\"entityIds\":[\"ent_8f8013f4b04714d2\",\"ent_a1351896c7c8d419\"],\"entityNames\":[\"ent_8f8013f4b04714d2\",\"ent_a1351896c7c8d419\"],\"firstAt\":\"2026-05-17T14:00:00.000Z\",\"id\":\"story_29d20d007746\",\"lastAt\":\"2026-05-17T18:00:00.000Z\",\"memberIds\":[\"a1\",\"a2\",\"a3\"],\"milestones\":[{\"at\":\"2026-05-17T16:30:00.000Z\",\"kind\":\"multi-source\"}],\"sources\":[],\"title\":\"a1\"}]}",
+ "secondChanged": false,
+ "w2Shape": "{\"contexts\":[],\"entities\":[{\"aliases\":[],\"attrs\":{\"dir\":\"cost_up\",\"impact\":{\"worst\":10.5},\"pct\":3.5,\"status\":\"PASS\"},\"createdAt\":\"2026-01-01T00:00:00.000Z\",\"id\":\"claim:vidhur:C1\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-01-02T00:00:00.000Z\",\"by\":\"t\",\"kind\":\"agent\"},\"state\":\"active\",\"type\":\"claim\",\"updatedAt\":\"2026-01-03T00:00:00.000Z\"}],\"facts\":[{\"about\":\"claim:vidhur:C1\",\"assertedAt\":\"2026-01-03T00:00:00.000Z\",\"confidence\":0.9,\"id\":\"fact_984698773cff5a31\",\"predicate\":\"impact\",\"source\":{\"at\":\"2026-01-03T00:00:00.000Z\",\"by\":\"t\",\"kind\":\"agent\"},\"value\":{\"worst\":10.5}}],\"observations\":[],\"relationships\":[{\"createdAt\":\"2026-01-02T00:00:00.000Z\",\"from\":\"claim:vidhur:C1\",\"id\":\"rel_eccc808dec1d3589\",\"schemaVersion\":1,\"source\":{\"at\":\"2026-01-02T00:00:00.000Z\",\"by\":\"t\",\"kind\":\"agent\"},\"to\":\"verdict:vidhur:V1\",\"type\":\"audited-by\",\"validFrom\":\"2026-01-02T00:00:00.000Z\"}],\"stories\":[]}",
+ "w2Audit": [
+  [
+   1,
+   "upsertEntity",
+   "t",
+   "claim:vidhur:C1 (claim)"
+  ],
+  [
+   2,
+   "upsertEntity",
+   "t",
+   "claim:vidhur:C1 (claim)"
+  ],
+  [
+   3,
+   "assertFact",
+   "t",
+   "claim:vidhur:C1.impact = {\"worst\":10.5} (most-recent-wins)"
+  ],
+  [
+   4,
+   "relate",
+   "t",
+   "claim:vidhur:C1 -[audited-by]-> verdict:vidhur:V1"
+  ]
+ ]
+}

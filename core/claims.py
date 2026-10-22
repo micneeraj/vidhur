@@ -11,14 +11,20 @@ class Claim:
     part_name: str
     supplier_country: str
     direction: str  # "cost_up" or "cost_down"
-    pct_low: float  # estimated % change in unit cost (magnitude), analyst's own estimate
+    pct_low: float  # estimated % change in unit cost (magnitude)
     pct_high: float
     source_urls: list = field(default_factory=list)  # urls cited; the Evaluator checks each one exists
     reasoning: str = ""
     attempt: int = 1
+    analyst: str = "geopolitics"
+    computed: dict = field(default_factory=dict)  # numbers computed in Python (e.g. FX moves), checked by the Evaluator
 
     def to_dict(self):
         return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
 
 
 @dataclass
@@ -35,8 +41,7 @@ class Verdict:
 
 @dataclass
 class AuditResult:
-    claim: Claim
+    claim_key: str  # the final claim's key in the world state
     status: str  # "PASS" or "UNVERIFIED"
     verdict: Verdict
     retries: int
-    history: list = field(default_factory=list)  # one entry per attempt: claim + verdict
