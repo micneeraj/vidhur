@@ -74,10 +74,13 @@ the console, recorded in the trace (`demo_weak_claim: true`) and stated at the t
 
 ## Notes on the AI runtime
 
-All product AI calls go through Meterless Nightshift with explicitly pinned Nemotron models (`MODEL_ANALYST`, `MODEL_EVALUATOR` in `.env`).
-Nightshift's router treats the pinned model as a preference, so the model that actually answers can differ. Vidhur therefore
-records **both** the requested and the answering model for every call in the trace. The runtime also sometimes returns 502 errors when
-it routes to a retired model; the client retries automatically (up to 3 attempts) and logs each failed attempt.
+All product AI calls go through Meterless Nightshift. The analyst uses the Nightshift lane `vidhur-analyst`
+(nvidia/nemotron-3.5-lightning-30b-a3b); the Evaluator is configured for the lane `vidhur-evaluator`
+(nvidia/nemotron-3-super-120b-a12b). `.env` holds the lane id to request (`MODEL_*`) and the Nemotron model that must answer
+(`MODEL_*_EXPECTED`). The trace records the requested model, the expected model, the model that actually answered and
+`pin_honoured` for every call. The analyst lane is honoured reliably; the evaluator lane is currently answered by the
+lightning model instead (see Limitations). The runtime enforces a ~45 s per-request deadline and answers 502 when a long
+reasoning call overruns it, so the client retries automatically (default 5 attempts, `LLM_MAX_ATTEMPTS`) and logs every failed attempt.
 
 ## Limitations / not built yet
 
@@ -90,6 +93,6 @@ it routes to a retired model; the client retries automatically (up to 3 attempts
 - **Percentage ranges are the model's own estimates**, not figures from the sources. The GBP maths is exact, but the inputs are estimates.
   The brief says so.
 - **Baseline is one quarter** (the latest quarter in the data); no seasonality, hedging or contract terms.
-- **Nightshift pinning is a preference**, and runs can be slow or hit provider errors (see above). A target whose model calls keep failing is
+- **The Evaluator is not yet served by its own lane**: requests for `vidhur-evaluator` / the super-120b model are answered by the lightning model, so analyst and auditor currently share a model. Runs also hit provider 502s (see above). A target whose model calls keep failing is
   reported as "not assessed" rather than guessed.
 - Synthetic data only; nothing here is financial advice.

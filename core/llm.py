@@ -11,7 +11,9 @@ from openai import OpenAI
 from core import config
 
 TIMEOUT_SECONDS = 180
-MAX_ATTEMPTS = 3  # first try + up to 2 automatic retries
+# First try + automatic retries. A pinned lane has no router fallback, and the runtime enforces a ~45 s
+# deadline per request, so a long-reasoning call fails a good share of the time and a retry is the fix.
+MAX_ATTEMPTS = int(config.env("LLM_MAX_ATTEMPTS", "5"))
 # Network problems, and 5xx from the runtime: Nightshift can route a request to a model that has
 # been retired upstream (it answers 502), and the next attempt usually gets a live route.
 RETRYABLE_ERRORS = (openai.APIConnectionError, openai.APITimeoutError, openai.InternalServerError)
@@ -22,13 +24,14 @@ class LLMResult:
     text: str
     model: str  # the model that actually answered (from the response)
     requested_model: str
+    expected_model: str  # the model the pin is supposed to deliver (a lane id resolves to this)
     prompt_tokens: int
     completion_tokens: int
     latency_ms: int
 
     @property
     def pin_honoured(self):
-        return self.model == self.requested_model
+        return self.model == self.expected_model
 
 
 def _client():
@@ -40,7 +43,8 @@ def _client():
     )
 
 
-def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000, temperature=0.2, retry_count=0):
+def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000, temperature=0.2, retry_count=0,
+         expected_model=None):
     """Send chat messages to Nightshift. Retries automatically on network errors and runtime 5xx errors.
 
     Logs the agent, requested model, answering model, tokens and latency to the trace.
@@ -68,6 +72,7 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
         text=(response.choices[0].message.content or "").strip(),
         model=response.model or model,
         requested_model=model,
+        expected_model=expected_model or model,
         prompt_tokens=getattr(usage, "prompt_tokens", 0) or 0,
         completion_tokens=getattr(usage, "completion_tokens", 0) or 0,
         latency_ms=latency_ms,
@@ -81,6 +86,7 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
             model=result.model,
             retry_count=retry_count,
             requested_model=result.requested_model,
+            expected_model=result.expected_model,
             pin_honoured=result.pin_honoured,
             prompt_tokens=result.prompt_tokens,
             completion_tokens=result.completion_tokens,
@@ -91,7 +97,8 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
 
 def ask_llm(prompt, model=None):
     """Simple one-prompt helper. Returns (reply, model_that_answered)."""
-    result = chat([{"role": "user", "content": prompt}], model or config.analyst_model(), agent="ask_llm")
+    result = chat([{"role": "user", "content": prompt}], model or config.analyst_model(), agent="ask_llm",
+                  expected_model=None if model else config.analyst_expected())
     return result.text, result.model
 
 

@@ -156,6 +156,7 @@ class Evaluator:
         self.pool = pool  # shared with the analyst: url -> Article
         self.trace = trace
         self.model = model or config.evaluator_model()
+        self.expected_model = config.evaluator_expected() if model is None else model
         self.now = now
         self.max_age_days = max_age_days
 
@@ -199,6 +200,7 @@ class Evaluator:
         result = llm.chat(
             [{"role": "system", "content": EVALUATOR_SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
             model=self.model,
+            expected_model=self.expected_model,
             agent=self.name,
             step="support-check",
             trace=self.trace,

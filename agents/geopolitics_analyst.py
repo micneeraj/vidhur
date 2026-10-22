@@ -43,6 +43,7 @@ class GeopoliticsAnalyst:
     def __init__(self, trace, model=None, demo_weak_claim=False, refresh_news=False):
         self.trace = trace
         self.model = model or config.analyst_model()
+        self.expected_model = config.analyst_expected() if model is None else model
         self.demo_weak_claim = demo_weak_claim
         self.refresh_news = refresh_news
         self.pool = {}  # url -> Article: every article fetched this run (the Evaluator checks against it)
@@ -118,6 +119,7 @@ class GeopoliticsAnalyst:
         result = llm.chat(
             [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": header + task}],
             model=self.model,
+            expected_model=self.expected_model,
             agent=self.name,
             step="claim" if previous is None else "revise",
             trace=self.trace,

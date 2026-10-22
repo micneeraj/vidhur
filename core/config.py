@@ -25,11 +25,21 @@ def nightshift_url():
 
 
 def analyst_model():
+    """What to put in the request: a Nightshift lane id (e.g. vidhur-analyst) or a full model id."""
     return env("MODEL_ANALYST", required=True)
+
+
+def analyst_expected():
+    """The Nemotron model that must actually answer for the analyst. Defaults to MODEL_ANALYST."""
+    return env("MODEL_ANALYST_EXPECTED") or analyst_model()
 
 
 def evaluator_model():
     return env("MODEL_EVALUATOR", required=True)
+
+
+def evaluator_expected():
+    return env("MODEL_EVALUATOR_EXPECTED") or evaluator_model()
 
 
 def evidence_max_age_days():
