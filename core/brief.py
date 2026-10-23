@@ -4,8 +4,12 @@ from agents.decision_maker import DEMO_AGGRESSIVE_INSTRUCTION, MAX_ROUNDS, handl
 from agents.evaluator import source_profile
 from core import decisions as dec
 from agents.geopolitics_analyst import DEMO_UNTRUSTED_INSTRUCTION, DEMO_WEAK_CLAIM_INSTRUCTION
+from core import failures
 from core.news import Article
 from core.source_trust import trust_of
+
+
+RED_TEAM_DID_NOT_RUN = "Red Team review could not run — AI runtime busy. Treat this recommendation as unreviewed."
 
 
 def gbp(value):
@@ -50,7 +54,7 @@ def _decisions_section(report, passed):
     out = ["", "## Recommended decisions (next quarter)", "",
            f"Options are compared as the change in quarterly cost vs baseline (+ extra cost, - saving). Assumed premiums on the protected "
            f"spend: hedge {dec.PREMIUM_PCT['HEDGE']}%, price lock {dec.PREMIUM_PCT['LOCK_PRICE']}%, second supplier "
-           f"{dec.PREMIUM_PCT['DUAL_SOURCE']}% (illustrative, to be replaced by real quotes). \"If forecast wrong\" is the mirror of the "
+           f"{dec.PREMIUM_PCT['DUAL_SOURCE']}% (illustrative assumptions, not market quotes). \"If forecast wrong\" is the mirror of the "
            "likely case. The model picks and explains an option; every GBP figure is computed in Python.", ""]
     for i in passed:
         wid = i["delegation"]["work_id"]
@@ -67,13 +71,13 @@ def _decisions_section(report, passed):
         contested = outcome.get("status") == "CONTESTED"
         claim = i["attempts"][-1]["claim"]
         not_challenged = outcome.get("status") in ("NOT_CHALLENGED", "UNCHALLENGED")
-        head = "CONTESTED - needs CFO judgement" if contested else ("Proposed, NOT challenged" if not_challenged else "Recommended")
+        head = "CONTESTED - needs CFO judgement" if contested else ("Proposed, UNREVIEWED" if not_challenged else "Recommended")
         out += [f"### {wid}. {claim.part_name} ({claim.supplier_country}) - {head}", ""]
         if contested:
             out += [f"**No confident recommendation.** The Red Team's high-severity objection was still unresolved after {outcome.get('rounds', 0)} "
                     f"round(s). Last proposal: **{_option_label(final['kind'], final['share_pct'])}**.", ""]
         elif not_challenged:
-            out += [f"**Unchallenged proposal:** {_option_label(final['kind'], final['share_pct'])} - {final['rationale']}", ""]
+            out += [f"**{RED_TEAM_DID_NOT_RUN}** Proposal: {_option_label(final['kind'], final['share_pct'])} - {final['rationale']}", ""]
         else:
             out += [f"**{_option_label(final['kind'], final['share_pct'])}** - {final['rationale']}", ""]
         rows = dec.compare_options(spend, impact, (final["kind"], final["share_pct"]))
@@ -81,14 +85,15 @@ def _decisions_section(report, passed):
         for r in rows:
             mark = " **<- proposed**" if (r["kind"], r["share_pct"]) == (final["kind"], final["share_pct"]) else ""
             out.append(f"| {_option_label(r['kind'], r['share_pct'])}{mark} | {dec.gbp(r['premium_gbp'])} | {_cost_cells(r)} |")
+        out += ["", f"_{dec.ASSUMPTIONS_NOTE}_"]
 
         objs = sorted(d["objections"], key=lambda o: ({"high": 0, "medium": 1, "low": 2}[o["severity"]], int(o["id"][1:])))
         out += ["", "**Challenged by Red Team**", ""]
         if not objs:
-            out.append(f"- Not challenged: {outcome['error']}" if outcome.get("error") else
-                       "- No line of attack applied: the forecast-wrong, cost-of-acting, concentration, evidence and cheaper-option checks "
+            out.append(f"- {RED_TEAM_DID_NOT_RUN} ({outcome['error']})" if outcome.get("status") == "NOT_CHALLENGED" else
+                       "- Red Team reviewed this decision and raised no high or medium objections: the forecast-wrong, cost-of-acting, concentration, evidence and cheaper-option checks "
                        "(computed in Python) all came back clear." if outcome.get("status") == "RECOMMENDED" else
-                       "- The Red Team returned no objection with a specific evidence reference, so this decision went unchallenged.")
+                       "- The Red Team ran but returned no objection with a specific evidence reference, so no objection was raised or answered.")
         for o in objs[:4]:
             resp = o.get("response") or {}
             tail = f" Decision Maker: {resp['action'].lower()} - {resp['reason']}" if resp.get("action") in ("REVISE", "DEFEND") else ""
@@ -145,6 +150,8 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
     plan, review, run = report["plan"], report["review"], report["run"]
     out = [
         "# Vidhur CFO Brief - Ganga AI Solutions", "",
+        *(["> **PARTIAL RESULTS.** AI runtime busy or offline: some agents could not run. See \"Agents that could not run\" below.", ""]
+          if failures.collect(report) else []),
         "> **SYNTHETIC DATA.** Ganga AI Solutions is a fictional company. Its purchase history is made up for the "
         "Open Agent Hackathon 2026. News and exchange-rate evidence is real, fetched live from free sources.", "",
         f"- Run `{run.get('run_id', '')}` - {run.get('elapsed_seconds', '?')} s - team: Planner (Vidhur), Geopolitics Analyst, Currency Analyst, Evaluator",
@@ -165,7 +172,7 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         out += [f"- **Demo flag `--demo-red-team` was on.** The first decision for the lowest-confidence verified claim was given this extra "
                 f"instruction: *\"{DEMO_AGGRESSIVE_INSTRUCTION}\"* The model calls, the Red Team and the challenge loop are real."]
 
-    out += ["", "## The Planner's plan", "", plan.get("summary", "")]
+    out += ["", "## The Planner's plan", "", plan.get("summary") or "No plan was produced (the Planner could not run)."]
     if plan.get("fallback"):
         out += ["", "**The planning model's reply was unusable, so this is the documented fallback plan.**"]
     out += ["", "| Work | Analyst | Part | Why the Planner chose it |", "|---|---|---|---|"]
@@ -194,6 +201,7 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         out.append("No claim passed the Evaluator in this run, so no GBP impact is reported.")
 
     out += _decisions_section(report, passed)
+    out += failures.brief_section(report)
 
     out += ["", "## Evidence trail", ""]
     for i in items:

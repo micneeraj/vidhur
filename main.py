@@ -18,6 +18,9 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
+import openai
+import requests
+
 from agents.currency_analyst import CurrencyAnalyst
 from agents.decision_maker import run_decisions
 from agents.evaluator import Evaluator
@@ -25,11 +28,17 @@ from agents.geopolitics_analyst import GeopoliticsAnalyst
 from agents.planner import Planner
 from agents.workflow import run_work_item
 from core import config
+from core import failures
 from core.brief import build_brief, console_summary
 from core.ganga_data import part_country_catalog, top_targets
+from core.preflight import RUNTIME_BUSY_EARLY, RUNTIME_BUSY_MESSAGE, ZETARIS_START_HINT, run_checks
 from core.shared_state import RunWorld
 from core.trace import Trace
-from core.zetaris_client import ZetarisClient
+from core.zetaris_client import ZetarisClient, ZetarisError, ZetarisUnreachable
+
+# A service being down or busy (after the retries inside core/llm.py and the Zetaris client) is reported, never a traceback.
+SERVICE_ERRORS = (openai.OpenAIError, ZetarisError, requests.RequestException)
+EXIT_STOPPED_EARLY, EXIT_PARTIAL = 1, 2
 
 OUTPUT_DIR = config.ROOT / "output_examples"
 INPUT_DIR = config.ROOT / "input_examples"
@@ -50,12 +59,28 @@ def parse_args():
                         "Real model calls and a real challenge loop.")
     p.add_argument("--workers", type=int, default=3, help="Analysts running in parallel (default 3).")
     p.add_argument("--refresh-news", action="store_true", help="Ignore the news cache and fetch live.")
+    p.add_argument("--skip-healthcheck", action="store_true", help="Do not run the start-up checks (same as scripts/healthcheck.py).")
     return p.parse_args()
+
+
+def preflight():
+    """The same checks as scripts/healthcheck.py. Returns True if the run may start."""
+    checks = run_checks()
+    for c in checks:
+        print(c.line())
+    if all(c.ok for c in checks):
+        return True
+    print("\nStopped before the run: fix the FAIL line(s) above. Nothing was run and nothing was saved. (scripts/healthcheck.py repeats these checks.)")
+    if any(not c.ok and c.name.startswith("Nightshift") and "busy" in c.detail for c in checks):
+        print(RUNTIME_BUSY_EARLY)
+    return False
 
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     args = parse_args()
+    if not args.skip_healthcheck and not preflight():
+        sys.exit(EXIT_STOPPED_EARLY)
     started = time.monotonic()
     trace = Trace()
     world = RunWorld(trace.run_id)
@@ -69,12 +94,17 @@ def main():
 
     # 1. Zetaris health check, then Ganga's spend by part (all parts, largest first)
     zt = ZetarisClient(trace=trace)
-    if not zt.health_check():
-        sys.exit("Zetaris health check failed. Is Docker Desktop running and the Zetaris containers healthy?")
-    trace.event("main", "zetaris:health", output_summary="SELECT 1 returned 1", decision="OK")
-    targets = top_targets(zt, 99)
+    try:
+        if not zt.health_check():
+            sys.exit("Zetaris health check failed. Is Docker Desktop running and the Zetaris containers healthy?")
+        trace.event("main", "zetaris:health", output_summary="SELECT 1 returned 1", decision="OK")
+        targets = top_targets(zt, 99)
+        catalog = part_country_catalog(zt)
+    except ZetarisUnreachable as exc:
+        sys.exit(f"{exc}\n{ZETARIS_START_HINT}")
+    except ZetarisError as exc:
+        sys.exit(f"Zetaris problem: {exc}")
     by_part = {t.part_id: t for t in targets}
-    catalog = part_country_catalog(zt)
     world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "demo_red_team": args.demo_red_team, "started": datetime.now().isoformat(timespec="seconds"),
                      "quarter": targets[0].quarter})
 
@@ -100,27 +130,51 @@ def main():
     evaluator = Evaluator(catalog, pool, world, trace)
     planner = Planner(trace, world)
 
+    stopped = []  # stages that a service outage cut short: {agent, stage, error}
+
+    def guarded(agent, stage, fn):
+        """Run one stage. A service outage is recorded (trace + world state + brief) and the run carries on with what it has."""
+        try:
+            return fn()
+        except SERVICE_ERRORS as exc:
+            error = f"{type(exc).__name__}: {str(exc)[:200]}"
+            stopped.append({"agent": agent, "stage": stage, "error": error})
+            trace.event("main", f"stopped:{stage}", output_summary=f"{agent} could not run - {error}", decision="STOPPED")
+            return None
+
     # 3. Planner decides which analyst works on which part, and why
-    plan = planner.plan(targets)
+    plan = guarded("Planner", "planning", lambda: planner.plan(targets))
+    delegations = plan["delegations"] if plan else []
 
     # 4. Analysts work in parallel; each work item runs draft -> Evaluator loop -> impact
     def process(delegation):
-        run_work_item(delegation, by_part[delegation["part_id"]], analysts, evaluator, world, zt, trace)
+        try:
+            run_work_item(delegation, by_part[delegation["part_id"]], analysts, evaluator, world, zt, trace)
+        except SERVICE_ERRORS as exc:  # run_work_item reports its own; this is the safety net
+            world.write_error(delegation["work_id"], f"{type(exc).__name__}: {str(exc)[:200]}")
 
     with ThreadPoolExecutor(max_workers=max(1, args.workers)) as executor:
-        list(executor.map(process, plan["delegations"]))
+        list(executor.map(process, delegations))
 
     # 5. Planner reviews the world state and may re-delegate once
-    extra = planner.review(world.report(), targets)
-    if extra:
-        process(extra)
+    if plan:
+        extra = guarded("Planner", "review", lambda: planner.review(world.report(), targets))
+        if extra:
+            process(extra)
 
     # 6. Decision Maker proposes a decision per verified claim; the Red Team challenges it (max 2 rounds)
-    run_decisions(world.report(), world, targets, trace, demo_red_team=args.demo_red_team, workers=min(args.workers, 2))
+    if plan:
+        guarded("Decision Maker / Red Team", "decisions", lambda: run_decisions(
+            world.report(), world, targets, trace, demo_red_team=args.demo_red_team, workers=min(args.workers, 2)))
 
-    # 7. Brief, built from the world state
+    # 7. Brief, built from the world state (also when partial: it lists which agents could not run and why)
     elapsed = round(time.monotonic() - started)
-    world.finish_run({"elapsed_seconds": elapsed, "llm_ok": trace.stats["llm_ok"], "llm_fail": trace.stats["llm_fail"]})
+    summary = {"elapsed_seconds": elapsed, "llm_ok": trace.stats["llm_ok"], "llm_fail": trace.stats["llm_fail"]}
+    if stopped:
+        summary["stopped"] = stopped
+    report = world.report()
+    partial = bool(failures.collect({**report, "run": summary}))
+    world.finish_run(summary, status="partial" if partial else "finished")
     report = world.report()
     brief = build_brief(report, world, trace.path, args.demo_weak_claim, trace.stats, args.demo_untrusted_source,
                         args.demo_red_team)
@@ -135,6 +189,11 @@ def main():
     print(f"Brief saved:     {out_path}")
     print(f"Trace file:      {trace.path}")
     print(f"World state:     {world.path} ({report['event_count']} events)")
+    if partial:
+        print("\n" + RUNTIME_BUSY_MESSAGE)
+        for f in failures.collect(report):
+            print(f"  - {f['agent']} ({f['where']}): {f['reason']}")
+        sys.exit(EXIT_PARTIAL)
 
 
 if __name__ == "__main__":

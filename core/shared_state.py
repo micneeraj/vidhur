@@ -52,8 +52,9 @@ class RunWorld:
     def start_run(self, meta):
         return self._upsert("run", "run", {"status": "running", **meta}, "main")
 
-    def finish_run(self, summary):
-        return self._upsert("run", "run", {"status": "finished", **summary}, "main")
+    def finish_run(self, summary, status="finished"):
+        """status 'partial' when a service was unavailable; summary may carry `stopped`: [{agent, stage, error}]."""
+        return self._upsert("run", "run", {"status": status, **summary}, "main")
 
     def record_plan(self, plan, targets):
         """plan = {"delegations": [...], "skipped": [...], "summary": str, "fallback": bool}"""

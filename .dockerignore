@@ -1,0 +1,12 @@
+venv/
+.venv/
+.env
+.git/
+.gitignore
+__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+# logs are not baked into the image (the committed example traces stay in git)
+logs/
+data/news_cache/

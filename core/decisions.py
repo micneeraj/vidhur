@@ -10,6 +10,10 @@ Scenarios: worst / likely / best (the claim's own range) and "forecast_wrong", t
 (the market moves the opposite way by the likely amount). The premiums are ASSUMPTIONS, stated in the CFO brief.
 """
 
+import csv
+
+from core.config import ROOT
+
 KINDS = ("NO_ACTION", "HEDGE", "LOCK_PRICE", "DUAL_SOURCE")
 LABELS = {
     "NO_ACTION": "No action, monitor",
@@ -17,8 +21,21 @@ LABELS = {
     "LOCK_PRICE": "Lock the price with the supplier (100% of volume)",
     "DUAL_SOURCE": "Move a share of volume to a second supplier",
 }
-# Assumed cost of protection, % of the protected spend (illustrative; a real quote would replace these).
-PREMIUM_PCT = {"NO_ACTION": 0.0, "HEDGE": 1.5, "LOCK_PRICE": 2.0, "DUAL_SOURCE": 3.0}
+ASSUMPTIONS_FILE = ROOT / "data" / "decision_assumptions.csv"
+ASSUMPTIONS_NOTE = "Assumptions: see data/decision_assumptions.csv"
+
+
+def load_premiums(path=ASSUMPTIONS_FILE):
+    """Assumed cost of protection, % of the protected spend, read from the CSV (illustrative; a real quote would replace them)."""
+    with open(path, newline="", encoding="utf-8") as f:
+        premiums = {row["option"].strip(): float(row["premium_pct"]) for row in csv.DictReader(f)}
+    missing = [k for k in KINDS if k not in premiums]
+    if missing:
+        raise ValueError(f"{path} has no premium_pct for: {', '.join(missing)}")
+    return premiums
+
+
+PREMIUM_PCT = load_premiums()
 # The comparison table every decision is shown against.
 MENU = (("NO_ACTION", 0), ("HEDGE", 50), ("LOCK_PRICE", 100), ("DUAL_SOURCE", 30))
 SCENARIOS = ("worst", "likely", "best", "forecast_wrong")

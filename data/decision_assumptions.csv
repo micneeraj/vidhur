@@ -1,0 +1,5 @@
+option,premium_pct,note
+NO_ACTION,0.0,No protection is bought so no premium is paid.
+HEDGE,1.5,Illustrative assumption for the cost of hedging a share of spend - not a market quote.
+LOCK_PRICE,2.0,Illustrative assumption for the cost of a supplier price lock - not a market quote.
+DUAL_SOURCE,3.0,Illustrative assumption for the cost of moving volume to a second supplier - not a market quote.

@@ -14,22 +14,34 @@ class ZetarisError(RuntimeError):
     pass
 
 
+class ZetarisUnreachable(ZetarisError):
+    """Zetaris did not answer at all (connection refused, DNS, timeout) - it is probably not running."""
+
+
 class ZetarisClient:
-    def __init__(self, trace=None):
-        self.base = config.env("ZETARIS_API_URL", "http://localhost:8888/api/v1.0").rstrip("/")
+    def __init__(self, trace=None, timeout=None):
+        self.base = config.zetaris_url()
         self.org_id = config.env("ZETARIS_ORG_ID", "1")
         self.trace = trace
+        self.timeout = timeout  # None = the defaults below; the health check passes a short one
         self._token = None
+
+    def _send(self, method, url, **kwargs):
+        """One HTTP call; network failures become ZetarisUnreachable so callers never see a raw requests traceback."""
+        try:
+            return requests.request(method, url, **kwargs)
+        except (requests.ConnectionError, requests.Timeout) as exc:
+            raise ZetarisUnreachable(f"Zetaris is not reachable at {self.base} ({type(exc).__name__}).") from exc
 
     # -- auth -----------------------------------------------------------------
     def _login(self):
         user = config.env("ZETARIS_USER", required=True)
         password = config.env("ZETARIS_PASSWORD", required=True)
-        response = requests.get(
-            f"{self.base}/auth/login",
+        response = self._send(
+            "GET", f"{self.base}/auth/login",
             headers={"X-Org-ID": self.org_id, "X-Request-ID": str(uuid.uuid4())},
             auth=(user, password),
-            timeout=30,
+            timeout=self.timeout or 30,
         )
         if response.status_code != 200:
             raise ZetarisError(f"Zetaris login failed (HTTP {response.status_code}). Check ZETARIS_USER/PASSWORD/ORG_ID in .env.")
@@ -53,10 +65,12 @@ class ZetarisClient:
         payload = {"queryId": str(uuid.uuid4()), "sql": statement, "limit": limit, "source": "Generic"}
 
         started = time.monotonic()
-        response = requests.post(f"{self.base}/sql-editor/sqls/run", headers=self._headers(), json=payload, timeout=REQUEST_TIMEOUT)
+        response = self._send("POST", f"{self.base}/sql-editor/sqls/run", headers=self._headers(), json=payload,
+                              timeout=self.timeout or REQUEST_TIMEOUT)
         if response.status_code == 401:  # token expired: log in again once
             self._token = None
-            response = requests.post(f"{self.base}/sql-editor/sqls/run", headers=self._headers(), json=payload, timeout=REQUEST_TIMEOUT)
+            response = self._send("POST", f"{self.base}/sql-editor/sqls/run", headers=self._headers(), json=payload,
+                              timeout=self.timeout or REQUEST_TIMEOUT)
         if response.status_code != 200:
             raise ZetarisError(f"Zetaris SQL failed (HTTP {response.status_code}): {_error_line(response)}")
 

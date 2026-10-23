@@ -34,23 +34,23 @@ class LLMResult:
         return self.model == self.expected_model
 
 
-def _client():
+def _client(timeout=None):
     return OpenAI(
         base_url=config.nightshift_url(),
         api_key=config.env("METERLESS_RUNTIME_TOKEN", required=True),
-        timeout=TIMEOUT_SECONDS,
+        timeout=timeout or TIMEOUT_SECONDS,
         max_retries=0,  # retries are handled below so they are visible
     )
 
 
 def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000, temperature=0.2, retry_count=0,
-         expected_model=None, max_attempts=None):
+         expected_model=None, max_attempts=None, timeout=None):
     """Send chat messages to Nightshift. Retries automatically on network errors and runtime 5xx errors.
 
     Logs the agent, requested model, answering model, tokens and latency to the trace.
     """
     attempts = max_attempts or MAX_ATTEMPTS
-    client = _client()
+    client = _client(timeout)
     started = time.monotonic()
     for attempt in range(1, attempts + 1):
         try:

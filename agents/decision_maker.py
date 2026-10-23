@@ -13,6 +13,7 @@ The challenge loop (non-linear on purpose):
 from concurrent.futures import ThreadPoolExecutor
 
 import openai
+import requests
 
 from core import config, decisions, llm
 from core.red_team import BRIEF_REASONING, MAX_ATTEMPTS, RedTeam, _number_tokens, evidence_block, known_ids, lean_block, ref_valid
@@ -282,7 +283,7 @@ def run_decisions(report, world, targets, trace, demo_red_team=False, workers=2)
             try:
                 ev = build_evidence(item, world, targets)
                 return challenge_decision(ev, dm, rt, world, trace, aggressive=(work_id == weakest))
-            except openai.OpenAIError as exc:
+            except (openai.OpenAIError, requests.RequestException) as exc:
                 message = f"{type(exc).__name__}: {str(exc)[:200]}"
                 # A model outage must not pass for a challenged decision: a proposal that was never challenged is labelled as such.
                 has_proposal = bool(world.decision_report().get(work_id, {}).get("versions"))

@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
 
 from dotenv import load_dotenv
 
@@ -16,12 +17,37 @@ def env(name, default=None, required=False):
     return value
 
 
+def in_docker():
+    """True inside a container: VIDHUR_IN_DOCKER=1 (the Dockerfile sets it) or Docker's /.dockerenv marker."""
+    flag = env("VIDHUR_IN_DOCKER")
+    if flag is not None:
+        return flag.strip().lower() in ("1", "true", "yes")
+    return Path("/.dockerenv").exists()
+
+
+def host_url(url):
+    """Inside Docker, localhost means the container itself, so point it at the host machine instead.
+    The alias is DOCKER_HOST_ALIAS (default host.docker.internal). Outside Docker the URL is returned unchanged."""
+    if not in_docker():
+        return url
+    parts = urlsplit(url)
+    if parts.hostname not in ("localhost", "127.0.0.1", "::1"):
+        return url
+    alias = env("DOCKER_HOST_ALIAS", "host.docker.internal")
+    netloc = alias + (f":{parts.port}" if parts.port else "")
+    return urlunsplit(parts._replace(netloc=netloc))
+
+
 def nightshift_url():
     # METERLESS_BASE_URL is the documented name; NIGHTSHIFT_URL is the Day 1 skeleton name.
     url = env("METERLESS_BASE_URL") or env("NIGHTSHIFT_URL")
     if not url:
         raise RuntimeError("METERLESS_BASE_URL is not set. Copy .env.example to .env and fill it in.")
-    return url
+    return host_url(url)
+
+
+def zetaris_url():
+    return host_url(env("ZETARIS_API_URL", "http://localhost:8888/api/v1.0")).rstrip("/")
 
 
 def analyst_model():

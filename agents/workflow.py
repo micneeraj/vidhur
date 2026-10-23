@@ -1,6 +1,7 @@
 """One unit of delegated work: an analyst drafts a claim on a part, the Evaluator audits it, GBP impact is computed."""
 
 import openai
+import requests
 
 from agents.evaluator import audit_claim
 from core.ganga_data import quarterly_spend
@@ -33,7 +34,7 @@ def run_work_item(delegation, target, analysts, evaluator, world, zt, trace):
                 trace.event("impact", "gbp", input_summary=f"{claim.part_id} {quarter} spend £{spend:,.2f}",
                             output_summary=f"worst {impact.worst_gbp:+,.0f} / likely {impact.likely_gbp:+,.0f} / best {impact.best_gbp:+,.0f}; "
                                            f"confidence {confidence}", decision="PASS")
-        except (openai.OpenAIError, ZetarisError) as exc:
+        except (openai.OpenAIError, ZetarisError, requests.RequestException) as exc:
             # A model outage on one work item must not lose the others; it is reported, never hidden.
             message = f"{type(exc).__name__}: {str(exc)[:200]}"
             world.write_error(work_id, message)
