@@ -1,0 +1,6 @@
+case_id,as_of,theme,why_chosen
+B1,2021-02-01,Global chip shortage (early 2021),Named in the brief: early 2021 chip shortage
+B2,2022-08-02,Taiwan Strait tension (Pelosi visit),Named in the brief: Aug 2022 Taiwan Strait tension
+B3,2022-09-23,UK mini-budget and the pound crash,Named in the brief: Sep 2022 mini-budget (as_of is the day of the budget; the later crash is NOT visible)
+B4,2023-05-02,Calmer quarter: export-control chatter only,Calmer quarter chosen so not every case is cost up
+B5,2024-09-02,Calmer quarter: sterling at a two-year high,Calmer quarter chosen so not every case is cost up

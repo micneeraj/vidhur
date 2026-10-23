@@ -1,0 +1,5389 @@
+{
+ "events": [
+  {
+   "id": "evt_1",
+   "seq": 1,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F01-a1",
+    "attrs": {
+     "claim_id": "F01",
+     "claim": "The Korean won has moved against sterling, which lifts the pound cost of Korean memory.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_up",
+     "pct_low": 7.14,
+     "pct_high": 30.82,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2026-07-25..2026-10-23?base=GBP&symbols=KRW",
+      "https://eval.example/FXN1",
+      "https://eval.example/FXN2"
+     ],
+     "reasoning": "Pass-through of the won move to the HBM stack price.",
+     "attempt": 1,
+     "analyst": "currency",
+     "computed": {
+      "currency": "KRW",
+      "move_30d_pct": 2.38,
+      "move_90d_pct": 9.94,
+      "start_date": "2026-07-24",
+      "end_date": "2026-10-23",
+      "start_rate": 1946.62,
+      "end_rate": 1770.57,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "F01"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:37.939Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:37.939Z",
+    "updatedAt": "2026-10-23T16:32:37.939Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:37.939Z"
+  },
+  {
+   "id": "evt_2",
+   "seq": 2,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_f0c03963029e651c",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F01",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F01-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F01-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:32:37.947Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:37.947Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:37.947Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:37.947Z"
+  },
+  {
+   "id": "evt_3",
+   "seq": 3,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F01",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:37.959Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:37.959Z",
+    "updatedAt": "2026-10-23T16:32:37.959Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:37.959Z"
+  },
+  {
+   "id": "evt_4",
+   "seq": 4,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_58eb6cb40b191b34",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F01",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F01-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:37.959Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:32:37.959Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:37.959Z"
+  },
+  {
+   "id": "evt_5",
+   "seq": 5,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F01-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "FX_MISMATCH: The range must be the computed FX moves 2.38-9.94%, not 7.14-30.82%."
+     ],
+     "independent_sources": 3,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F01-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:32:37.983Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:37.983Z",
+    "updatedAt": "2026-10-23T16:32:37.983Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:37.983Z"
+  },
+  {
+   "id": "evt_6",
+   "seq": 6,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_ef774cd926a931f0",
+    "from": "claim:vidhur:eval-bf9a2a6d-F01-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F01-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:32:37.996Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:32:37.996Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:37.996Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:37.996Z"
+  },
+  {
+   "id": "evt_7",
+   "seq": 7,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F02-a1",
+    "attrs": {
+     "claim_id": "F02",
+     "claim": "The Korean won has moved against sterling, which changes the pound cost of Korean memory.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_down",
+     "pct_low": 2.38,
+     "pct_high": 9.94,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2026-07-25..2026-10-23?base=GBP&symbols=KRW",
+      "https://eval.example/FXN1",
+      "https://eval.example/FXN2"
+     ],
+     "reasoning": "Pass-through of the won move to the HBM stack price.",
+     "attempt": 1,
+     "analyst": "currency",
+     "computed": {
+      "currency": "KRW",
+      "move_30d_pct": 2.38,
+      "move_90d_pct": 9.94,
+      "start_date": "2026-07-24",
+      "end_date": "2026-10-23",
+      "start_rate": 1946.62,
+      "end_rate": 1770.57,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "F02"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.009Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.009Z",
+    "updatedAt": "2026-10-23T16:32:38.009Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.009Z"
+  },
+  {
+   "id": "evt_8",
+   "seq": 8,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_04efa6f2dc9c3bc4",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F02",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F02-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F02-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:32:38.020Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.020Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.020Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.020Z"
+  },
+  {
+   "id": "evt_9",
+   "seq": 9,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F02",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.027Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.027Z",
+    "updatedAt": "2026-10-23T16:32:38.027Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.027Z"
+  },
+  {
+   "id": "evt_10",
+   "seq": 10,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_b66d9c7bcadc6053",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F02",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F02-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.027Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:32:38.027Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.027Z"
+  },
+  {
+   "id": "evt_11",
+   "seq": 11,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F02-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "FX_MISMATCH: The FX data (90d +9.94%) implies cost_up, not cost_down."
+     ],
+     "independent_sources": 3,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F02-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:32:38.050Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.050Z",
+    "updatedAt": "2026-10-23T16:32:38.050Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.050Z"
+  },
+  {
+   "id": "evt_12",
+   "seq": 12,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_f25fd37cfe3d1537",
+    "from": "claim:vidhur:eval-bf9a2a6d-F02-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F02-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:32:38.061Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:32:38.061Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.061Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.061Z"
+  },
+  {
+   "id": "evt_13",
+   "seq": 13,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F03-a1",
+    "attrs": {
+     "claim_id": "F03",
+     "claim": "The Korean won has jumped 9 percent against sterling over 90 days, so Korean memory costs more in pounds.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_up",
+     "pct_low": 6.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2026-07-25..2026-10-23?base=GBP&symbols=KRW",
+      "https://eval.example/FXN1",
+      "https://eval.example/FXN2"
+     ],
+     "reasoning": "Pass-through of the won move to the HBM stack price.",
+     "attempt": 1,
+     "analyst": "currency",
+     "computed": {
+      "currency": "KRW",
+      "move_30d_pct": 6.0,
+      "move_90d_pct": 9.0,
+      "start_date": "2026-07-24",
+      "end_date": "2026-10-23",
+      "start_rate": 1946.62,
+      "end_rate": 1770.57,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "F03"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.076Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.076Z",
+    "updatedAt": "2026-10-23T16:32:38.076Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.076Z"
+  },
+  {
+   "id": "evt_14",
+   "seq": 14,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_edfaf693045148a3",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F03",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F03-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F03-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:32:38.088Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.088Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.088Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.088Z"
+  },
+  {
+   "id": "evt_15",
+   "seq": 15,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F03",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.101Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:32:38.101Z",
+    "updatedAt": "2026-10-23T16:32:38.101Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.101Z"
+  },
+  {
+   "id": "evt_16",
+   "seq": 16,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_a363647a9248ed39",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F03",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F03-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:32:38.101Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:32:38.101Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:32:38.101Z"
+  },
+  {
+   "id": "evt_17",
+   "seq": 17,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F03-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "S1's ECB data confirms a +9.94% GBP/KRW rise over 90 days, directly matching the claimed ~9% won move and supporting the direction of cost pass-through; S2 and S3 provide relevant context on sterling-Asian currency policy drivers, with no contradictions."
+     ],
+     "independent_sources": 3,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F03-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:33:23.799Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:33:23.799Z",
+    "updatedAt": "2026-10-23T16:33:23.799Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:33:23.799Z"
+  },
+  {
+   "id": "evt_18",
+   "seq": 18,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_93c31292b4f0ebc3",
+    "from": "claim:vidhur:eval-bf9a2a6d-F03-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F03-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:33:23.819Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:33:23.819Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:33:23.819Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:33:23.819Z"
+  },
+  {
+   "id": "evt_19",
+   "seq": 19,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F04-a1",
+    "attrs": {
+     "claim_id": "F04",
+     "claim": "The yen has moved against sterling, which changes the pound cost of Korean memory.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_up",
+     "pct_low": 0.02,
+     "pct_high": 4.13,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2026-07-25..2026-10-23?base=GBP&symbols=JPY",
+      "https://eval.example/FXN1",
+      "https://eval.example/FXN2"
+     ],
+     "reasoning": "Pass-through of the yen move to the HBM stack price.",
+     "attempt": 1,
+     "analyst": "currency",
+     "computed": {
+      "currency": "JPY",
+      "move_30d_pct": 0.02,
+      "move_90d_pct": 4.13,
+      "start_date": "2026-07-24",
+      "end_date": "2026-10-23",
+      "start_rate": 218.27,
+      "end_rate": 209.62,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "F04"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:33:23.837Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:33:23.837Z",
+    "updatedAt": "2026-10-23T16:33:23.837Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:33:23.837Z"
+  },
+  {
+   "id": "evt_20",
+   "seq": 20,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_444d5beab39abf1e",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F04",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F04-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F04-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:33:23.847Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:33:23.847Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:33:23.847Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:33:23.847Z"
+  },
+  {
+   "id": "evt_21",
+   "seq": 21,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F04",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:33:23.862Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:33:23.862Z",
+    "updatedAt": "2026-10-23T16:33:23.862Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:33:23.862Z"
+  },
+  {
+   "id": "evt_22",
+   "seq": 22,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_940594f14367a5f4",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F04",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F04-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:33:23.862Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:33:23.862Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:33:23.862Z"
+  },
+  {
+   "id": "evt_23",
+   "seq": 23,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F04-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "S1 provides ECB GBP/JPY reference rate data that exactly matches the analyst's cited percentages (0.02% over 30 days, +4.13% over 90 days) and shows a yen strengthening against sterling, confirming the direction of cost pass-through. S2 and S3 corroborate central bank-driven sterling-Asian currency moves, supporting the claim's factual basis without contradiction."
+     ],
+     "independent_sources": 3,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F04-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.046Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.046Z",
+    "updatedAt": "2026-10-23T16:35:54.046Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.046Z"
+  },
+  {
+   "id": "evt_24",
+   "seq": 24,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_806c180d6b20b965",
+    "from": "claim:vidhur:eval-bf9a2a6d-F04-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F04-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.067Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.067Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.067Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.067Z"
+  },
+  {
+   "id": "evt_25",
+   "seq": 25,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F05-a1",
+    "attrs": {
+     "claim_id": "F05",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/TSTALE1"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost that suppliers pass on.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F05"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.086Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.086Z",
+    "updatedAt": "2026-10-23T16:35:54.086Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.086Z"
+  },
+  {
+   "id": "evt_26",
+   "seq": 26,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_78574ba722da3feb",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F05",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F05-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F05-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.103Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.103Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.103Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.103Z"
+  },
+  {
+   "id": "evt_27",
+   "seq": 27,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F05",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.116Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.116Z",
+    "updatedAt": "2026-10-23T16:35:54.116Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.116Z"
+  },
+  {
+   "id": "evt_28",
+   "seq": 28,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_d814a2134cd479b0",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F05",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F05-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.116Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.116Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.116Z"
+  },
+  {
+   "id": "evt_29",
+   "seq": 29,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F05-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "STALE_SOURCE: Source 'Taiwan considers export licensing for AI chips' (Reuters) is from 2026-08-09, older than 30 days; replace it with a fresher one.",
+      "NOT_INDEPENDENT: The cited sources are not independent (publishers: Reuters; same publisher or the same story syndicated). Cite sources from different publishers reporting separately.",
+      "STALE_SOURCES: 1 cited source(s) are older than 30 days and do not count; only 1 independent fresh source(s) remain, at least 2 are required."
+     ],
+     "independent_sources": 1,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F05-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.143Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.143Z",
+    "updatedAt": "2026-10-23T16:35:54.143Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.143Z"
+  },
+  {
+   "id": "evt_30",
+   "seq": 30,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_f1053bb41ae6ebd1",
+    "from": "claim:vidhur:eval-bf9a2a6d-F05-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F05-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.161Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.161Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.161Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.161Z"
+  },
+  {
+   "id": "evt_31",
+   "seq": 31,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F06-a1",
+    "attrs": {
+     "claim_id": "F06",
+     "claim": "Taiwan's export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/TSTALE1",
+      "https://eval.example/TSTALE2"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost that suppliers pass on.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F06"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.181Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.181Z",
+    "updatedAt": "2026-10-23T16:35:54.181Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.181Z"
+  },
+  {
+   "id": "evt_32",
+   "seq": 32,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_a2b66f461af81c0b",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F06",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F06-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F06-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.195Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.195Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.195Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.195Z"
+  },
+  {
+   "id": "evt_33",
+   "seq": 33,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F06",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.213Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.213Z",
+    "updatedAt": "2026-10-23T16:35:54.213Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.213Z"
+  },
+  {
+   "id": "evt_34",
+   "seq": 34,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_cbbcafbf3dbc40ff",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F06",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F06-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.213Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.213Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.213Z"
+  },
+  {
+   "id": "evt_35",
+   "seq": 35,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F06-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "STALE_SOURCE: Source 'Taiwan considers export licensing for AI chips' (Reuters) is from 2026-08-09, older than 30 days; replace it with a fresher one.",
+      "STALE_SOURCE: Source 'Taiwan weighs tighter chip export rules' (BBC News) is from 2026-08-04, older than 30 days; replace it with a fresher one.",
+      "STALE_SOURCES: 2 cited source(s) are older than 30 days and do not count; only 0 independent fresh source(s) remain, at least 2 are required.",
+      "NO_TRUSTED_SOURCE: No fresh cited source is Tier 1 or Tier 2 (cited: BBC News (Tier 1), Reuters (Tier 1)). Cite at least one wire service, major business press or official source."
+     ],
+     "independent_sources": 2,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F06-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.243Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.243Z",
+    "updatedAt": "2026-10-23T16:35:54.243Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.243Z"
+  },
+  {
+   "id": "evt_36",
+   "seq": 36,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_2a35013277bf4623",
+    "from": "claim:vidhur:eval-bf9a2a6d-F06-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F06-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.256Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.256Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.256Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.256Z"
+  },
+  {
+   "id": "evt_37",
+   "seq": 37,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F07-a1",
+    "attrs": {
+     "claim_id": "F07",
+     "claim": "A Taiwan GPU export crackdown will send GA100 chip prices soaring.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 10.0,
+     "pct_high": 25.0,
+     "source_urls": [
+      "https://eval.example/TBLOG1",
+      "https://eval.example/TBLOG2"
+     ],
+     "reasoning": "Blogs say a crackdown is coming.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F07"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.280Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.280Z",
+    "updatedAt": "2026-10-23T16:35:54.280Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.280Z"
+  },
+  {
+   "id": "evt_38",
+   "seq": 38,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_3ec9d2327f66520f",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F07",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F07-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F07-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.297Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.297Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.297Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.297Z"
+  },
+  {
+   "id": "evt_39",
+   "seq": 39,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F07",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.317Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.317Z",
+    "updatedAt": "2026-10-23T16:35:54.317Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.317Z"
+  },
+  {
+   "id": "evt_40",
+   "seq": 40,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_ae558d4321ddba6a",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F07",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F07-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.317Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.317Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.317Z"
+  },
+  {
+   "id": "evt_41",
+   "seq": 41,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F07-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "NO_TRUSTED_SOURCE: No fresh cited source is Tier 1 or Tier 2 (cited: ChipWatch Daily (Tier 3), SiliconRumorMill (Tier 3)). Cite at least one wire service, major business press or official source."
+     ],
+     "independent_sources": 2,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F07-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.345Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.345Z",
+    "updatedAt": "2026-10-23T16:35:54.345Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.345Z"
+  },
+  {
+   "id": "evt_42",
+   "seq": 42,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_288bb0bc0c8e9389",
+    "from": "claim:vidhur:eval-bf9a2a6d-F07-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F07-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.365Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.365Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.365Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.365Z"
+  },
+  {
+   "id": "evt_43",
+   "seq": 43,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F08-a1",
+    "attrs": {
+     "claim_id": "F08",
+     "claim": "Taiwan is about to choke AI chip exports and GA100 prices will jump.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 8.0,
+     "pct_high": 20.0,
+     "source_urls": [
+      "https://eval.example/TBLOG2",
+      "https://eval.example/TBLOG1"
+     ],
+     "reasoning": "Rumour sites report the crackdown.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F08"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.389Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.389Z",
+    "updatedAt": "2026-10-23T16:35:54.389Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.389Z"
+  },
+  {
+   "id": "evt_44",
+   "seq": 44,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_32f54a32868ff971",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F08",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F08-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F08-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.409Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.409Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.409Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.409Z"
+  },
+  {
+   "id": "evt_45",
+   "seq": 45,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F08",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.429Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.429Z",
+    "updatedAt": "2026-10-23T16:35:54.429Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.429Z"
+  },
+  {
+   "id": "evt_46",
+   "seq": 46,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_3da13c988282fe53",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F08",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F08-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.429Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.429Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.429Z"
+  },
+  {
+   "id": "evt_47",
+   "seq": 47,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F08-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "NO_TRUSTED_SOURCE: No fresh cited source is Tier 1 or Tier 2 (cited: ChipWatch Daily (Tier 3), SiliconRumorMill (Tier 3)). Cite at least one wire service, major business press or official source."
+     ],
+     "independent_sources": 2,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F08-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.460Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.460Z",
+    "updatedAt": "2026-10-23T16:35:54.460Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.460Z"
+  },
+  {
+   "id": "evt_48",
+   "seq": 48,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_3850786cd899fa63",
+    "from": "claim:vidhur:eval-bf9a2a6d-F08-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F08-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.482Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.482Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.482Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.482Z"
+  },
+  {
+   "id": "evt_49",
+   "seq": 49,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F09-a1",
+    "attrs": {
+     "claim_id": "F09",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F09"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.508Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.508Z",
+    "updatedAt": "2026-10-23T16:35:54.508Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.508Z"
+  },
+  {
+   "id": "evt_50",
+   "seq": 50,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_4f5a39f22489e181",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F09",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F09-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F09-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.531Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.531Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.531Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.531Z"
+  },
+  {
+   "id": "evt_51",
+   "seq": 51,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F09",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.554Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.554Z",
+    "updatedAt": "2026-10-23T16:35:54.554Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.554Z"
+  },
+  {
+   "id": "evt_52",
+   "seq": 52,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_5e657bdd32491068",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F09",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F09-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.554Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.554Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.554Z"
+  },
+  {
+   "id": "evt_53",
+   "seq": 53,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F09-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "TOO_FEW_SOURCES: Only 1 source cited; at least 2 independent sources are required."
+     ],
+     "independent_sources": 1,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F09-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.587Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.587Z",
+    "updatedAt": "2026-10-23T16:35:54.587Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.587Z"
+  },
+  {
+   "id": "evt_54",
+   "seq": 54,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_1b6d9cd5d5446bfa",
+    "from": "claim:vidhur:eval-bf9a2a6d-F09-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F09-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.608Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.608Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.608Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.608Z"
+  },
+  {
+   "id": "evt_55",
+   "seq": 55,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F10-a1",
+    "attrs": {
+     "claim_id": "F10",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T1"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F10"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.637Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.637Z",
+    "updatedAt": "2026-10-23T16:35:54.637Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.637Z"
+  },
+  {
+   "id": "evt_56",
+   "seq": 56,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_019c7a0310fdd4d2",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F10",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F10-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F10-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.657Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.657Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.657Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.657Z"
+  },
+  {
+   "id": "evt_57",
+   "seq": 57,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F10",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.682Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.682Z",
+    "updatedAt": "2026-10-23T16:35:54.682Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.682Z"
+  },
+  {
+   "id": "evt_58",
+   "seq": 58,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_fbd6515b15713a39",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F10",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F10-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.682Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.682Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.682Z"
+  },
+  {
+   "id": "evt_59",
+   "seq": 59,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F10-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "TOO_FEW_SOURCES: Only 1 source cited; at least 2 independent sources are required."
+     ],
+     "independent_sources": 1,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F10-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.722Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.722Z",
+    "updatedAt": "2026-10-23T16:35:54.722Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.722Z"
+  },
+  {
+   "id": "evt_60",
+   "seq": 60,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_daf8113300f7924c",
+    "from": "claim:vidhur:eval-bf9a2a6d-F10-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F10-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.746Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.746Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.746Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.746Z"
+  },
+  {
+   "id": "evt_61",
+   "seq": 61,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F11-a1",
+    "attrs": {
+     "claim_id": "F11",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T1COPY"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F11"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.774Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.774Z",
+    "updatedAt": "2026-10-23T16:35:54.774Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.774Z"
+  },
+  {
+   "id": "evt_62",
+   "seq": 62,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_a2aa9d57da6c1526",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F11",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F11-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F11-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.800Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.800Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.800Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.800Z"
+  },
+  {
+   "id": "evt_63",
+   "seq": 63,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F11",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.825Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.825Z",
+    "updatedAt": "2026-10-23T16:35:54.825Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.825Z"
+  },
+  {
+   "id": "evt_64",
+   "seq": 64,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_cd4fb8cc7fa9dd4a",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F11",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F11-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.825Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.825Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.825Z"
+  },
+  {
+   "id": "evt_65",
+   "seq": 65,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F11-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "NOT_INDEPENDENT: The cited sources are not independent (publishers: Reuters, The Guardian; same publisher or the same story syndicated). Cite sources from different publishers reporting separately.",
+      "SOURCES_NOT_INDEPENDENT: 2 fresh sources collapse to 1 independent one (same publisher domain or near-identical headline count once)."
+     ],
+     "independent_sources": 1,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F11-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.863Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.863Z",
+    "updatedAt": "2026-10-23T16:35:54.863Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.863Z"
+  },
+  {
+   "id": "evt_66",
+   "seq": 66,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_1fc09361eb0a37ec",
+    "from": "claim:vidhur:eval-bf9a2a6d-F11-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F11-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.886Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:54.886Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.886Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.886Z"
+  },
+  {
+   "id": "evt_67",
+   "seq": 67,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F12-a1",
+    "attrs": {
+     "claim_id": "F12",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T1B"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F12"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.918Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.918Z",
+    "updatedAt": "2026-10-23T16:35:54.918Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.918Z"
+  },
+  {
+   "id": "evt_68",
+   "seq": 68,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_015225f8f10643f7",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F12",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F12-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F12-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:54.941Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.941Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.941Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.941Z"
+  },
+  {
+   "id": "evt_69",
+   "seq": 69,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F12",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.964Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:54.964Z",
+    "updatedAt": "2026-10-23T16:35:54.964Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.964Z"
+  },
+  {
+   "id": "evt_70",
+   "seq": 70,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_457ddd948648ea0f",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F12",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F12-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:54.964Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:54.964Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:54.964Z"
+  },
+  {
+   "id": "evt_71",
+   "seq": 71,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F12-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "NOT_INDEPENDENT: The cited sources are not independent (publishers: Reuters; same publisher or the same story syndicated). Cite sources from different publishers reporting separately.",
+      "SOURCES_NOT_INDEPENDENT: 2 fresh sources collapse to 1 independent one (same publisher domain or near-identical headline count once)."
+     ],
+     "independent_sources": 1,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F12-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:55.003Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.003Z",
+    "updatedAt": "2026-10-23T16:35:55.003Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.003Z"
+  },
+  {
+   "id": "evt_72",
+   "seq": 72,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_b3423379c32842d0",
+    "from": "claim:vidhur:eval-bf9a2a6d-F12-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F12-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:55.026Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:55.026Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.026Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.026Z"
+  },
+  {
+   "id": "evt_73",
+   "seq": 73,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F13-a1",
+    "attrs": {
+     "claim_id": "F13",
+     "claim": "Japan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Japan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T2"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F13"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.059Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.059Z",
+    "updatedAt": "2026-10-23T16:35:55.059Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.059Z"
+  },
+  {
+   "id": "evt_74",
+   "seq": 74,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_c875bd6afba97f95",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F13",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F13-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F13-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:55.083Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.083Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.083Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.083Z"
+  },
+  {
+   "id": "evt_75",
+   "seq": 75,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F13",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.111Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.111Z",
+    "updatedAt": "2026-10-23T16:35:55.111Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.111Z"
+  },
+  {
+   "id": "evt_76",
+   "seq": 76,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_e527995a5ddb6717",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F13",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F13-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.111Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:55.111Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.111Z"
+  },
+  {
+   "id": "evt_77",
+   "seq": 77,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F13-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "COUNTRY_MISMATCH: Ganga buys P001 from Taiwan, not from 'Japan'."
+     ],
+     "independent_sources": 2,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F13-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:55.154Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.154Z",
+    "updatedAt": "2026-10-23T16:35:55.154Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.154Z"
+  },
+  {
+   "id": "evt_78",
+   "seq": 78,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_d3b613b0f2a83860",
+    "from": "claim:vidhur:eval-bf9a2a6d-F13-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F13-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:55.180Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:55.180Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.180Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.180Z"
+  },
+  {
+   "id": "evt_79",
+   "seq": 79,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F14-a1",
+    "attrs": {
+     "claim_id": "F14",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the 8-layer server PCB.",
+     "part_id": "P004",
+     "part_name": "GangaBoard 8-Layer Server PCB",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T2"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F14"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.224Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.224Z",
+    "updatedAt": "2026-10-23T16:35:55.224Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.224Z"
+  },
+  {
+   "id": "evt_80",
+   "seq": 80,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_435bac219ca90fdc",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F14",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F14-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F14-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:55.254Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.254Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.254Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.254Z"
+  },
+  {
+   "id": "evt_81",
+   "seq": 81,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F14",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.283Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.283Z",
+    "updatedAt": "2026-10-23T16:35:55.283Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.283Z"
+  },
+  {
+   "id": "evt_82",
+   "seq": 82,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_d56635bad505dce9",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F14",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F14-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.283Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:55.283Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.283Z"
+  },
+  {
+   "id": "evt_83",
+   "seq": 83,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F14-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "COUNTRY_MISMATCH: Ganga buys P004 from China, not from 'Taiwan'."
+     ],
+     "independent_sources": 2,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F14-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:55.329Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.329Z",
+    "updatedAt": "2026-10-23T16:35:55.329Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.329Z"
+  },
+  {
+   "id": "evt_84",
+   "seq": 84,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_eb5de24113ec3a7d",
+    "from": "claim:vidhur:eval-bf9a2a6d-F14-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F14-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:55.358Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:35:55.358Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.358Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.358Z"
+  },
+  {
+   "id": "evt_85",
+   "seq": 85,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F15-a1",
+    "attrs": {
+     "claim_id": "F15",
+     "claim": "Taiwan's new export licensing for AI chips will raise GA100 costs by 4-9 percent on Ganga's GBP 13,449,750 quarterly GPU chip bill.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T2"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F15"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.389Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.389Z",
+    "updatedAt": "2026-10-23T16:35:55.389Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.389Z"
+  },
+  {
+   "id": "evt_86",
+   "seq": 86,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_d7b7eb277eab530c",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F15",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F15-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F15-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:35:55.421Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.421Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.421Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.421Z"
+  },
+  {
+   "id": "evt_87",
+   "seq": 87,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F15",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.451Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:35:55.451Z",
+    "updatedAt": "2026-10-23T16:35:55.451Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.451Z"
+  },
+  {
+   "id": "evt_88",
+   "seq": 88,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_88241183c177a47f",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F15",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F15-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:35:55.451Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:35:55.451Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:35:55.451Z"
+  },
+  {
+   "id": "evt_89",
+   "seq": 89,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F15-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "Both sources confirm Taiwan has tightened export licensing for AI accelerators and expect higher costs/compliance delays for overseas buyers, directly supporting the claim's direction and applicability."
+     ],
+     "independent_sources": 2,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F15-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:36:42.821Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:36:42.821Z",
+    "updatedAt": "2026-10-23T16:36:42.821Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:36:42.821Z"
+  },
+  {
+   "id": "evt_90",
+   "seq": 90,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_3cc3ace280cfab30",
+    "from": "claim:vidhur:eval-bf9a2a6d-F15-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F15-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:36:42.848Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:36:42.848Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:36:42.848Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:36:42.848Z"
+  },
+  {
+   "id": "evt_91",
+   "seq": 91,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F16-a1",
+    "attrs": {
+     "claim_id": "F16",
+     "claim": "South Korea's new HBM export licence rules will raise memory costs by 2-6 percent on Ganga's GBP 33,012 quarterly spend.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_up",
+     "pct_low": 2.0,
+     "pct_high": 6.0,
+     "source_urls": [
+      "https://eval.example/K1",
+      "https://eval.example/K2"
+     ],
+     "reasoning": "Compliance cost passed on by suppliers.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F16"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:36:42.868Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:36:42.868Z",
+    "updatedAt": "2026-10-23T16:36:42.868Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:36:42.868Z"
+  },
+  {
+   "id": "evt_92",
+   "seq": 92,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_39f744fbe48d5700",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F16",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F16-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F16-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:36:42.892Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:36:42.892Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:36:42.892Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:36:42.892Z"
+  },
+  {
+   "id": "evt_93",
+   "seq": 93,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F16",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:36:42.923Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:36:42.923Z",
+    "updatedAt": "2026-10-23T16:36:42.923Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:36:42.923Z"
+  },
+  {
+   "id": "evt_94",
+   "seq": 94,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_c75b5a5c5eb59ee2",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F16",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F16-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:36:42.923Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:36:42.923Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:36:42.923Z"
+  },
+  {
+   "id": "evt_95",
+   "seq": 95,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F16-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "Both sources confirm South Korea introduced new HBM export licence rules and that compliance costs will be passed on to buyers, supporting the claim's direction and geopolitical driver."
+     ],
+     "independent_sources": 2,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F16-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:37:03.104Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:03.104Z",
+    "updatedAt": "2026-10-23T16:37:03.104Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:03.104Z"
+  },
+  {
+   "id": "evt_96",
+   "seq": 96,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_a9fee38d77026b5f",
+    "from": "claim:vidhur:eval-bf9a2a6d-F16-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F16-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:37:03.135Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:37:03.135Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:03.135Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:03.135Z"
+  },
+  {
+   "id": "evt_97",
+   "seq": 97,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F17-a1",
+    "attrs": {
+     "claim_id": "F17",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 5.0,
+     "pct_high": 10.0,
+     "source_urls": [
+      "https://eval.example/TGLUT1",
+      "https://eval.example/TGLUT2"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F17"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:03.181Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:03.181Z",
+    "updatedAt": "2026-10-23T16:37:03.181Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:03.181Z"
+  },
+  {
+   "id": "evt_98",
+   "seq": 98,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_6f8c544045f42690",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F17",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F17-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F17-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:37:03.217Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:03.217Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:03.217Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:03.217Z"
+  },
+  {
+   "id": "evt_99",
+   "seq": 99,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F17",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:03.250Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:03.250Z",
+    "updatedAt": "2026-10-23T16:37:03.250Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:03.250Z"
+  },
+  {
+   "id": "evt_100",
+   "seq": 100,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_6b52d6d2aa76cbaa",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F17",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F17-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:03.250Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:37:03.250Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:03.250Z"
+  },
+  {
+   "id": "evt_101",
+   "seq": 101,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F17-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "NOT_SUPPORTED: S1 and S2 report market-driven GPU price declines from inventory glut and supply outpacing demand, with no mention of export licensing, geopolitical trade policy, or compliance costs; they contradict the claimed direction (price up) and cause (licensing vs market dynamics), placing the claim out of scope for the GEOPOLITICS analyst."
+     ],
+     "independent_sources": 2,
+     "strength": "weak",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F17-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:37:19.812Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:19.812Z",
+    "updatedAt": "2026-10-23T16:37:19.812Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:19.812Z"
+  },
+  {
+   "id": "evt_102",
+   "seq": 102,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_77ff7e6cf0a4fcb8",
+    "from": "claim:vidhur:eval-bf9a2a6d-F17-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F17-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:37:19.848Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:37:19.848Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:19.848Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:19.848Z"
+  },
+  {
+   "id": "evt_103",
+   "seq": 103,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F18-a1",
+    "attrs": {
+     "claim_id": "F18",
+     "claim": "A new 25 percent tariff on South Korean memory will raise the cost of the HBM stack.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_up",
+     "pct_low": 5.0,
+     "pct_high": 12.0,
+     "source_urls": [
+      "https://eval.example/KSUB1",
+      "https://eval.example/KSUB2"
+     ],
+     "reasoning": "The tariff is passed on by the supplier.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F18"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:19.892Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:19.892Z",
+    "updatedAt": "2026-10-23T16:37:19.892Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:19.892Z"
+  },
+  {
+   "id": "evt_104",
+   "seq": 104,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_3a37617197f55dd1",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F18",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F18-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F18-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:37:19.926Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:19.926Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:19.926Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:19.926Z"
+  },
+  {
+   "id": "evt_105",
+   "seq": 105,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F18",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:19.954Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:19.954Z",
+    "updatedAt": "2026-10-23T16:37:19.954Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:19.954Z"
+  },
+  {
+   "id": "evt_106",
+   "seq": 106,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_ee0d7a47c7ecb905",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F18",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F18-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:19.954Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:37:19.954Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:19.954Z"
+  },
+  {
+   "id": "evt_107",
+   "seq": 107,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F18-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "NOT_SUPPORTED: The sources describe South Korean subsidies and tax relief for memory chipmakers, with S2 explicitly stating no new tariffs or trade restrictions were announced. Neither source mentions or implies a 25% tariff on South Korean memory, so the claim's core driver is unsupported."
+     ],
+     "independent_sources": 2,
+     "strength": "weak",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F18-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:37:42.177Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:42.177Z",
+    "updatedAt": "2026-10-23T16:37:42.177Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:42.177Z"
+  },
+  {
+   "id": "evt_108",
+   "seq": 108,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_2cf070be965493f3",
+    "from": "claim:vidhur:eval-bf9a2a6d-F18-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F18-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:37:42.214Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:37:42.214Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:42.214Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:42.214Z"
+  },
+  {
+   "id": "evt_109",
+   "seq": 109,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F19-a1",
+    "attrs": {
+     "claim_id": "F19",
+     "claim": "Taiwan's March 2025 export licensing rule for AI chips has already pushed up the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T2"
+     ],
+     "reasoning": "The rule dates from March 2025.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F19"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:42.266Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:42.266Z",
+    "updatedAt": "2026-10-23T16:37:42.266Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:42.266Z"
+  },
+  {
+   "id": "evt_110",
+   "seq": 110,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_652e578b6f147e2e",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F19",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F19-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F19-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:37:42.306Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:42.306Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:42.306Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:42.306Z"
+  },
+  {
+   "id": "evt_111",
+   "seq": 111,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F19",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:42.331Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:37:42.331Z",
+    "updatedAt": "2026-10-23T16:37:42.331Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:42.331Z"
+  },
+  {
+   "id": "evt_112",
+   "seq": 112,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_74e176fb339c0288",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F19",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F19-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:37:42.331Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:37:42.331Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:37:42.331Z"
+  },
+  {
+   "id": "evt_113",
+   "seq": 113,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-F20-a1",
+    "attrs": {
+     "claim_id": "F20",
+     "claim": "Taiwan's export licensing for AI chips took effect in January 2024 and raised the cost of the GA100 GPU chip then.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T3"
+     ],
+     "reasoning": "The rule has applied since January 2024.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "F20"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:43:42.744Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:43:42.744Z",
+    "updatedAt": "2026-10-23T16:43:42.744Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:43:42.744Z"
+  },
+  {
+   "id": "evt_114",
+   "seq": 114,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_383fe78075a681e5",
+    "from": "delegation:vidhur:eval-bf9a2a6d-F20",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-F20-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-F20-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:43:42.783Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:43:42.783Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:43:42.783Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:43:42.783Z"
+  },
+  {
+   "id": "evt_115",
+   "seq": 115,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-F20",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:43:42.820Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:43:42.820Z",
+    "updatedAt": "2026-10-23T16:43:42.820Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:43:42.820Z"
+  },
+  {
+   "id": "evt_116",
+   "seq": 116,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_6f1fd5403bce8701",
+    "about": "delegation:vidhur:eval-bf9a2a6d-F20",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-F20-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:43:42.820Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:43:42.820Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:43:42.820Z"
+  },
+  {
+   "id": "evt_117",
+   "seq": 117,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-F20-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "NOT_SUPPORTED: The cited sources are from October 2026 and describe new licensing measures; they do not mention a January 2024 effective date or a cost raise at that time, so the claim's temporal premise is unsupported."
+     ],
+     "independent_sources": 2,
+     "strength": "weak",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-F20-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:44:27.977Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:27.977Z",
+    "updatedAt": "2026-10-23T16:44:27.977Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:27.977Z"
+  },
+  {
+   "id": "evt_118",
+   "seq": 118,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_a20ed7c8b1b983b9",
+    "from": "claim:vidhur:eval-bf9a2a6d-F20-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-F20-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:44:28.011Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:44:28.011Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:28.011Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:28.011Z"
+  },
+  {
+   "id": "evt_119",
+   "seq": 119,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-C01-a1",
+    "attrs": {
+     "claim_id": "C01",
+     "claim": "Taiwan's new export licensing for AI chips will raise the cost of the GA100 GPU chip.",
+     "part_id": "P001",
+     "part_name": "GangaAccel GA100 GPU Chip",
+     "supplier_country": "Taiwan",
+     "direction": "cost_up",
+     "pct_low": 4.0,
+     "pct_high": 9.0,
+     "source_urls": [
+      "https://eval.example/T1",
+      "https://eval.example/T2"
+     ],
+     "reasoning": "Licensing adds delay and compliance cost that suppliers pass on.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "C01"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:28.053Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:28.053Z",
+    "updatedAt": "2026-10-23T16:44:28.053Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:28.053Z"
+  },
+  {
+   "id": "evt_120",
+   "seq": 120,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_d6bb534de0252676",
+    "from": "delegation:vidhur:eval-bf9a2a6d-C01",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-C01-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-C01-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:44:28.089Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:28.089Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:28.089Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:28.089Z"
+  },
+  {
+   "id": "evt_121",
+   "seq": 121,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-C01",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:28.124Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:28.124Z",
+    "updatedAt": "2026-10-23T16:44:28.124Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:28.124Z"
+  },
+  {
+   "id": "evt_122",
+   "seq": 122,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_2c5b6b245179e8f3",
+    "about": "delegation:vidhur:eval-bf9a2a6d-C01",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-C01-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:28.124Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:44:28.124Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:28.124Z"
+  },
+  {
+   "id": "evt_123",
+   "seq": 123,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-C01-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "Both sources confirm Taiwan has introduced export licensing and controlled export lists for AI chips, directly citing higher costs and compliance delays for overseas buyers, which plausibly raises per-unit prices for Taiwan-sourced GPU chips like the GA100."
+     ],
+     "independent_sources": 2,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-C01-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:44:47.142Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:47.142Z",
+    "updatedAt": "2026-10-23T16:44:47.142Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:47.142Z"
+  },
+  {
+   "id": "evt_124",
+   "seq": 124,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_a48920b20d5fb1aa",
+    "from": "claim:vidhur:eval-bf9a2a6d-C01-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-C01-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:44:47.183Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:44:47.183Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:47.183Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:47.183Z"
+  },
+  {
+   "id": "evt_125",
+   "seq": 125,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-C02-a1",
+    "attrs": {
+     "claim_id": "C02",
+     "claim": "South Korea's new HBM export licence rules will raise the cost of the HBM memory stack.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_up",
+     "pct_low": 2.0,
+     "pct_high": 6.0,
+     "source_urls": [
+      "https://eval.example/K1",
+      "https://eval.example/K2"
+     ],
+     "reasoning": "Compliance cost is likely passed on by suppliers.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "C02"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:47.229Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:47.229Z",
+    "updatedAt": "2026-10-23T16:44:47.229Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:47.229Z"
+  },
+  {
+   "id": "evt_126",
+   "seq": 126,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_d8293b3364d7fedd",
+    "from": "delegation:vidhur:eval-bf9a2a6d-C02",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-C02-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-C02-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:44:47.265Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:47.265Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:47.265Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:47.265Z"
+  },
+  {
+   "id": "evt_127",
+   "seq": 127,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-C02",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:47.309Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:47.309Z",
+    "updatedAt": "2026-10-23T16:44:47.309Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:47.309Z"
+  },
+  {
+   "id": "evt_128",
+   "seq": 128,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_f1d87d785abd9df9",
+    "about": "delegation:vidhur:eval-bf9a2a6d-C02",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-C02-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:47.309Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:44:47.309Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:47.309Z"
+  },
+  {
+   "id": "evt_129",
+   "seq": 129,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-C02-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "Both sources confirm South Korea's new HBM export licence rules introduce compliance costs that makers and analysts say will be passed on to buyers, directly supporting the claimed cost increase direction."
+     ],
+     "independent_sources": 2,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-C02-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:44:59.305Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:59.305Z",
+    "updatedAt": "2026-10-23T16:44:59.305Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:59.305Z"
+  },
+  {
+   "id": "evt_130",
+   "seq": 130,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_bfd48f1588e4ff20",
+    "from": "claim:vidhur:eval-bf9a2a6d-C02-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-C02-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:44:59.358Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:44:59.358Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:59.358Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:59.358Z"
+  },
+  {
+   "id": "evt_131",
+   "seq": 131,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-C03-a1",
+    "attrs": {
+     "claim_id": "C03",
+     "claim": "Japan's new export rule on substrate materials will raise the cost of the ABF substrate.",
+     "part_id": "P003",
+     "part_name": "GangaCore ABF Substrate",
+     "supplier_country": "Japan",
+     "direction": "cost_up",
+     "pct_low": 3.0,
+     "pct_high": 7.0,
+     "source_urls": [
+      "https://eval.example/J1",
+      "https://eval.example/J2"
+     ],
+     "reasoning": "Supply concern and compliance cost lift prices.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "C03"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:59.502Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:59.502Z",
+    "updatedAt": "2026-10-23T16:44:59.502Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:59.502Z"
+  },
+  {
+   "id": "evt_132",
+   "seq": 132,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_f38db4d5b4f32c91",
+    "from": "delegation:vidhur:eval-bf9a2a6d-C03",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-C03-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-C03-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:44:59.574Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:59.574Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:59.574Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:59.574Z"
+  },
+  {
+   "id": "evt_133",
+   "seq": 133,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-C03",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:59.634Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:44:59.634Z",
+    "updatedAt": "2026-10-23T16:44:59.634Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:59.634Z"
+  },
+  {
+   "id": "evt_134",
+   "seq": 134,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_69928c5ecdf42d8c",
+    "about": "delegation:vidhur:eval-bf9a2a6d-C03",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-C03-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:44:59.634Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:44:59.634Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:44:59.634Z"
+  },
+  {
+   "id": "evt_135",
+   "seq": 135,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-C03-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "Japan has introduced export controls on advanced chip-substrate materials, and buyers' supply concerns following the rule plausibly raise compliance costs and unit prices for Japan-sourced ABF substrates."
+     ],
+     "independent_sources": 2,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-C03-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:45:25.421Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:25.421Z",
+    "updatedAt": "2026-10-23T16:45:25.421Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:25.421Z"
+  },
+  {
+   "id": "evt_136",
+   "seq": 136,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_a0a5315f0e0feb44",
+    "from": "claim:vidhur:eval-bf9a2a6d-C03-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-C03-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:45:25.468Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:45:25.468Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:25.468Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:25.468Z"
+  },
+  {
+   "id": "evt_137",
+   "seq": 137,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-C04-a1",
+    "attrs": {
+     "claim_id": "C04",
+     "claim": "China's wider gallium export licensing will raise the cost of the GaN power die mix.",
+     "part_id": "P007",
+     "part_name": "GangaRare GaN Power Die Mix",
+     "supplier_country": "China",
+     "direction": "cost_up",
+     "pct_low": 5.0,
+     "pct_high": 12.0,
+     "source_urls": [
+      "https://eval.example/C1",
+      "https://eval.example/C2"
+     ],
+     "reasoning": "Slower shipments and higher gallium compound prices.",
+     "attempt": 1,
+     "analyst": "geopolitics",
+     "computed": {},
+     "work_id": "C04"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:25.510Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:25.510Z",
+    "updatedAt": "2026-10-23T16:45:25.510Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:25.510Z"
+  },
+  {
+   "id": "evt_138",
+   "seq": 138,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_5bebeeecffc9e5f5",
+    "from": "delegation:vidhur:eval-bf9a2a6d-C04",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-C04-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-C04-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:45:25.544Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:25.544Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:25.544Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:25.544Z"
+  },
+  {
+   "id": "evt_139",
+   "seq": 139,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-C04",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:25.582Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:25.582Z",
+    "updatedAt": "2026-10-23T16:45:25.582Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:25.582Z"
+  },
+  {
+   "id": "evt_140",
+   "seq": 140,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_7fa6ff3a5bff8c8a",
+    "about": "delegation:vidhur:eval-bf9a2a6d-C04",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-C04-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:25.582Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:45:25.582Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:25.582Z"
+  },
+  {
+   "id": "evt_141",
+   "seq": 141,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-C04-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "Both sources confirm China extended gallium export licensing to compounds, resulting in slower shipments and higher compound prices, which plausibly raises costs for China-sourced GaN power dies. The driver is a geopolitical trade-policy change, consistent with the required scope."
+     ],
+     "independent_sources": 2,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-C04-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:45:43.532Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:43.532Z",
+    "updatedAt": "2026-10-23T16:45:43.532Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:43.532Z"
+  },
+  {
+   "id": "evt_142",
+   "seq": 142,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_f27b39e1a09dec7e",
+    "from": "claim:vidhur:eval-bf9a2a6d-C04-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-C04-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:45:43.565Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:45:43.565Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:43.565Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:43.565Z"
+  },
+  {
+   "id": "evt_143",
+   "seq": 143,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:eval-bf9a2a6d-C05-a1",
+    "attrs": {
+     "claim_id": "C05",
+     "claim": "The Korean won has moved against sterling over 90 days; if the move passes through it changes the pound cost of Korean memory.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_up",
+     "pct_low": 2.38,
+     "pct_high": 9.94,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2026-07-25..2026-10-23?base=GBP&symbols=KRW",
+      "https://eval.example/FXN1",
+      "https://eval.example/FXN2"
+     ],
+     "reasoning": "Pass-through of the won move to the HBM stack price.",
+     "attempt": 1,
+     "analyst": "currency",
+     "computed": {
+      "currency": "KRW",
+      "move_30d_pct": 2.38,
+      "move_90d_pct": 9.94,
+      "start_date": "2026-07-24",
+      "end_date": "2026-10-23",
+      "start_rate": 1946.62,
+      "end_rate": 1770.57,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "C05"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:43.607Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:43.607Z",
+    "updatedAt": "2026-10-23T16:45:43.607Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:43.607Z"
+  },
+  {
+   "id": "evt_144",
+   "seq": 144,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_b36bc8592d1d5503",
+    "from": "delegation:vidhur:eval-bf9a2a6d-C05",
+    "type": "produced",
+    "to": "claim:vidhur:eval-bf9a2a6d-C05-a1",
+    "context": "claim:vidhur:eval-bf9a2a6d-C05-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:45:43.648Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:43.648Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:43.648Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:43.648Z"
+  },
+  {
+   "id": "evt_145",
+   "seq": 145,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:eval-bf9a2a6d-C05",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:43.690Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:45:43.690Z",
+    "updatedAt": "2026-10-23T16:45:43.690Z",
+    "aliases": [],
+    "state": "emerging"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:43.690Z"
+  },
+  {
+   "id": "evt_146",
+   "seq": 146,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_e327c74f0707503d",
+    "about": "delegation:vidhur:eval-bf9a2a6d-C05",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:eval-bf9a2a6d-C05-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "eval_planted_claims",
+     "at": "2026-10-23T16:45:43.690Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "assertedAt": "2026-10-23T16:45:43.690Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:45:43.690Z"
+  },
+  {
+   "id": "evt_147",
+   "seq": 147,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:eval-bf9a2a6d-C05-a1",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "S1 confirms the exact GBP/KRW rate moves cited (+9.94% over 90 days, +2.38% over 30 days), and S2/S3 provide relevant central-bank-driven currency context that is consistent with the claimed move and direction, with no contradictions."
+     ],
+     "independent_sources": 3,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 0,
+     "claim": "claim:vidhur:eval-bf9a2a6d-C05-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:46:58.865Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:46:58.865Z",
+    "updatedAt": "2026-10-23T16:46:58.865Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:46:58.865Z"
+  },
+  {
+   "id": "evt_148",
+   "seq": 148,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_c669d9ebc2561c83",
+    "from": "claim:vidhur:eval-bf9a2a6d-C05-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:eval-bf9a2a6d-C05-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:46:58.901Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:46:58.901Z",
+     "runId": "eval-bf9a2a6d"
+    },
+    "createdAt": "2026-10-23T16:46:58.901Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:46:58.901Z"
+  }
+ ],
+ "audit": [
+  {
+   "seq": 1,
+   "at": "2026-10-23T16:32:37.939Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F01-a1 (claim)",
+   "eventId": "evt_1",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 2,
+   "at": "2026-10-23T16:32:37.947Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F01 -[produced]-> claim:vidhur:eval-bf9a2a6d-F01-a1",
+   "eventId": "evt_2",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 3,
+   "at": "2026-10-23T16:32:37.959Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F01.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F01-a1\" (most-recent-wins)",
+   "eventId": "evt_4",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 4,
+   "at": "2026-10-23T16:32:37.983Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F01-a1 (verdict)",
+   "eventId": "evt_5",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 5,
+   "at": "2026-10-23T16:32:37.996Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F01-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F01-a1",
+   "eventId": "evt_6",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 6,
+   "at": "2026-10-23T16:32:38.009Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F02-a1 (claim)",
+   "eventId": "evt_7",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 7,
+   "at": "2026-10-23T16:32:38.020Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F02 -[produced]-> claim:vidhur:eval-bf9a2a6d-F02-a1",
+   "eventId": "evt_8",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 8,
+   "at": "2026-10-23T16:32:38.027Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F02.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F02-a1\" (most-recent-wins)",
+   "eventId": "evt_10",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 9,
+   "at": "2026-10-23T16:32:38.050Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F02-a1 (verdict)",
+   "eventId": "evt_11",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 10,
+   "at": "2026-10-23T16:32:38.061Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F02-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F02-a1",
+   "eventId": "evt_12",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 11,
+   "at": "2026-10-23T16:32:38.076Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F03-a1 (claim)",
+   "eventId": "evt_13",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 12,
+   "at": "2026-10-23T16:32:38.088Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F03 -[produced]-> claim:vidhur:eval-bf9a2a6d-F03-a1",
+   "eventId": "evt_14",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 13,
+   "at": "2026-10-23T16:32:38.101Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F03.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F03-a1\" (most-recent-wins)",
+   "eventId": "evt_16",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 14,
+   "at": "2026-10-23T16:33:23.799Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F03-a1 (verdict)",
+   "eventId": "evt_17",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 15,
+   "at": "2026-10-23T16:33:23.819Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F03-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F03-a1",
+   "eventId": "evt_18",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 16,
+   "at": "2026-10-23T16:33:23.837Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F04-a1 (claim)",
+   "eventId": "evt_19",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 17,
+   "at": "2026-10-23T16:33:23.847Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F04 -[produced]-> claim:vidhur:eval-bf9a2a6d-F04-a1",
+   "eventId": "evt_20",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 18,
+   "at": "2026-10-23T16:33:23.862Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F04.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F04-a1\" (most-recent-wins)",
+   "eventId": "evt_22",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 19,
+   "at": "2026-10-23T16:35:54.046Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F04-a1 (verdict)",
+   "eventId": "evt_23",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 20,
+   "at": "2026-10-23T16:35:54.067Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F04-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F04-a1",
+   "eventId": "evt_24",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 21,
+   "at": "2026-10-23T16:35:54.086Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F05-a1 (claim)",
+   "eventId": "evt_25",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 22,
+   "at": "2026-10-23T16:35:54.103Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F05 -[produced]-> claim:vidhur:eval-bf9a2a6d-F05-a1",
+   "eventId": "evt_26",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 23,
+   "at": "2026-10-23T16:35:54.116Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F05.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F05-a1\" (most-recent-wins)",
+   "eventId": "evt_28",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 24,
+   "at": "2026-10-23T16:35:54.143Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F05-a1 (verdict)",
+   "eventId": "evt_29",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 25,
+   "at": "2026-10-23T16:35:54.161Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F05-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F05-a1",
+   "eventId": "evt_30",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 26,
+   "at": "2026-10-23T16:35:54.181Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F06-a1 (claim)",
+   "eventId": "evt_31",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 27,
+   "at": "2026-10-23T16:35:54.195Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F06 -[produced]-> claim:vidhur:eval-bf9a2a6d-F06-a1",
+   "eventId": "evt_32",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 28,
+   "at": "2026-10-23T16:35:54.213Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F06.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F06-a1\" (most-recent-wins)",
+   "eventId": "evt_34",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 29,
+   "at": "2026-10-23T16:35:54.243Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F06-a1 (verdict)",
+   "eventId": "evt_35",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 30,
+   "at": "2026-10-23T16:35:54.256Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F06-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F06-a1",
+   "eventId": "evt_36",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 31,
+   "at": "2026-10-23T16:35:54.280Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F07-a1 (claim)",
+   "eventId": "evt_37",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 32,
+   "at": "2026-10-23T16:35:54.297Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F07 -[produced]-> claim:vidhur:eval-bf9a2a6d-F07-a1",
+   "eventId": "evt_38",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 33,
+   "at": "2026-10-23T16:35:54.317Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F07.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F07-a1\" (most-recent-wins)",
+   "eventId": "evt_40",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 34,
+   "at": "2026-10-23T16:35:54.345Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F07-a1 (verdict)",
+   "eventId": "evt_41",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 35,
+   "at": "2026-10-23T16:35:54.365Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F07-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F07-a1",
+   "eventId": "evt_42",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 36,
+   "at": "2026-10-23T16:35:54.389Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F08-a1 (claim)",
+   "eventId": "evt_43",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 37,
+   "at": "2026-10-23T16:35:54.409Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F08 -[produced]-> claim:vidhur:eval-bf9a2a6d-F08-a1",
+   "eventId": "evt_44",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 38,
+   "at": "2026-10-23T16:35:54.429Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F08.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F08-a1\" (most-recent-wins)",
+   "eventId": "evt_46",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 39,
+   "at": "2026-10-23T16:35:54.460Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F08-a1 (verdict)",
+   "eventId": "evt_47",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 40,
+   "at": "2026-10-23T16:35:54.482Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F08-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F08-a1",
+   "eventId": "evt_48",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 41,
+   "at": "2026-10-23T16:35:54.508Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F09-a1 (claim)",
+   "eventId": "evt_49",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 42,
+   "at": "2026-10-23T16:35:54.531Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F09 -[produced]-> claim:vidhur:eval-bf9a2a6d-F09-a1",
+   "eventId": "evt_50",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 43,
+   "at": "2026-10-23T16:35:54.554Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F09.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F09-a1\" (most-recent-wins)",
+   "eventId": "evt_52",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 44,
+   "at": "2026-10-23T16:35:54.587Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F09-a1 (verdict)",
+   "eventId": "evt_53",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 45,
+   "at": "2026-10-23T16:35:54.608Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F09-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F09-a1",
+   "eventId": "evt_54",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 46,
+   "at": "2026-10-23T16:35:54.637Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F10-a1 (claim)",
+   "eventId": "evt_55",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 47,
+   "at": "2026-10-23T16:35:54.657Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F10 -[produced]-> claim:vidhur:eval-bf9a2a6d-F10-a1",
+   "eventId": "evt_56",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 48,
+   "at": "2026-10-23T16:35:54.682Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F10.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F10-a1\" (most-recent-wins)",
+   "eventId": "evt_58",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 49,
+   "at": "2026-10-23T16:35:54.722Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F10-a1 (verdict)",
+   "eventId": "evt_59",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 50,
+   "at": "2026-10-23T16:35:54.746Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F10-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F10-a1",
+   "eventId": "evt_60",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 51,
+   "at": "2026-10-23T16:35:54.774Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F11-a1 (claim)",
+   "eventId": "evt_61",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 52,
+   "at": "2026-10-23T16:35:54.800Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F11 -[produced]-> claim:vidhur:eval-bf9a2a6d-F11-a1",
+   "eventId": "evt_62",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 53,
+   "at": "2026-10-23T16:35:54.825Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F11.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F11-a1\" (most-recent-wins)",
+   "eventId": "evt_64",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 54,
+   "at": "2026-10-23T16:35:54.863Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F11-a1 (verdict)",
+   "eventId": "evt_65",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 55,
+   "at": "2026-10-23T16:35:54.886Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F11-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F11-a1",
+   "eventId": "evt_66",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 56,
+   "at": "2026-10-23T16:35:54.918Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F12-a1 (claim)",
+   "eventId": "evt_67",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 57,
+   "at": "2026-10-23T16:35:54.941Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F12 -[produced]-> claim:vidhur:eval-bf9a2a6d-F12-a1",
+   "eventId": "evt_68",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 58,
+   "at": "2026-10-23T16:35:54.964Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F12.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F12-a1\" (most-recent-wins)",
+   "eventId": "evt_70",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 59,
+   "at": "2026-10-23T16:35:55.003Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F12-a1 (verdict)",
+   "eventId": "evt_71",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 60,
+   "at": "2026-10-23T16:35:55.026Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F12-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F12-a1",
+   "eventId": "evt_72",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 61,
+   "at": "2026-10-23T16:35:55.059Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F13-a1 (claim)",
+   "eventId": "evt_73",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 62,
+   "at": "2026-10-23T16:35:55.083Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F13 -[produced]-> claim:vidhur:eval-bf9a2a6d-F13-a1",
+   "eventId": "evt_74",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 63,
+   "at": "2026-10-23T16:35:55.111Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F13.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F13-a1\" (most-recent-wins)",
+   "eventId": "evt_76",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 64,
+   "at": "2026-10-23T16:35:55.154Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F13-a1 (verdict)",
+   "eventId": "evt_77",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 65,
+   "at": "2026-10-23T16:35:55.180Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F13-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F13-a1",
+   "eventId": "evt_78",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 66,
+   "at": "2026-10-23T16:35:55.224Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F14-a1 (claim)",
+   "eventId": "evt_79",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 67,
+   "at": "2026-10-23T16:35:55.254Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F14 -[produced]-> claim:vidhur:eval-bf9a2a6d-F14-a1",
+   "eventId": "evt_80",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 68,
+   "at": "2026-10-23T16:35:55.283Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F14.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F14-a1\" (most-recent-wins)",
+   "eventId": "evt_82",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 69,
+   "at": "2026-10-23T16:35:55.329Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F14-a1 (verdict)",
+   "eventId": "evt_83",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 70,
+   "at": "2026-10-23T16:35:55.358Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F14-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F14-a1",
+   "eventId": "evt_84",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 71,
+   "at": "2026-10-23T16:35:55.389Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F15-a1 (claim)",
+   "eventId": "evt_85",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 72,
+   "at": "2026-10-23T16:35:55.421Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F15 -[produced]-> claim:vidhur:eval-bf9a2a6d-F15-a1",
+   "eventId": "evt_86",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 73,
+   "at": "2026-10-23T16:35:55.451Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F15.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F15-a1\" (most-recent-wins)",
+   "eventId": "evt_88",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 74,
+   "at": "2026-10-23T16:36:42.821Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F15-a1 (verdict)",
+   "eventId": "evt_89",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 75,
+   "at": "2026-10-23T16:36:42.848Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F15-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F15-a1",
+   "eventId": "evt_90",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 76,
+   "at": "2026-10-23T16:36:42.868Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F16-a1 (claim)",
+   "eventId": "evt_91",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 77,
+   "at": "2026-10-23T16:36:42.892Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F16 -[produced]-> claim:vidhur:eval-bf9a2a6d-F16-a1",
+   "eventId": "evt_92",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 78,
+   "at": "2026-10-23T16:36:42.923Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F16.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F16-a1\" (most-recent-wins)",
+   "eventId": "evt_94",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 79,
+   "at": "2026-10-23T16:37:03.104Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F16-a1 (verdict)",
+   "eventId": "evt_95",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 80,
+   "at": "2026-10-23T16:37:03.135Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F16-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F16-a1",
+   "eventId": "evt_96",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 81,
+   "at": "2026-10-23T16:37:03.181Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F17-a1 (claim)",
+   "eventId": "evt_97",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 82,
+   "at": "2026-10-23T16:37:03.217Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F17 -[produced]-> claim:vidhur:eval-bf9a2a6d-F17-a1",
+   "eventId": "evt_98",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 83,
+   "at": "2026-10-23T16:37:03.250Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F17.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F17-a1\" (most-recent-wins)",
+   "eventId": "evt_100",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 84,
+   "at": "2026-10-23T16:37:19.812Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F17-a1 (verdict)",
+   "eventId": "evt_101",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 85,
+   "at": "2026-10-23T16:37:19.848Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F17-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F17-a1",
+   "eventId": "evt_102",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 86,
+   "at": "2026-10-23T16:37:19.892Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F18-a1 (claim)",
+   "eventId": "evt_103",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 87,
+   "at": "2026-10-23T16:37:19.926Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F18 -[produced]-> claim:vidhur:eval-bf9a2a6d-F18-a1",
+   "eventId": "evt_104",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 88,
+   "at": "2026-10-23T16:37:19.954Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F18.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F18-a1\" (most-recent-wins)",
+   "eventId": "evt_106",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 89,
+   "at": "2026-10-23T16:37:42.177Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F18-a1 (verdict)",
+   "eventId": "evt_107",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 90,
+   "at": "2026-10-23T16:37:42.214Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F18-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F18-a1",
+   "eventId": "evt_108",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 91,
+   "at": "2026-10-23T16:37:42.266Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F19-a1 (claim)",
+   "eventId": "evt_109",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 92,
+   "at": "2026-10-23T16:37:42.306Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F19 -[produced]-> claim:vidhur:eval-bf9a2a6d-F19-a1",
+   "eventId": "evt_110",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 93,
+   "at": "2026-10-23T16:37:42.331Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F19.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F19-a1\" (most-recent-wins)",
+   "eventId": "evt_112",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 94,
+   "at": "2026-10-23T16:43:42.744Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F20-a1 (claim)",
+   "eventId": "evt_113",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 95,
+   "at": "2026-10-23T16:43:42.783Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F20 -[produced]-> claim:vidhur:eval-bf9a2a6d-F20-a1",
+   "eventId": "evt_114",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 96,
+   "at": "2026-10-23T16:43:42.820Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-F20.latest_claim = \"claim:vidhur:eval-bf9a2a6d-F20-a1\" (most-recent-wins)",
+   "eventId": "evt_116",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 97,
+   "at": "2026-10-23T16:44:27.977Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-F20-a1 (verdict)",
+   "eventId": "evt_117",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 98,
+   "at": "2026-10-23T16:44:28.011Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-F20-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-F20-a1",
+   "eventId": "evt_118",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 99,
+   "at": "2026-10-23T16:44:28.053Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C01-a1 (claim)",
+   "eventId": "evt_119",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 100,
+   "at": "2026-10-23T16:44:28.089Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C01 -[produced]-> claim:vidhur:eval-bf9a2a6d-C01-a1",
+   "eventId": "evt_120",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 101,
+   "at": "2026-10-23T16:44:28.124Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C01.latest_claim = \"claim:vidhur:eval-bf9a2a6d-C01-a1\" (most-recent-wins)",
+   "eventId": "evt_122",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 102,
+   "at": "2026-10-23T16:44:47.142Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-C01-a1 (verdict)",
+   "eventId": "evt_123",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 103,
+   "at": "2026-10-23T16:44:47.183Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C01-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-C01-a1",
+   "eventId": "evt_124",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 104,
+   "at": "2026-10-23T16:44:47.229Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C02-a1 (claim)",
+   "eventId": "evt_125",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 105,
+   "at": "2026-10-23T16:44:47.265Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C02 -[produced]-> claim:vidhur:eval-bf9a2a6d-C02-a1",
+   "eventId": "evt_126",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 106,
+   "at": "2026-10-23T16:44:47.309Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C02.latest_claim = \"claim:vidhur:eval-bf9a2a6d-C02-a1\" (most-recent-wins)",
+   "eventId": "evt_128",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 107,
+   "at": "2026-10-23T16:44:59.305Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-C02-a1 (verdict)",
+   "eventId": "evt_129",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 108,
+   "at": "2026-10-23T16:44:59.358Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C02-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-C02-a1",
+   "eventId": "evt_130",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 109,
+   "at": "2026-10-23T16:44:59.502Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C03-a1 (claim)",
+   "eventId": "evt_131",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 110,
+   "at": "2026-10-23T16:44:59.574Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C03 -[produced]-> claim:vidhur:eval-bf9a2a6d-C03-a1",
+   "eventId": "evt_132",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 111,
+   "at": "2026-10-23T16:44:59.634Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C03.latest_claim = \"claim:vidhur:eval-bf9a2a6d-C03-a1\" (most-recent-wins)",
+   "eventId": "evt_134",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 112,
+   "at": "2026-10-23T16:45:25.421Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-C03-a1 (verdict)",
+   "eventId": "evt_135",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 113,
+   "at": "2026-10-23T16:45:25.468Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C03-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-C03-a1",
+   "eventId": "evt_136",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 114,
+   "at": "2026-10-23T16:45:25.510Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C04-a1 (claim)",
+   "eventId": "evt_137",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 115,
+   "at": "2026-10-23T16:45:25.544Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C04 -[produced]-> claim:vidhur:eval-bf9a2a6d-C04-a1",
+   "eventId": "evt_138",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 116,
+   "at": "2026-10-23T16:45:25.582Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C04.latest_claim = \"claim:vidhur:eval-bf9a2a6d-C04-a1\" (most-recent-wins)",
+   "eventId": "evt_140",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 117,
+   "at": "2026-10-23T16:45:43.532Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-C04-a1 (verdict)",
+   "eventId": "evt_141",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 118,
+   "at": "2026-10-23T16:45:43.565Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C04-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-C04-a1",
+   "eventId": "evt_142",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 119,
+   "at": "2026-10-23T16:45:43.607Z",
+   "kind": "upsertEntity",
+   "actor": "eval_planted_claims",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C05-a1 (claim)",
+   "eventId": "evt_143",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 120,
+   "at": "2026-10-23T16:45:43.648Z",
+   "kind": "relate",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C05 -[produced]-> claim:vidhur:eval-bf9a2a6d-C05-a1",
+   "eventId": "evt_144",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 121,
+   "at": "2026-10-23T16:45:43.690Z",
+   "kind": "assertFact",
+   "actor": "eval_planted_claims",
+   "summary": "delegation:vidhur:eval-bf9a2a6d-C05.latest_claim = \"claim:vidhur:eval-bf9a2a6d-C05-a1\" (most-recent-wins)",
+   "eventId": "evt_146",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 122,
+   "at": "2026-10-23T16:46:58.865Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:eval-bf9a2a6d-C05-a1 (verdict)",
+   "eventId": "evt_147",
+   "runId": "eval-bf9a2a6d"
+  },
+  {
+   "seq": 123,
+   "at": "2026-10-23T16:46:58.901Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:eval-bf9a2a6d-C05-a1 -[audited-by]-> verdict:vidhur:eval-bf9a2a6d-C05-a1",
+   "eventId": "evt_148",
+   "runId": "eval-bf9a2a6d"
+  }
+ ],
+ "observations": [],
+ "stories": [],
+ "scores": [],
+ "mergeQueue": []
+}

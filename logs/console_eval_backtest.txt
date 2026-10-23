@@ -1,0 +1,21 @@
+
+=== B1 as_of 2021-02-01 | spend quarter 2020-Q4 | 2 headlines ===
+outcome flat (-1.56%) | naive flat | model-only not completed | vidhur not completed (- verified)
+Traceback (most recent call last):
+  File "C:\Users\neeraj\vidhur\scripts\eval_backtest.py", line 392, in <module>
+    main()
+  File "C:\Users\neeraj\vidhur\scripts\eval_backtest.py", line 257, in main
+    targets = top_targets(zt, 99, max_quarter=zt.max_quarter)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\neeraj\vidhur\core\ganga_data.py", line 25, in top_targets
+    quarter = latest_quarter(zt, max_quarter)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\neeraj\vidhur\core\ganga_data.py", line 20, in latest_quarter
+    return zt.query(f"SELECT MAX(quarter) AS q FROM ganga.purchases{cap}")[0]["q"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\neeraj\vidhur\core\asof.py", line 72, in query
+    return self._zt.query(sql, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\neeraj\vidhur\core\zetaris_client.py", line 75, in query
+    raise ZetarisError(f"Zetaris SQL failed (HTTP {response.status_code}): {_error_line(response)}")
+core.zetaris_client.ZetarisError: Zetaris SQL failed (HTTP 400): Bad Request

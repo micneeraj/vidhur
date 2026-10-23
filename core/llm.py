@@ -16,6 +16,9 @@ TIMEOUT_SECONDS = 180
 MAX_ATTEMPTS = int(config.env("LLM_MAX_ATTEMPTS", "5"))
 # Network problems, and 5xx from the runtime: Nightshift can route a request to a model that has
 # been retired upstream (it answers 502), and the next attempt usually gets a live route.
+# Seconds between attempts (default 2). The evaluation jobs set LLM_RETRY_WAIT_SECONDS=60 and LLM_MAX_ATTEMPTS=4
+# (one try + 3 retries) so a busy 1.2.1 runtime gets time to recover.
+RETRY_WAIT_SECONDS = float(config.env("LLM_RETRY_WAIT_SECONDS", "2"))
 RETRYABLE_ERRORS = (openai.APIConnectionError, openai.APITimeoutError, openai.InternalServerError)
 
 
@@ -28,10 +31,36 @@ class LLMResult:
     prompt_tokens: int
     completion_tokens: int
     latency_ms: int
+    receipt_id: str = None  # Nightshift receipt id if the response carries one (1.2.1 does not always)
 
     @property
     def pin_honoured(self):
         return self.model == self.expected_model
+
+
+def _receipt_in(obj):
+    """A receipt id from a response body (dict of extra fields), if any key mentions 'receipt'."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if "receipt" in str(k).lower() and v:
+                return str(v) if not isinstance(v, dict) else str(v.get("id") or v)
+    return None
+
+
+def error_details(exc):
+    """Honest facts about a failed call: HTTP status, the model the runtime says it routed to, and a receipt id if one is exposed."""
+    out = {"status_code": getattr(exc, "status_code", None), "routed_model": None, "receipt_id": None}
+    body = getattr(exc, "body", None)
+    if isinstance(body, dict):
+        detail = str(body.get("meterless_detail") or "")
+        out["routed_model"] = detail.split("_empty_response")[0] or None
+        out["receipt_id"] = _receipt_in(body)
+    response = getattr(exc, "response", None)
+    if response is not None:
+        for k, v in response.headers.items():
+            if "receipt" in k.lower():
+                out["receipt_id"] = v
+    return out
 
 
 def _client(timeout=None):
@@ -63,10 +92,10 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
                 trace.event(agent, f"llm:{step}:error", output_summary=f"{type(exc).__name__}: {str(exc)[:300]}",
                             model=None, decision="RETRY" if attempt < attempts else "GIVE_UP",
                             retry_count=retry_count, requested_model=model, requested_lane=model, answered_model=None,
-                            llm_attempt=attempt)
+                            llm_attempt=attempt, **error_details(exc))
             if attempt == attempts:
                 raise
-            time.sleep(2)
+            time.sleep(RETRY_WAIT_SECONDS)
 
     latency_ms = int((time.monotonic() - started) * 1000)
     usage = response.usage
@@ -78,6 +107,7 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
         prompt_tokens=getattr(usage, "prompt_tokens", 0) or 0,
         completion_tokens=getattr(usage, "completion_tokens", 0) or 0,
         latency_ms=latency_ms,
+        receipt_id=_receipt_in(getattr(response, "model_extra", None)),
     )
     if trace is not None:
         trace.event(
@@ -95,6 +125,7 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
             prompt_tokens=result.prompt_tokens,
             completion_tokens=result.completion_tokens,
             latency_ms=result.latency_ms,
+            receipt_id=result.receipt_id,
         )
     return result
 

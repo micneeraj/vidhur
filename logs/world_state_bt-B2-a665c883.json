@@ -1,0 +1,48 @@
+{
+ "events": [
+  {
+   "id": "evt_1",
+   "seq": 1,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "run",
+    "id": "run:vidhur:bt-B2-a665c883-run",
+    "attrs": {
+     "status": "running",
+     "run_id": "a665c883",
+     "backtest_case": "B2",
+     "as_of": "2022-08-02"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "main",
+     "at": "2026-10-23T17:44:44.597Z",
+     "runId": "bt-B2-a665c883"
+    },
+    "createdAt": "2026-10-23T17:44:44.597Z",
+    "updatedAt": "2026-10-23T17:44:44.597Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T17:44:44.597Z"
+  }
+ ],
+ "audit": [
+  {
+   "seq": 1,
+   "at": "2026-10-23T17:44:44.597Z",
+   "kind": "upsertEntity",
+   "actor": "main",
+   "summary": "run:vidhur:bt-B2-a665c883-run (run)",
+   "eventId": "evt_1",
+   "runId": "bt-B2-a665c883"
+  }
+ ],
+ "observations": [],
+ "stories": [],
+ "scores": [],
+ "mergeQueue": []
+}

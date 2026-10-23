@@ -2,6 +2,8 @@
 
 **The Agent That Can Explain Why** - Open Agent Hackathon 2026 (GenAI Works), Track 2.
 
+Company data is synthetic for privacy; FX and news are live.
+
 ## What it is
 
 Vidhur is an **auditor's agent for cost risk**. For a fictional UK AI-server maker, **Ganga AI Solutions**, it looks at what the company buys, asks
@@ -10,6 +12,10 @@ against trusted, independent, fresh sources (ranked by publisher) and against th
 Claims that cannot be verified get no number. The claims that survive become a **decision** (hedge, lock the price, add a second supplier, or do
 nothing) and a **Red Team** challenges that decision, like a sceptical CFO, **before it reaches the CFO brief**. Every GBP figure is computed in
 plain Python, every step is traced, and the brief says which evidence supports each number.
+
+**Professional scepticism.** The **Evaluator** and the **Red Team** are Vidhur's *professional scepticism* layer: the auditor's way of never accepting a
+claim, or a recommendation, without evidence. The Evaluator will not let a claim reach the CFO unless independent, fresh, trusted sources support it and it matches
+Ganga's own data; the Red Team then attacks the resulting decision before the CFO sees it. How well that works is measured, not asserted: see **Evaluation** below.
 
 ## Architecture
 
@@ -88,6 +94,15 @@ What happens in a run (`python main.py`):
 8. **CFO brief** (`output_examples/brief_<timestamp>.md`) is built from the world state: plan and reasons, verified claims with worst/likely/best GBP,
    UNVERIFIED items, evidence trail, and pointers to the trace and the world-state file.
 
+
+## Design choices
+
+- **No freight analyst in this version.** Ganga's high value parts (GPUs, memory chips, AI servers) mostly ship by air and freight is a small share of landed cost,
+  so it would add little to the CFO decision. A freight or commodity analyst is future work. Adding one is a small change, not a rewrite: write the analyst class and
+  register it in `ANALYSTS` (`agents/planner.py`) and in the `analysts` dict in `main.py`; the Planner's prompt, its validation of delegations and the work-item
+  loop (`agents/workflow.py`) already accept any registered analyst name. It is not zero-code: the registration is needed.
+- **Numbers are computed in Python, never by the model.** FX moves, GBP impacts and decision costs come from Zetaris data and plain arithmetic; the model explains and picks.
+- **Unverified means no number.** A claim that fails the Evaluator after two send-backs is shown as unverified with no GBP figure.
 
 ## Sponsor technology
 
@@ -218,14 +233,12 @@ supplier (3%). They are **illustrative assumptions, not market quotes**, and the
 |---|---|---|
 | `input_20261023_074501.json` (`python main.py`) | `brief_20261023_075606.md` | A normal run, before the Decision Maker existed: Planner's plan, verified claims with worst / likely / best GBP, evidence trail with publisher tiers |
 | `input_20261023_081111.json` (`--demo-untrusted-source`) | `brief_20261023_081832.md` | The Evaluator rejecting a first attempt that cited only untrusted sources (`NO_TRUSTED_SOURCE`) and the analyst revising |
-| `input_20261023_150615.json` (`python main.py`) | `brief_20261023_152556.md` | A normal run with the Decision Maker and Red Team stage; the runtime was returning 502s, so one analyst item is `NOT_ASSESSED`, one decision was not produced and the other is shown as not challenged |
-| `input_20261023_152706.json` (`--demo-red-team`) | `brief_20261023_154540.md` | The red-team demo run: aggressive first proposals; the Red Team calls failed on the 502s, so two decisions are labelled not challenged and one was not produced |
+| `input_20261023_202729.json` (`--demo-red-team`) | `brief_20261023_211838.md` | **The Red Team loop completing live:** the first proposal was told to hedge 100 %; the Red Team raised 3 objections (one high: concentration), the Decision Maker revised to a 50 % hedge, the Red Team marked the objections resolved. Another decision shows "Red Team review could not run" after repeated 502s. Partial run, labelled as such |
+| `input_20261023_212734.json` (`--demo-weak-claim`) | `brief_20261023_220144.md` | The Evaluator sending back a one-source claim (`TOO_FEW_SOURCES`) and the analyst revising. Partial run (502s stopped some work items), labelled as such |
 
-Also in `output_examples/`, from before input files were saved: `brief_20261022_224215.md` and `brief_20261023_015139.md` are `--demo-weak-claim` runs
-(the Evaluator sends back a one-source claim: `TOO_FEW_SOURCES`; traces `logs/run_20261022_222600.jsonl` and `logs/run_20261023_014729.jsonl`), and
-`brief_20261022_222558.md`, `brief_20261022_232023.md`, `brief_20261023_014722.md` are earlier normal runs.
-The two Red Team briefs above were produced before the "Red Team review could not run" wording was introduced, so they say "NOT challenged"; they are
-unedited. A run that completes the Red Team loop has not been captured yet (see Known limitations).
+Both 2026-10-23 evening runs went through `--skip-healthcheck` after the healthcheck itself failed on a busy Nightshift 1.2.1 (retried 4 times, 60 s apart, first),
+so the command recorded in their input files includes that flag. Traces are `logs/run_20261023_202729.jsonl` and `logs/run_20261023_212734.jsonl`.
+Older briefs that said "NOT challenged", or came from runs with no saved input file, were deleted and replaced by the runs above.
 
 ## Decision Maker and Red Team (the challenge loop)
 
@@ -264,6 +277,61 @@ Not every source is equal, so Vidhur ranks evidence by who published it, not onl
 - **CFO brief:** every source shows publisher, tier and date, and each claim has an evidence-strength line such as
   "2 independent sources, 1 Tier 1".
 
+## Evaluation
+
+Two evaluations were built to test the "professional scepticism" layer honestly. Both use real runs (traces in `logs/`), no mocks and no cached model replies.
+Nightshift 1.2.1 often returned 502 during this work, which limited what could be completed. **All figures below are one run, a small sample, with synthetic company
+data and real market data.** Prepared evaluation data is in `data/eval/` (see `data/eval/README_EVAL.md`).
+
+### 1. Planted false-claim test of the Evaluator - completed
+
+`python scripts/eval_planted_claims.py` sends 20 deliberately false or weak claims and 5 correct controls through the same Evaluator the product uses (real Zetaris queries,
+real deterministic checks, real Nemotron support check). The articles the claims cite are **synthetic prepared data**; the ECB exchange rates are live.
+Full table: `output_examples/eval_planted_claims.md`; trace `logs/run_20261023_220200.jsonl`; results `logs/eval_planted_20261023_220200.jsonl`.
+
+| Result | Count |
+|---|---|
+| False claims caught | **15 / 20** |
+| Correct (control) claims wrongly rejected | **0 / 5** |
+| Could not be evaluated because of a runtime error (counted separately, never as caught) | **1** (F19, 502 after retries) |
+
+Caught: wrong FX range and direction (2 of 3), stale sources (2/2), untrusted publishers only (2/2), single source (2/2), copied report from two outlets or the same outlet (2/2),
+wrong supplier country (2/2), cause not supported by the cited sources (2/2), and one of the two wrong-date claims.
+
+**Missed (4), as measured:**
+- **F03, invented FX numbers:** a claim quoting a 9 % won move whose attached ECB figures it had falsified; the Evaluator trusts the moves attached to a currency claim and the model check judged it consistent. (The cited ECB article does show +9.94 % over 90 days, so the false number happened to sit close to the real one; this is a weak plant.)
+- **F04, wrong currency pair:** a South Korean part explained with GBP/JPY data. The numbers matched the yen data, so neither the deterministic check nor the model check noticed the currency was Japan's, not Korea's.
+- **F15 and F16, GBP impact that does not match Ganga's purchase data:** the claim text stated a GBP exposure 10x too large (P001) and 10x too small (P002) against Zetaris spend. The Evaluator does not compare GBP figures written inside a claim with Zetaris; Vidhur computes the GBP impact itself from Zetaris after a claim passes, so such a figure never reaches the brief, but the Evaluator did not flag it.
+
+These are gaps in this version, reported as they came out. The test cases were not changed after seeing results.
+
+### 2. Backtest against baselines - NOT completed
+
+`python scripts/eval_backtest.py` compares (a) a naive "always flat" baseline, (b) one Nemotron call with the same inputs and (c) Vidhur, on 5 historical cases, scoring
+the direction of Ganga's landed cost in GBP over the next 91 days (up / down / flat within +/-2 %) and whether Vidhur's GBP range contained the real outcome.
+Real outcomes use real ECB rates (Frankfurter) and Ganga's synthetic purchase mix. **Taiwan dollar is proxied by USD because the ECB does not publish TWD**
+(Taiwan is the GPU chip supplier and Ganga's largest spend, so this matters; Vidhur's own Currency Analyst reports "no data" for TWD).
+Vidhur can only see data dated on or before `as_of`; this is enforced in code (`core/asof.py`), not in the prompt.
+
+| Case | as_of | Real outcome | Naive | Model only | Vidhur |
+|---|---|---|---|---|---|
+| B1 chip shortage | 2021-02-01 | flat (-1.56 %) | flat (right) | not completed (502) | not completed (502) |
+| B2 Taiwan Strait tension | 2022-08-02 | up (+3.06 %) | flat (wrong) | not completed (502) | not completed (502) |
+| B3 UK mini-budget | 2022-09-23 | not computed | - | not run | interrupted, not scored |
+| B4 calmer quarter | 2023-05-02 | not computed | - | not run | not run |
+| B5 calmer quarter | 2024-09-02 | not computed | - | not run | not run |
+
+**There is no result for whether Vidhur beats the baselines.** Both completed cases ended "not completed" for the model-based approaches because the runtime answered 502
+on every retry (4 attempts, 60 s apart), and the job then hit its time limit. Details: `output_examples/eval_backtest.md`. The script resumes where it stopped with
+`--previous logs/backtest_results_20261023.jsonl --only B3,B4,B5`.
+
+### Limits
+
+- Nightshift 1.2.1 returned 502 (`provider_error`: `empty_response`, `provider_deadline`) on a large share of calls; every failure is logged with the routed model (receipt ids are not exposed by the runtime).
+- Planted-claim test: 25 claims written by the builder, one run. It shows what the Evaluator does and does not catch, not a general accuracy figure.
+- Backtest: 5 cases planned, 2 attempted, 0 completed for the model-based approaches. The news set is small (2-7 real headlines per case, CNBC and Fortune only), the model may remember these historical events from training, and the outcome is a currency-driven proxy for landed cost (no freight, duties or part-price changes).
+- Company data is synthetic for privacy; FX and news are live (live in the product; historical in the backtest).
+
 ## Where things are
 
 | Path | What |
@@ -282,6 +350,10 @@ Not every source is equal, so Vidhur ranks evidence by who published it, not onl
 | `core/news.py`, `core/fx.py` | Real evidence: RSS news and ECB exchange rates; trust-aware ranking |
 | `core/source_trust.py`, `data/source_trust.csv` | Publisher trust tiers (curated list) |
 | `scripts/check_lanes.py` | Calls each Nightshift lane 3 times and prints which model answered |
+| `scripts/eval_planted_claims.py` | Planted false-claim test of the Evaluator (20 false + 5 correct claims) -> `output_examples/eval_planted_claims.md` |
+| `scripts/eval_backtest.py` | 5-case backtest of Vidhur vs a naive baseline and a model-only call -> `output_examples/eval_backtest.md` |
+| `core/asof.py` | Point-in-time guards for the backtest: news, FX window and Zetaris quarters after `as_of` raise `AsOfViolation` |
+| `data/eval/` | Prepared evaluation data (planted claims, synthetic planted articles, backtest cases, real dated backtest headlines); see `data/eval/README_EVAL.md` |
 | `core/impact.py`, `core/brief.py` | GBP maths and confidence; the CFO brief |
 | `scripts/load_ganga_to_zetaris.py` | Registers Ganga's CSVs as Zetaris tables |
 | `docs/meterless_engine.md` | The World Model spec we followed and the test results |
@@ -300,11 +372,11 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 - **Lightning is used for all agents.** The evaluator lane could not be pinned to a larger Nemotron in Nightshift: `scripts/check_lanes.py` showed `vidhur-evaluator`
   answered by Lightning (`nemotron-3.5-lightning-30b-a3b`) in 3 of 3 calls, so the Planner and Evaluator are pointed at the `vidhur-analyst` lane on purpose
   (the pin is real, not accidental). If a larger lane is fixed, set `MODEL_EVALUATOR` / `MODEL_EVALUATOR_EXPECTED` in `.env`.
-- **Runtime 502s can stop the Red Team.** On 2026-10-23 the Nightshift provider answered 502 (`provider_error` / `empty_response`) to many attempts. In the captured
-  runs every Red Team call failed after 8 attempts, so those decisions are labelled as not challenged (never passed off as challenged), and the Red Team loop has
-  not completed in a captured live run. The loop, validation, revise / defend handling, the 2-round limit and CONTESTED escalation are covered by tests with scripted model
-  replies (`tests/test_red_team.py`); the graceful-failure paths are covered by `tests/test_failure_paths.py`. Rerun `python main.py --demo-red-team` when the runtime is healthy.
-- **Runs take 15-20 minutes** (many sequential model calls with retries against a per-request deadline of about 45 s on the runtime).
+- **Runtime 502s can stop the Red Team.** The Nightshift 1.2.1 provider often answers 502 (`provider_error`, `empty_response` or `provider_deadline`). In the
+  2026-10-23 `--demo-red-team` run the Red Team loop completed live for one decision, but for another every Red Team call failed after its retries, so that decision is
+  labelled "Red Team review could not run" (never passed off as challenged). The loop's other branches (defend, the 2-round limit, CONTESTED escalation) are covered by
+  tests with scripted model replies (`tests/test_red_team.py`); graceful failure is covered by `tests/test_failure_paths.py`.
+- **Runs take 15-20 minutes on a healthy runtime and 35-50 minutes on a busy one** (many sequential model calls with retries against a per-request deadline of about 45 s on the runtime).
 - **Decision premiums are assumptions** (`data/decision_assumptions.csv`), not market quotes, and the second supplier is assumed to be unexposed to the claim's driver.
   Decisions are made per claim, so two claims on one part are not combined.
 - **The start-up healthcheck refuses to start while Nightshift is answering 5xx.** Use `--skip-healthcheck` to run anyway; Vidhur then retries inside the run and finishes with partial results if the runtime stays down.

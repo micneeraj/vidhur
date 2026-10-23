@@ -1,0 +1,3073 @@
+{
+ "events": [
+  {
+   "id": "evt_1",
+   "seq": 1,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "run",
+    "id": "run:vidhur:bt-B1-605a6c57-run",
+    "attrs": {
+     "status": "running",
+     "run_id": "605a6c57",
+     "backtest_case": "B1",
+     "as_of": "2021-02-01"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "main",
+     "at": "2026-10-23T16:47:22.876Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:47:22.876Z",
+    "updatedAt": "2026-10-23T16:47:22.876Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:47:22.876Z"
+  },
+  {
+   "id": "evt_2",
+   "seq": 2,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "plan",
+    "id": "plan:vidhur:bt-B1-605a6c57-plan",
+    "attrs": {
+     "summary": "Delegated geopolitics to Taiwan's top‑cost chip and currency analysis to Germany, China, and South Korea parts to monitor cost‑impacting risks within the CFO's limited runtime.",
+     "fallback": false,
+     "targets": [
+      {
+       "part_id": "P001",
+       "country": "Taiwan",
+       "spend": 400470.75
+      },
+      {
+       "part_id": "P006",
+       "country": "Germany",
+       "spend": 208395.8
+      },
+      {
+       "part_id": "P007",
+       "country": "China",
+       "spend": 80147.43
+      },
+      {
+       "part_id": "P002",
+       "country": "South Korea",
+       "spend": 65335.0
+      },
+      {
+       "part_id": "P005",
+       "country": "China",
+       "spend": 52404.0
+      },
+      {
+       "part_id": "P008",
+       "country": "Malaysia",
+       "spend": 49979.0
+      },
+      {
+       "part_id": "P003",
+       "country": "Japan",
+       "spend": 29836.84
+      },
+      {
+       "part_id": "P004",
+       "country": "China",
+       "spend": 25980.48
+      }
+     ]
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:09.942Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:09.942Z",
+    "updatedAt": "2026-10-23T16:48:09.942Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:09.942Z"
+  },
+  {
+   "id": "evt_3",
+   "seq": 3,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_5b57ebf2b6a9ed23",
+    "from": "run:vidhur:bt-B1-605a6c57-run",
+    "type": "has-plan",
+    "to": "plan:vidhur:bt-B1-605a6c57-plan",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:09.950Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:09.950Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:09.950Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:09.950Z"
+  },
+  {
+   "id": "evt_4",
+   "seq": 4,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D1",
+    "attrs": {
+     "analyst": "geopolitics",
+     "part_id": "P001",
+     "reason": "Spend GBP 400,471 (44%); headline states chipmakers will take quarters to catch up auto demand, signalling potential delays and cost uplift for Taiwan-sourced GPU.",
+     "work_id": "D1",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:09.964Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:09.964Z",
+    "updatedAt": "2026-10-23T16:48:09.964Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:09.964Z"
+  },
+  {
+   "id": "evt_5",
+   "seq": 5,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_49ac9665099fe97a",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B1-605a6c57-D1",
+    "context": "delegation:vidhur:bt-B1-605a6c57-D1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:09.976Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:09.976Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:09.976Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:09.976Z"
+  },
+  {
+   "id": "evt_6",
+   "seq": 6,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P006",
+     "reason": "Spend GBP 208,396 (23%); EUR FX data available from ECB; will compute 30/90‑day move to detect currency‑driven cost change.",
+     "work_id": "D2",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:09.987Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:09.987Z",
+    "updatedAt": "2026-10-23T16:48:09.987Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:09.987Z"
+  },
+  {
+   "id": "evt_7",
+   "seq": 7,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_83e94ffd6ad160cb",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "context": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:10.002Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.002Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.002Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.002Z"
+  },
+  {
+   "id": "evt_8",
+   "seq": 8,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D3",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P007",
+     "reason": "Spend GBP 80,147 (9%); CNY FX data available; assessing real currency move against GBP.",
+     "work_id": "D3",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.011Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.011Z",
+    "updatedAt": "2026-10-23T16:48:10.011Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.011Z"
+  },
+  {
+   "id": "evt_9",
+   "seq": 9,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_2bd6721be6977012",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B1-605a6c57-D3",
+    "context": "delegation:vidhur:bt-B1-605a6c57-D3",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:10.026Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.026Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.026Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.026Z"
+  },
+  {
+   "id": "evt_10",
+   "seq": 10,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D4",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P002",
+     "reason": "Spend GBP 65,335 (7%); KRW FX data available from ECB; 30/90‑day move will be reported.",
+     "work_id": "D4",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.036Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.036Z",
+    "updatedAt": "2026-10-23T16:48:10.036Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.036Z"
+  },
+  {
+   "id": "evt_11",
+   "seq": 11,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_c991cfc37f65618a",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B1-605a6c57-D4",
+    "context": "delegation:vidhur:bt-B1-605a6c57-D4",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:10.049Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.049Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.049Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.049Z"
+  },
+  {
+   "id": "evt_12",
+   "seq": 12,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-S1",
+    "attrs": {
+     "analyst": "none",
+     "part_id": "P005",
+     "reason": "Low spend 6% of total; CNY FX data available but risk impact limited.",
+     "work_id": "S1",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.063Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.063Z",
+    "updatedAt": "2026-10-23T16:48:10.063Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.063Z"
+  },
+  {
+   "id": "evt_13",
+   "seq": 13,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_e642214ebef9be6e",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B1-605a6c57-S1",
+    "context": "delegation:vidhur:bt-B1-605a6c57-S1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:10.074Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.074Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.074Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.074Z"
+  },
+  {
+   "id": "evt_14",
+   "seq": 14,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-S2",
+    "attrs": {
+     "analyst": "none",
+     "part_id": "P008",
+     "reason": "Low spend 5% of total; MYR FX data available but minimal cost effect.",
+     "work_id": "S2",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.096Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.096Z",
+    "updatedAt": "2026-10-23T16:48:10.096Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.096Z"
+  },
+  {
+   "id": "evt_15",
+   "seq": 15,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_2b32e74569b9ddc7",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B1-605a6c57-S2",
+    "context": "delegation:vidhur:bt-B1-605a6c57-S2",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:10.109Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.109Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.109Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.109Z"
+  },
+  {
+   "id": "evt_16",
+   "seq": 16,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-S3",
+    "attrs": {
+     "analyst": "none",
+     "part_id": "P003",
+     "reason": "Low spend 3% of total; JPY FX data available but priority low.",
+     "work_id": "S3",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.122Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.122Z",
+    "updatedAt": "2026-10-23T16:48:10.122Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.122Z"
+  },
+  {
+   "id": "evt_17",
+   "seq": 17,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_403ea8074a0c51ce",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B1-605a6c57-S3",
+    "context": "delegation:vidhur:bt-B1-605a6c57-S3",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:10.142Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.142Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.142Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.142Z"
+  },
+  {
+   "id": "evt_18",
+   "seq": 18,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-S4",
+    "attrs": {
+     "analyst": "none",
+     "part_id": "P004",
+     "reason": "Low spend 3% of total; CNY FX data already covered by other China parts.",
+     "work_id": "S4",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.158Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.158Z",
+    "updatedAt": "2026-10-23T16:48:10.158Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.158Z"
+  },
+  {
+   "id": "evt_19",
+   "seq": 19,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_0783c7c58e76b648",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B1-605a6c57-S4",
+    "context": "delegation:vidhur:bt-B1-605a6c57-S4",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:10.172Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:48:10.172Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.172Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.172Z"
+  },
+  {
+   "id": "evt_20",
+   "seq": 20,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D1",
+    "attrs": {
+     "status": "running"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:48:10.195Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.195Z",
+    "updatedAt": "2026-10-23T16:48:10.195Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.195Z"
+  },
+  {
+   "id": "evt_21",
+   "seq": 21,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "attrs": {
+     "status": "running"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:48:10.196Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:10.196Z",
+    "updatedAt": "2026-10-23T16:48:10.196Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:10.196Z"
+  },
+  {
+   "id": "evt_22",
+   "seq": 22,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+    "attrs": {
+     "title": "chipmakers will take quarters to catch up with auto sector demand credit suisse",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-27T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-27T00:00:00+00:00",
+    "updatedAt": "2021-01-27T00:00:00+00:00",
+    "name": "chipmakers will take quarters to catch up with auto sector demand credit suisse",
+    "aliases": [
+     "chipmakers will take quarters to catch up with auto sector demand credit suisse"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-27T00:00:00+00:00"
+  },
+  {
+   "id": "evt_23",
+   "seq": 23,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-27T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-27T00:00:00+00:00",
+    "updatedAt": "2021-01-27T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-27T00:00:00+00:00"
+  },
+  {
+   "id": "evt_24",
+   "seq": 24,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_7de2dbbd2a5d97b9",
+    "from": "article:ingest:https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2021-01-27T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-27T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-27T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-27T00:00:00+00:00"
+  },
+  {
+   "id": "evt_25",
+   "seq": 25,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-27T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-27T00:00:00+00:00",
+    "updatedAt": "2021-01-27T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-27T00:00:00+00:00"
+  },
+  {
+   "id": "evt_26",
+   "seq": 26,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_d0358f97cf13974c",
+    "from": "article:ingest:https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2021-01-27T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-27T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-27T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-27T00:00:00+00:00"
+  },
+  {
+   "id": "evt_27",
+   "seq": 27,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_4f358fd513c4b44e",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-27T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-27T00:00:00+00:00",
+    "updatedAt": "2021-01-27T00:00:00+00:00",
+    "name": "CNBC",
+    "aliases": [
+     "CNBC"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-27T00:00:00+00:00"
+  },
+  {
+   "id": "evt_28",
+   "seq": 28,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_4cbc5c8cf2f409d5",
+    "from": "article:ingest:https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+    "type": "mentions",
+    "to": "ent_4f358fd513c4b44e",
+    "validFrom": "2021-01-27T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-27T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-27T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-27T00:00:00+00:00"
+  },
+  {
+   "id": "evt_29",
+   "seq": 29,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+    "attrs": {
+     "title": "Taiwan ministry says TSMC will prioritize auto chips if possible",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-25T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-25T00:00:00+00:00",
+    "updatedAt": "2021-01-25T00:00:00+00:00",
+    "name": "Taiwan ministry says TSMC will prioritize auto chips if possible",
+    "aliases": [
+     "Taiwan ministry says TSMC will prioritize auto chips if possible"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-25T00:00:00+00:00"
+  },
+  {
+   "id": "evt_30",
+   "seq": 30,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-25T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-25T00:00:00+00:00",
+    "updatedAt": "2021-01-25T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-25T00:00:00+00:00"
+  },
+  {
+   "id": "evt_31",
+   "seq": 31,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_4d7ece716742b87d",
+    "from": "article:ingest:https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2021-01-25T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-25T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-25T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-25T00:00:00+00:00"
+  },
+  {
+   "id": "evt_32",
+   "seq": 32,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-25T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-25T00:00:00+00:00",
+    "updatedAt": "2021-01-25T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-25T00:00:00+00:00"
+  },
+  {
+   "id": "evt_33",
+   "seq": 33,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_b1c500092e5b534d",
+    "from": "article:ingest:https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2021-01-25T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-25T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-25T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-25T00:00:00+00:00"
+  },
+  {
+   "id": "evt_34",
+   "seq": 34,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_4f358fd513c4b44e",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-25T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-25T00:00:00+00:00",
+    "updatedAt": "2021-01-25T00:00:00+00:00",
+    "name": "CNBC",
+    "aliases": [
+     "CNBC"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-25T00:00:00+00:00"
+  },
+  {
+   "id": "evt_35",
+   "seq": 35,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_4e5aa2dcdfb58fc7",
+    "from": "article:ingest:https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+    "type": "mentions",
+    "to": "ent_4f358fd513c4b44e",
+    "validFrom": "2021-01-25T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-01-25T00:00:00+00:00"
+    },
+    "createdAt": "2021-01-25T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-01-25T00:00:00+00:00"
+  },
+  {
+   "id": "evt_36",
+   "seq": 36,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+    "attrs": {
+     "title": "GBP/EUR ECB reference rates 2020-11-03 to 2021-02-01: -2.05% over 90 days, -1.90% over 30 days",
+     "text": "1 GBP = 1.1338 EUR on 2021-02-01 (was 1.1106 on 2020-11-03)."
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "GBP/EUR ECB reference rates 2020-11-03 to 2021-02-01: -2.05% over 90 days, -1.90% over 30 days",
+    "aliases": [
+     "GBP/EUR ECB reference rates 2020-11-03 to 2021-02-01: -2.05% over 90 days, -1.90% over 30 days"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_37",
+   "seq": 37,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_158170c7ace17e06",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "Germany",
+    "aliases": [
+     "Germany"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_38",
+   "seq": 38,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_40d968a82c5ecadc",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+    "type": "mentions",
+    "to": "ent_158170c7ace17e06",
+    "validFrom": "2021-02-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_39",
+   "seq": 39,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_bea80219b3e91e33",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "GangaCool Direct-to-Chip Loop",
+    "aliases": [
+     "GangaCool Direct-to-Chip Loop"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_40",
+   "seq": 40,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_90d57483efe3f555",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+    "type": "mentions",
+    "to": "ent_bea80219b3e91e33",
+    "validFrom": "2021-02-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_41",
+   "seq": 41,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_002d27bef27c9711",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "Frankfurter (ECB reference rates)",
+    "aliases": [
+     "Frankfurter (ECB reference rates)"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_42",
+   "seq": 42,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_79fca72a17d567d8",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+    "type": "mentions",
+    "to": "ent_002d27bef27c9711",
+    "validFrom": "2021-02-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_43",
+   "seq": 43,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D1",
+    "attrs": {
+     "status": "NO_CLAIM",
+     "note": "the analyst found no supported development"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:48:27.038Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:27.038Z",
+    "updatedAt": "2026-10-23T16:48:27.038Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:27.038Z"
+  },
+  {
+   "id": "evt_44",
+   "seq": 44,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D3",
+    "attrs": {
+     "status": "running"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:48:27.058Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:27.058Z",
+    "updatedAt": "2026-10-23T16:48:27.058Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:27.058Z"
+  },
+  {
+   "id": "evt_45",
+   "seq": 45,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D3",
+    "attrs": {
+     "status": "NO_CLAIM",
+     "note": "GBP/CNY moved +0.72% (30d) and -1.98% (90d): mixed direction"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:48:28.391Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:28.391Z",
+    "updatedAt": "2026-10-23T16:48:28.391Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:28.391Z"
+  },
+  {
+   "id": "evt_46",
+   "seq": 46,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D4",
+    "attrs": {
+     "status": "running"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:48:28.412Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:28.412Z",
+    "updatedAt": "2026-10-23T16:48:28.412Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:28.412Z"
+  },
+  {
+   "id": "evt_47",
+   "seq": 47,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+    "attrs": {
+     "title": "GBP/KRW ECB reference rates 2020-11-03 to 2021-02-01: -4.04% over 90 days, -3.00% over 30 days",
+     "text": "1 GBP = 1531.98 KRW on 2021-02-01 (was 1470.14 on 2020-11-03)."
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "GBP/KRW ECB reference rates 2020-11-03 to 2021-02-01: -4.04% over 90 days, -3.00% over 30 days",
+    "aliases": [
+     "GBP/KRW ECB reference rates 2020-11-03 to 2021-02-01: -4.04% over 90 days, -3.00% over 30 days"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_48",
+   "seq": 48,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_b72531153ac2ff83",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "South Korea",
+    "aliases": [
+     "South Korea"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_49",
+   "seq": 49,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_902b957088fef5d2",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+    "type": "mentions",
+    "to": "ent_b72531153ac2ff83",
+    "validFrom": "2021-02-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_50",
+   "seq": 50,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_c00bc7307517fd10",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "GangaHBM-8H Memory Stack",
+    "aliases": [
+     "GangaHBM-8H Memory Stack"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_51",
+   "seq": 51,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_c094b70aab9fc68f",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+    "type": "mentions",
+    "to": "ent_c00bc7307517fd10",
+    "validFrom": "2021-02-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_52",
+   "seq": 52,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_002d27bef27c9711",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00",
+    "updatedAt": "2021-02-01T00:00:00+00:00",
+    "name": "Frankfurter (ECB reference rates)",
+    "aliases": [
+     "Frankfurter (ECB reference rates)"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_53",
+   "seq": 53,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_8da4a657a5aeb7c1",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+    "type": "mentions",
+    "to": "ent_002d27bef27c9711",
+    "validFrom": "2021-02-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+     "runId": "bt-B1-605a6c57",
+     "at": "2021-02-01T00:00:00+00:00"
+    },
+    "createdAt": "2021-02-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2021-02-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_54",
+   "seq": 54,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:bt-B1-605a6c57-D2-a1",
+    "attrs": {
+     "claim_id": "D2",
+     "claim": "A 1.90–2.05% decline in the supplier's currency relative to the pound would lower Ganga's cost for this part by a comparable amount if the move passes through fully.",
+     "part_id": "P006",
+     "part_name": "GangaCool Direct-to-Chip Loop",
+     "supplier_country": "Germany",
+     "direction": "cost_down",
+     "pct_low": 1.9,
+     "pct_high": 2.05,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR"
+     ],
+     "reasoning": "Since the part is sourced from Germany, a sustained shift in the supplier's currency against the pound reduces the GBP outlay needed for the same invoice, delivering the estimated cost decrease within the 1.9–2.05% range.",
+     "attempt": 1,
+     "analyst": "currency",
+     "computed": {
+      "currency": "EUR",
+      "move_30d_pct": -1.9,
+      "move_90d_pct": -2.05,
+      "start_date": "2020-11-03",
+      "end_date": "2021-02-01",
+      "start_rate": 1.1106,
+      "end_rate": 1.1338,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "D2"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:48:56.322Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:56.322Z",
+    "updatedAt": "2026-10-23T16:48:56.322Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:56.322Z"
+  },
+  {
+   "id": "evt_55",
+   "seq": 55,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_634a9e3a2cd43813",
+    "from": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "type": "produced",
+    "to": "claim:vidhur:bt-B1-605a6c57-D2-a1",
+    "context": "claim:vidhur:bt-B1-605a6c57-D2-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:56.343Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:48:56.343Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:56.343Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:56.343Z"
+  },
+  {
+   "id": "evt_56",
+   "seq": 56,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_7af4f30b167fea86",
+    "about": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:bt-B1-605a6c57-D2-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:48:56.364Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "assertedAt": "2026-10-23T16:48:56.364Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:56.364Z"
+  },
+  {
+   "id": "evt_57",
+   "seq": 57,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:bt-B1-605a6c57-D2-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "TOO_FEW_SOURCES: Only 1 source cited; at least 2 independent sources are required."
+     ],
+     "independent_sources": 1,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:bt-B1-605a6c57-D2-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:48:56.387Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:56.387Z",
+    "updatedAt": "2026-10-23T16:48:56.387Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:56.387Z"
+  },
+  {
+   "id": "evt_58",
+   "seq": 58,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_629d612517520a97",
+    "from": "claim:vidhur:bt-B1-605a6c57-D2-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:bt-B1-605a6c57-D2-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:56.410Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:48:56.410Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:56.410Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:56.410Z"
+  },
+  {
+   "id": "evt_59",
+   "seq": 59,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:bt-B1-605a6c57-D4-a1",
+    "attrs": {
+     "claim_id": "D4",
+     "claim": "The KRW has depreciated 3.00% against GBP over the past 30 days and 4.04% over the past 90 days, reducing the GBP cost of the South Korean-sourced part by 3.0–4.04% if the move passes through fully.",
+     "part_id": "P002",
+     "part_name": "GangaHBM-8H Memory Stack",
+     "supplier_country": "South Korea",
+     "direction": "cost_down",
+     "pct_low": 3.0,
+     "pct_high": 4.04,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW"
+     ],
+     "reasoning": "With full pass-through, this depreciation directly reduces Ganga's pound-denominated expenditure for the part. The cost reduction therefore falls within the 3.0–4.04% range.",
+     "attempt": 1,
+     "analyst": "currency",
+     "computed": {
+      "currency": "KRW",
+      "move_30d_pct": -3.0,
+      "move_90d_pct": -4.04,
+      "start_date": "2020-11-03",
+      "end_date": "2021-02-01",
+      "start_rate": 1470.14,
+      "end_rate": 1531.98,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "D4"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:48:58.112Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:58.112Z",
+    "updatedAt": "2026-10-23T16:48:58.112Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:58.112Z"
+  },
+  {
+   "id": "evt_60",
+   "seq": 60,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_0a1878a5193ca3a0",
+    "from": "delegation:vidhur:bt-B1-605a6c57-D4",
+    "type": "produced",
+    "to": "claim:vidhur:bt-B1-605a6c57-D4-a1",
+    "context": "claim:vidhur:bt-B1-605a6c57-D4-a1",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:58.137Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:48:58.137Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:58.137Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:58.137Z"
+  },
+  {
+   "id": "evt_61",
+   "seq": 61,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_1b71df2625770c7e",
+    "about": "delegation:vidhur:bt-B1-605a6c57-D4",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:bt-B1-605a6c57-D4-a1",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:48:58.151Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "assertedAt": "2026-10-23T16:48:58.151Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:58.151Z"
+  },
+  {
+   "id": "evt_62",
+   "seq": 62,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:bt-B1-605a6c57-D4-a1",
+    "attrs": {
+     "verdict": "SEND_BACK",
+     "reasons": [
+      "TOO_FEW_SOURCES: Only 1 source cited; at least 2 independent sources are required."
+     ],
+     "independent_sources": 1,
+     "strength": "",
+     "llm_checked": false,
+     "retry_count": 0,
+     "claim": "claim:vidhur:bt-B1-605a6c57-D4-a1"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:48:58.173Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:58.173Z",
+    "updatedAt": "2026-10-23T16:48:58.173Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:58.173Z"
+  },
+  {
+   "id": "evt_63",
+   "seq": 63,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_917bf6a67c6df622",
+    "from": "claim:vidhur:bt-B1-605a6c57-D4-a1",
+    "type": "audited-by",
+    "to": "verdict:vidhur:bt-B1-605a6c57-D4-a1",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:48:58.190Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:48:58.190Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:48:58.190Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:48:58.190Z"
+  },
+  {
+   "id": "evt_64",
+   "seq": 64,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "claim",
+    "id": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+    "attrs": {
+     "claim_id": "D2",
+     "claim": "The euro's 1.90–2.05% depreciation against the pound over the past 30–90 days would lower Ganga's GBP cost for the Germany-sourced part by a comparable amount if the pricing move passes through fully.",
+     "part_id": "P006",
+     "part_name": "GangaCool Direct-to-Chip Loop",
+     "supplier_country": "Germany",
+     "direction": "cost_down",
+     "pct_low": 1.9,
+     "pct_high": 2.05,
+     "source_urls": [
+      "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+      "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+      "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html"
+     ],
+     "reasoning": "ECB reference rates show 1 EUR declined 1.90% over 30 days and 2.05% over 90 days versus the pound, moving from 1.1106 to 1.1338. Since Ganga spent GBP 208,396 on the part from Germany in 2020-Q4, a full pass-through of this currency move would reduce the GBP outlay by 1.9–2.05%.",
+     "attempt": 2,
+     "analyst": "currency",
+     "computed": {
+      "currency": "EUR",
+      "move_30d_pct": -1.9,
+      "move_90d_pct": -2.05,
+      "start_date": "2020-11-03",
+      "end_date": "2021-02-01",
+      "start_rate": 1.1106,
+      "end_rate": 1.1338,
+      "pass_through": "100% (upper bound)"
+     },
+     "work_id": "D2"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:50:04.700Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:50:04.700Z",
+    "updatedAt": "2026-10-23T16:50:04.700Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:50:04.700Z"
+  },
+  {
+   "id": "evt_65",
+   "seq": 65,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_7b10851d6547c17a",
+    "from": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "type": "produced",
+    "to": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+    "context": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:50:04.721Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:50:04.721Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:50:04.721Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:50:04.721Z"
+  },
+  {
+   "id": "evt_66",
+   "seq": 66,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_4422279739ed751a",
+    "from": "claim:vidhur:bt-B1-605a6c57-D2-a1",
+    "type": "revised-into",
+    "to": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:50:04.743Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:50:04.743Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:50:04.743Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:50:04.743Z"
+  },
+  {
+   "id": "evt_67",
+   "seq": 67,
+   "kind": "assertFact",
+   "payload": {
+    "id": "fact_cbdf4e3c9f5fce5a",
+    "about": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "predicate": "latest_claim",
+    "value": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+    "confidence": 0.5,
+    "context": null,
+    "source": {
+     "kind": "agent",
+     "by": "currency",
+     "at": "2026-10-23T16:50:04.768Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "assertedAt": "2026-10-23T16:50:04.768Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:50:04.768Z"
+  },
+  {
+   "id": "evt_68",
+   "seq": 68,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "verdict",
+    "id": "verdict:vidhur:bt-B1-605a6c57-D2-a2",
+    "attrs": {
+     "verdict": "PASS",
+     "reasons": [
+      "S1 directly confirms the exact ECB reference rate moves (–1.90% over 30 days, –2.05% over 90 days for GBP/EUR) that the claim relies on, and the direction correctly implies lower GBP cost for a EUR-denominated German part. S2 and S3 are neutral and do not contradict the rate data or the claim."
+     ],
+     "independent_sources": 2,
+     "strength": "strong",
+     "llm_checked": true,
+     "retry_count": 1,
+     "claim": "claim:vidhur:bt-B1-605a6c57-D2-a2"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:50:58.405Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:50:58.405Z",
+    "updatedAt": "2026-10-23T16:50:58.405Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:50:58.405Z"
+  },
+  {
+   "id": "evt_69",
+   "seq": 69,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_ab552a5e147dca06",
+    "from": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+    "type": "audited-by",
+    "to": "verdict:vidhur:bt-B1-605a6c57-D2-a2",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:50:58.426Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:50:58.426Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:50:58.426Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:50:58.426Z"
+  },
+  {
+   "id": "evt_70",
+   "seq": 70,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D2",
+    "attrs": {
+     "status": "PASS",
+     "retries": 1
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "evaluator",
+     "at": "2026-10-23T16:50:58.455Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:50:58.455Z",
+    "updatedAt": "2026-10-23T16:50:58.455Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:50:58.455Z"
+  },
+  {
+   "id": "evt_71",
+   "seq": 71,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "impact",
+    "id": "impact:vidhur:bt-B1-605a6c57-D2",
+    "attrs": {
+     "baseline_quarterly_spend_gbp": 208395.8,
+     "worst_gbp": -3959.52,
+     "likely_gbp": -4115.82,
+     "best_gbp": -4272.11,
+     "pct_low": 1.9,
+     "pct_high": 2.05,
+     "direction": "cost_down",
+     "confidence": "Low",
+     "quarter": "2020-Q4",
+     "claim": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+     "work_id": "D2"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "impact",
+     "at": "2026-10-23T16:51:01.067Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:51:01.067Z",
+    "updatedAt": "2026-10-23T16:51:01.067Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:51:01.067Z"
+  },
+  {
+   "id": "evt_72",
+   "seq": 72,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_c16b3ac7600a6aea",
+    "from": "claim:vidhur:bt-B1-605a6c57-D2-a2",
+    "type": "has-impact",
+    "to": "impact:vidhur:bt-B1-605a6c57-D2",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:51:01.095Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "impact",
+     "at": "2026-10-23T16:51:01.095Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:51:01.095Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:51:01.095Z"
+  },
+  {
+   "id": "evt_73",
+   "seq": 73,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D4",
+    "attrs": {
+     "status": "NOT_ASSESSED",
+     "error": "InternalServerError: Error code: 502 - {'error': {'message': 'Meterless provider request failed.', 'type': 'api_error', 'code': 'provider_error', 'param': None, 'meterless_detail': 'provider_deadline'}, 'meterless': {'req"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "main",
+     "at": "2026-10-23T16:56:46.387Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:56:46.387Z",
+    "updatedAt": "2026-10-23T16:56:46.387Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:56:46.387Z"
+  },
+  {
+   "id": "evt_74",
+   "seq": 74,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "review",
+    "id": "review:vidhur:bt-B1-605a6c57-review",
+    "attrs": {
+     "redelegate": true,
+     "part_id": "P001",
+     "analyst": "currency",
+     "reason": "P001 is the highest-spend part (GBP 400,471) with no verified claim; geopolitics analyst found no supported development, but currency risk has not been specifically assessed for this part. A currency analyst attempt maximizes risk insight return before the final re-delegate.",
+     "work_id": "D9"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:57:18.200Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:57:18.200Z",
+    "updatedAt": "2026-10-23T16:57:18.200Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:57:18.200Z"
+  },
+  {
+   "id": "evt_75",
+   "seq": 75,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_decb391f5992836f",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "reviewed-as",
+    "to": "review:vidhur:bt-B1-605a6c57-review",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T16:57:18.225Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:57:18.225Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:57:18.225Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:57:18.225Z"
+  },
+  {
+   "id": "evt_76",
+   "seq": 76,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D9",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P001",
+     "work_id": "D9",
+     "reason": "P001 is the highest-spend part (GBP 400,471) with no verified claim; geopolitics analyst found no supported development, but currency risk has not been specifically assessed for this part. A currency analyst attempt maximizes risk insight return before the final re-delegate.",
+     "redelegation": true,
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:57:18.235Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:57:18.235Z",
+    "updatedAt": "2026-10-23T16:57:18.235Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:57:18.235Z"
+  },
+  {
+   "id": "evt_77",
+   "seq": 77,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_7977523525bab313",
+    "from": "plan:vidhur:bt-B1-605a6c57-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B1-605a6c57-D9",
+    "context": "delegation:vidhur:bt-B1-605a6c57-D9",
+    "attrs": null,
+    "validFrom": "2026-10-23T16:57:18.258Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T16:57:18.258Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:57:18.258Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:57:18.258Z"
+  },
+  {
+   "id": "evt_78",
+   "seq": 78,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D9",
+    "attrs": {
+     "status": "running"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:57:18.288Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:57:18.288Z",
+    "updatedAt": "2026-10-23T16:57:18.288Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:57:18.288Z"
+  },
+  {
+   "id": "evt_79",
+   "seq": 79,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B1-605a6c57-D9",
+    "attrs": {
+     "status": "NO_CLAIM",
+     "note": "TWD: TWD is not published by the ECB / Frankfurter"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T16:57:18.316Z",
+     "runId": "bt-B1-605a6c57"
+    },
+    "createdAt": "2026-10-23T16:57:18.316Z",
+    "updatedAt": "2026-10-23T16:57:18.316Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T16:57:18.316Z"
+  }
+ ],
+ "audit": [
+  {
+   "seq": 1,
+   "at": "2026-10-23T16:47:22.876Z",
+   "kind": "upsertEntity",
+   "actor": "main",
+   "summary": "run:vidhur:bt-B1-605a6c57-run (run)",
+   "eventId": "evt_1",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 2,
+   "at": "2026-10-23T16:48:09.942Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan (plan)",
+   "eventId": "evt_2",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 3,
+   "at": "2026-10-23T16:48:09.950Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "run:vidhur:bt-B1-605a6c57-run -[has-plan]-> plan:vidhur:bt-B1-605a6c57-plan",
+   "eventId": "evt_3",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 4,
+   "at": "2026-10-23T16:48:09.964Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D1 (delegation)",
+   "eventId": "evt_4",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 5,
+   "at": "2026-10-23T16:48:09.976Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[delegates]-> delegation:vidhur:bt-B1-605a6c57-D1",
+   "eventId": "evt_5",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 6,
+   "at": "2026-10-23T16:48:09.987Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D2 (delegation)",
+   "eventId": "evt_6",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 7,
+   "at": "2026-10-23T16:48:10.002Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[delegates]-> delegation:vidhur:bt-B1-605a6c57-D2",
+   "eventId": "evt_7",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 8,
+   "at": "2026-10-23T16:48:10.011Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D3 (delegation)",
+   "eventId": "evt_8",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 9,
+   "at": "2026-10-23T16:48:10.026Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[delegates]-> delegation:vidhur:bt-B1-605a6c57-D3",
+   "eventId": "evt_9",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 10,
+   "at": "2026-10-23T16:48:10.036Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D4 (delegation)",
+   "eventId": "evt_10",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 11,
+   "at": "2026-10-23T16:48:10.049Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[delegates]-> delegation:vidhur:bt-B1-605a6c57-D4",
+   "eventId": "evt_11",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 12,
+   "at": "2026-10-23T16:48:10.063Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-S1 (delegation)",
+   "eventId": "evt_12",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 13,
+   "at": "2026-10-23T16:48:10.074Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[skips]-> delegation:vidhur:bt-B1-605a6c57-S1",
+   "eventId": "evt_13",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 14,
+   "at": "2026-10-23T16:48:10.096Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-S2 (delegation)",
+   "eventId": "evt_14",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 15,
+   "at": "2026-10-23T16:48:10.109Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[skips]-> delegation:vidhur:bt-B1-605a6c57-S2",
+   "eventId": "evt_15",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 16,
+   "at": "2026-10-23T16:48:10.122Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-S3 (delegation)",
+   "eventId": "evt_16",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 17,
+   "at": "2026-10-23T16:48:10.142Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[skips]-> delegation:vidhur:bt-B1-605a6c57-S3",
+   "eventId": "evt_17",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 18,
+   "at": "2026-10-23T16:48:10.158Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-S4 (delegation)",
+   "eventId": "evt_18",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 19,
+   "at": "2026-10-23T16:48:10.172Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[skips]-> delegation:vidhur:bt-B1-605a6c57-S4",
+   "eventId": "evt_19",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 20,
+   "at": "2026-10-23T16:48:10.195Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D1 (delegation)",
+   "eventId": "evt_20",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 21,
+   "at": "2026-10-23T16:48:10.196Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D2 (delegation)",
+   "eventId": "evt_21",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 22,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html (article)",
+   "eventId": "evt_22",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 23,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_23",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 24,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_25",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 25,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_4f358fd513c4b44e (publisher)",
+   "eventId": "evt_27",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 26,
+   "at": "2021-01-25T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html (article)",
+   "eventId": "evt_29",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 27,
+   "at": "2021-01-25T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_30",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 28,
+   "at": "2021-01-25T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_32",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 29,
+   "at": "2021-01-25T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_4f358fd513c4b44e (publisher)",
+   "eventId": "evt_34",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 30,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_3f069b7f66a4: 2 processed, 0 skipped",
+   "eventId": null,
+   "runId": "run_3f069b7f66a4"
+  },
+  {
+   "seq": 31,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR (article)",
+   "eventId": "evt_36",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 32,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_158170c7ace17e06 (country)",
+   "eventId": "evt_37",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 33,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_bea80219b3e91e33 (part)",
+   "eventId": "evt_39",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 34,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_002d27bef27c9711 (publisher)",
+   "eventId": "evt_41",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 35,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_7dca8ac1d4a8: 1 processed, 0 skipped",
+   "eventId": null,
+   "runId": "run_7dca8ac1d4a8"
+  },
+  {
+   "seq": 36,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_3f069b7f66a4: 0 processed, 2 skipped",
+   "eventId": null,
+   "runId": "run_3f069b7f66a4"
+  },
+  {
+   "seq": 37,
+   "at": "2026-10-23T16:48:27.038Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D1 (delegation)",
+   "eventId": "evt_43",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 38,
+   "at": "2026-10-23T16:48:27.058Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D3 (delegation)",
+   "eventId": "evt_44",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 39,
+   "at": "2026-10-23T16:48:28.391Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D3 (delegation)",
+   "eventId": "evt_45",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 40,
+   "at": "2026-10-23T16:48:28.412Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D4 (delegation)",
+   "eventId": "evt_46",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 41,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW (article)",
+   "eventId": "evt_47",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 42,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_b72531153ac2ff83 (country)",
+   "eventId": "evt_48",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 43,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_c00bc7307517fd10 (part)",
+   "eventId": "evt_50",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 44,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_002d27bef27c9711 (publisher)",
+   "eventId": "evt_52",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 45,
+   "at": "2021-02-01T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_f1dae3cc288b: 1 processed, 0 skipped",
+   "eventId": null,
+   "runId": "run_f1dae3cc288b"
+  },
+  {
+   "seq": 46,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_3f069b7f66a4: 0 processed, 2 skipped",
+   "eventId": null,
+   "runId": "run_3f069b7f66a4"
+  },
+  {
+   "seq": 47,
+   "at": "2026-10-23T16:48:56.322Z",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D2-a1 (claim)",
+   "eventId": "evt_54",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 48,
+   "at": "2026-10-23T16:48:56.343Z",
+   "kind": "relate",
+   "actor": "currency",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D2 -[produced]-> claim:vidhur:bt-B1-605a6c57-D2-a1",
+   "eventId": "evt_55",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 49,
+   "at": "2026-10-23T16:48:56.364Z",
+   "kind": "assertFact",
+   "actor": "currency",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D2.latest_claim = \"claim:vidhur:bt-B1-605a6c57-D2-a1\" (most-recent-wins)",
+   "eventId": "evt_56",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 50,
+   "at": "2026-10-23T16:48:56.387Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:bt-B1-605a6c57-D2-a1 (verdict)",
+   "eventId": "evt_57",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 51,
+   "at": "2026-10-23T16:48:56.410Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D2-a1 -[audited-by]-> verdict:vidhur:bt-B1-605a6c57-D2-a1",
+   "eventId": "evt_58",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 52,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_3f069b7f66a4: 0 processed, 2 skipped",
+   "eventId": null,
+   "runId": "run_3f069b7f66a4"
+  },
+  {
+   "seq": 53,
+   "at": "2026-10-23T16:48:58.112Z",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D4-a1 (claim)",
+   "eventId": "evt_59",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 54,
+   "at": "2026-10-23T16:48:58.137Z",
+   "kind": "relate",
+   "actor": "currency",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D4 -[produced]-> claim:vidhur:bt-B1-605a6c57-D4-a1",
+   "eventId": "evt_60",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 55,
+   "at": "2026-10-23T16:48:58.151Z",
+   "kind": "assertFact",
+   "actor": "currency",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D4.latest_claim = \"claim:vidhur:bt-B1-605a6c57-D4-a1\" (most-recent-wins)",
+   "eventId": "evt_61",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 56,
+   "at": "2026-10-23T16:48:58.173Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:bt-B1-605a6c57-D4-a1 (verdict)",
+   "eventId": "evt_62",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 57,
+   "at": "2026-10-23T16:48:58.190Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D4-a1 -[audited-by]-> verdict:vidhur:bt-B1-605a6c57-D4-a1",
+   "eventId": "evt_63",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 58,
+   "at": "2021-01-27T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_3f069b7f66a4: 0 processed, 2 skipped",
+   "eventId": null,
+   "runId": "run_3f069b7f66a4"
+  },
+  {
+   "seq": 59,
+   "at": "2026-10-23T16:50:04.700Z",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D2-a2 (claim)",
+   "eventId": "evt_64",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 60,
+   "at": "2026-10-23T16:50:04.721Z",
+   "kind": "relate",
+   "actor": "currency",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D2 -[produced]-> claim:vidhur:bt-B1-605a6c57-D2-a2",
+   "eventId": "evt_65",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 61,
+   "at": "2026-10-23T16:50:04.743Z",
+   "kind": "relate",
+   "actor": "currency",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D2-a1 -[revised-into]-> claim:vidhur:bt-B1-605a6c57-D2-a2",
+   "eventId": "evt_66",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 62,
+   "at": "2026-10-23T16:50:04.768Z",
+   "kind": "assertFact",
+   "actor": "currency",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D2.latest_claim = \"claim:vidhur:bt-B1-605a6c57-D2-a2\" (most-recent-wins)",
+   "eventId": "evt_67",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 63,
+   "at": "2026-10-23T16:50:58.405Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "verdict:vidhur:bt-B1-605a6c57-D2-a2 (verdict)",
+   "eventId": "evt_68",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 64,
+   "at": "2026-10-23T16:50:58.426Z",
+   "kind": "relate",
+   "actor": "evaluator",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D2-a2 -[audited-by]-> verdict:vidhur:bt-B1-605a6c57-D2-a2",
+   "eventId": "evt_69",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 65,
+   "at": "2026-10-23T16:50:58.455Z",
+   "kind": "upsertEntity",
+   "actor": "evaluator",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D2 (delegation)",
+   "eventId": "evt_70",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 66,
+   "at": "2026-10-23T16:51:01.067Z",
+   "kind": "upsertEntity",
+   "actor": "impact",
+   "summary": "impact:vidhur:bt-B1-605a6c57-D2 (impact)",
+   "eventId": "evt_71",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 67,
+   "at": "2026-10-23T16:51:01.095Z",
+   "kind": "relate",
+   "actor": "impact",
+   "summary": "claim:vidhur:bt-B1-605a6c57-D2-a2 -[has-impact]-> impact:vidhur:bt-B1-605a6c57-D2",
+   "eventId": "evt_72",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 68,
+   "at": "2026-10-23T16:56:46.387Z",
+   "kind": "upsertEntity",
+   "actor": "main",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D4 (delegation)",
+   "eventId": "evt_73",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 69,
+   "at": "2026-10-23T16:57:18.200Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "review:vidhur:bt-B1-605a6c57-review (review)",
+   "eventId": "evt_74",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 70,
+   "at": "2026-10-23T16:57:18.225Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[reviewed-as]-> review:vidhur:bt-B1-605a6c57-review",
+   "eventId": "evt_75",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 71,
+   "at": "2026-10-23T16:57:18.235Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D9 (delegation)",
+   "eventId": "evt_76",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 72,
+   "at": "2026-10-23T16:57:18.258Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B1-605a6c57-plan -[delegates]-> delegation:vidhur:bt-B1-605a6c57-D9",
+   "eventId": "evt_77",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 73,
+   "at": "2026-10-23T16:57:18.288Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D9 (delegation)",
+   "eventId": "evt_78",
+   "runId": "bt-B1-605a6c57"
+  },
+  {
+   "seq": 74,
+   "at": "2026-10-23T16:57:18.316Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B1-605a6c57-D9 (delegation)",
+   "eventId": "evt_79",
+   "runId": "bt-B1-605a6c57"
+  }
+ ],
+ "observations": [
+  [
+   "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+   {
+    "id": "obs_e9c555fade6a",
+    "externalId": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+    "entityId": "article:ingest:https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+    "checksum": "e2f87d575da46c4379ee9b5145778d276eaaae6ce52dcaf426c54a6b4f50466c",
+    "at": "2021-01-27T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_3f069b7f66a4"
+   }
+  ],
+  [
+   "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+   {
+    "id": "obs_27695ebc0ed2",
+    "externalId": "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+    "entityId": "article:ingest:https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html",
+    "checksum": "1fe834d796e120e31ef0b60adf48c1761cecf84a4cb935554ca962f1db11ad27",
+    "at": "2021-01-25T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_3f069b7f66a4"
+   }
+  ],
+  [
+   "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+   {
+    "id": "obs_ad338330a5cc",
+    "externalId": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+    "entityId": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+    "checksum": "c82b15ec3fbb7d49e9aa165b83c530e71dc8c43cbfa4c2552e5df04957208217",
+    "at": "2021-02-01T00:00:00+00:00",
+    "entityIds": [
+     "ent_002d27bef27c9711",
+     "ent_158170c7ace17e06",
+     "ent_bea80219b3e91e33"
+    ],
+    "stale": false,
+    "storyId": "story_7dca8ac1d4a8"
+   }
+  ],
+  [
+   "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+   {
+    "id": "obs_f83e220ef73e",
+    "externalId": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+    "entityId": "article:ingest:https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+    "checksum": "a8017ea2a066f0671f9b079006cf74d76b360910e85b03638d62570c35763308",
+    "at": "2021-02-01T00:00:00+00:00",
+    "entityIds": [
+     "ent_002d27bef27c9711",
+     "ent_b72531153ac2ff83",
+     "ent_c00bc7307517fd10"
+    ],
+    "stale": false,
+    "storyId": "story_f1dae3cc288b"
+   }
+  ]
+ ],
+ "stories": [
+  [
+   "story_3f069b7f66a4",
+   {
+    "id": "story_3f069b7f66a4",
+    "title": "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+    "memberIds": [
+     "https://www.cnbc.com/2021/01/27/chipmakers-will-take-quarters-to-catch-up-with-auto-sector-demand-credit-suisse.html",
+     "https://www.cnbc.com/amp/2021/01/25/taiwan-ministry-says-tsmc-will-prioritize-auto-chips-if-possible.html"
+    ],
+    "entityNames": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "sources": [],
+    "firstAt": "2021-01-25T00:00:00.000Z",
+    "lastAt": "2021-01-27T00:00:00.000Z",
+    "milestones": [
+     {
+      "kind": "multi-source",
+      "at": "2021-01-27T00:00:00.000Z"
+     }
+    ]
+   }
+  ],
+  [
+   "story_7dca8ac1d4a8",
+   {
+    "id": "story_7dca8ac1d4a8",
+    "title": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR",
+    "memberIds": [
+     "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=EUR"
+    ],
+    "entityNames": [
+     "ent_002d27bef27c9711",
+     "ent_158170c7ace17e06",
+     "ent_bea80219b3e91e33"
+    ],
+    "entityIds": [
+     "ent_002d27bef27c9711",
+     "ent_158170c7ace17e06",
+     "ent_bea80219b3e91e33"
+    ],
+    "sources": [],
+    "firstAt": "2021-02-01T00:00:00.000Z",
+    "lastAt": "2021-02-01T00:00:00.000Z",
+    "milestones": []
+   }
+  ],
+  [
+   "story_f1dae3cc288b",
+   {
+    "id": "story_f1dae3cc288b",
+    "title": "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW",
+    "memberIds": [
+     "https://api.frankfurter.dev/v1/2020-11-03..2021-02-01?base=GBP&symbols=KRW"
+    ],
+    "entityNames": [
+     "ent_002d27bef27c9711",
+     "ent_b72531153ac2ff83",
+     "ent_c00bc7307517fd10"
+    ],
+    "entityIds": [
+     "ent_002d27bef27c9711",
+     "ent_b72531153ac2ff83",
+     "ent_c00bc7307517fd10"
+    ],
+    "sources": [],
+    "firstAt": "2021-02-01T00:00:00.000Z",
+    "lastAt": "2021-02-01T00:00:00.000Z",
+    "milestones": []
+   }
+  ]
+ ],
+ "scores": [
+  {
+   "storyId": "story_7dca8ac1d4a8",
+   "at": "2021-02-01T00:00:00.000Z",
+   "velocity1h": 1.0,
+   "velocity24h": 0.041666666666666664,
+   "velocity7d": 0.005952380952380952,
+   "trendDirection": 1
+  },
+  {
+   "storyId": "story_f1dae3cc288b",
+   "at": "2021-02-01T00:00:00.000Z",
+   "velocity1h": 1.0,
+   "velocity24h": 0.041666666666666664,
+   "velocity7d": 0.005952380952380952,
+   "trendDirection": 1
+  },
+  {
+   "storyId": "story_3f069b7f66a4",
+   "at": "2021-01-27T00:00:00.000Z",
+   "velocity1h": 1.0,
+   "velocity24h": 0.041666666666666664,
+   "velocity7d": 0.011904761904761904,
+   "trendDirection": 1
+  }
+ ],
+ "mergeQueue": []
+}

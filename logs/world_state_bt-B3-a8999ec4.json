@@ -1,0 +1,2793 @@
+{
+ "events": [
+  {
+   "id": "evt_1",
+   "seq": 1,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "run",
+    "id": "run:vidhur:bt-B3-a8999ec4-run",
+    "attrs": {
+     "status": "running",
+     "run_id": "a8999ec4",
+     "backtest_case": "B3",
+     "as_of": "2022-09-23"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "main",
+     "at": "2026-10-23T17:56:59.383Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T17:56:59.383Z",
+    "updatedAt": "2026-10-23T17:56:59.383Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T17:56:59.383Z"
+  },
+  {
+   "id": "evt_2",
+   "seq": 2,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "plan",
+    "id": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "attrs": {
+     "summary": "Prioritize geopolitical risk on the Taiwan‑sourced GPU chip and currency moves on German, Japanese, and South Korean components to protect the largest cost exposures.",
+     "fallback": false,
+     "targets": [
+      {
+       "part_id": "P001",
+       "country": "Taiwan",
+       "spend": 1057350.0
+      },
+      {
+       "part_id": "P006",
+       "country": "Germany",
+       "spend": 247041.48
+      },
+      {
+       "part_id": "P007",
+       "country": "China",
+       "spend": 122232.6
+      },
+      {
+       "part_id": "P003",
+       "country": "Japan",
+       "spend": 103973.28
+      },
+      {
+       "part_id": "P002",
+       "country": "South Korea",
+       "spend": 96746.38
+      },
+      {
+       "part_id": "P004",
+       "country": "China",
+       "spend": 68610.37
+      },
+      {
+       "part_id": "P005",
+       "country": "China",
+       "spend": 62156.46
+      },
+      {
+       "part_id": "P008",
+       "country": "Malaysia",
+       "spend": 57688.24
+      }
+     ]
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.219Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.219Z",
+    "updatedAt": "2026-10-23T18:20:06.219Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.219Z"
+  },
+  {
+   "id": "evt_3",
+   "seq": 3,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_13d53c96899b2a98",
+    "from": "run:vidhur:bt-B3-a8999ec4-run",
+    "type": "has-plan",
+    "to": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "context": null,
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.238Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.238Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.238Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.238Z"
+  },
+  {
+   "id": "evt_4",
+   "seq": 4,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-D1",
+    "attrs": {
+     "analyst": "geopolitics",
+     "part_id": "P001",
+     "reason": "P001 accounts for 58% of spend (GBP 1,057,350) from Taiwan; recent headlines on the U.S. and allies joining forces on chips and Taiwan export controls raise compliance‑cost risk, so a geopolitics analyst can estimate the % cost change.",
+     "work_id": "D1",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.260Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.260Z",
+    "updatedAt": "2026-10-23T18:20:06.260Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.260Z"
+  },
+  {
+   "id": "evt_5",
+   "seq": 5,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_a9c3324c1043d8bb",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-D1",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-D1",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.281Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.281Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.281Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.281Z"
+  },
+  {
+   "id": "evt_6",
+   "seq": 6,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-D2",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P006",
+     "reason": "P006 is 14% of spend (GBP 247,041) from Germany; EUR/GBP FX data is available from the ECB, and the headline BoE 50‑bp hike plus UK recession risk drives currency‑move cost impact.",
+     "work_id": "D2",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.296Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.296Z",
+    "updatedAt": "2026-10-23T18:20:06.296Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.296Z"
+  },
+  {
+   "id": "evt_7",
+   "seq": 7,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_127b67e1b22aaebc",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-D2",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-D2",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.311Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.311Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.311Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.311Z"
+  },
+  {
+   "id": "evt_8",
+   "seq": 8,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-D3",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P003",
+     "reason": "P003 represents 6% of spend (GBP 103,973) from Japan; JPY/GBP FX data is ECB‑available, and the same macro‑headlines make JPY volatility relevant to part cost.",
+     "work_id": "D3",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.328Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.328Z",
+    "updatedAt": "2026-10-23T18:20:06.328Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.328Z"
+  },
+  {
+   "id": "evt_9",
+   "seq": 9,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_1b2e4ffefc6dc4d4",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-D3",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-D3",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.337Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.337Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.337Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.337Z"
+  },
+  {
+   "id": "evt_10",
+   "seq": 10,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-D4",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P002",
+     "reason": "P002 comprises 5% of spend (GBP 96,746) from South Korea; KRW/GBP FX data is ECB‑available, and the headline on U.S./ally chip controls adds risk that could affect part pricing.",
+     "work_id": "D4",
+     "action": "run",
+     "status": "planned"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.353Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.353Z",
+    "updatedAt": "2026-10-23T18:20:06.353Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.353Z"
+  },
+  {
+   "id": "evt_11",
+   "seq": 11,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_4705a62f7e6cd147",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "delegates",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-D4",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-D4",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.372Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.372Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.372Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.372Z"
+  },
+  {
+   "id": "evt_12",
+   "seq": 12,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-S1",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P004",
+     "reason": "P004 is only 4% of spend (GBP 68,610) from China; China‑related FX data exists but the part’s low spend does not warrant a dedicated delegation.",
+     "work_id": "S1",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.385Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.385Z",
+    "updatedAt": "2026-10-23T18:20:06.385Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.385Z"
+  },
+  {
+   "id": "evt_13",
+   "seq": 13,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_2cf523103dc6cd7a",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-S1",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-S1",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.399Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.399Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.399Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.399Z"
+  },
+  {
+   "id": "evt_14",
+   "seq": 14,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-S2",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P005",
+     "reason": "P005 is 3% of spend (GBP 62,156) from China; similar low‑spend argument as P004.",
+     "work_id": "S2",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.415Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.415Z",
+    "updatedAt": "2026-10-23T18:20:06.415Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.415Z"
+  },
+  {
+   "id": "evt_15",
+   "seq": 15,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_346f484d8d99612b",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-S2",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-S2",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.433Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.433Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.433Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.433Z"
+  },
+  {
+   "id": "evt_16",
+   "seq": 16,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-S3",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P007",
+     "reason": "P007 is 7% of spend (GBP 122,233) from China; although FX data is available, the part’s risk is already captured by the Taiwan‑focused geopolitics delegation, and spend is modest relative to P001.",
+     "work_id": "S3",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.446Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.446Z",
+    "updatedAt": "2026-10-23T18:20:06.446Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.446Z"
+  },
+  {
+   "id": "evt_17",
+   "seq": 17,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_3a1dcf708ca37721",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-S3",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-S3",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.462Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.462Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.462Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.462Z"
+  },
+  {
+   "id": "evt_18",
+   "seq": 18,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-S4",
+    "attrs": {
+     "analyst": "currency",
+     "part_id": "P008",
+     "reason": "P008 is 3% of spend (GBP 57,688) from Malaysia; MYR FX data is not guaranteed ECB‑covered, and the part’s low spend makes it a lower priority.",
+     "work_id": "S4",
+     "action": "skip",
+     "status": "skipped"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.480Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.480Z",
+    "updatedAt": "2026-10-23T18:20:06.480Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.480Z"
+  },
+  {
+   "id": "evt_19",
+   "seq": 19,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_b576f31f09e5d859",
+    "from": "plan:vidhur:bt-B3-a8999ec4-plan",
+    "type": "skips",
+    "to": "delegation:vidhur:bt-B3-a8999ec4-S4",
+    "context": "delegation:vidhur:bt-B3-a8999ec4-S4",
+    "attrs": null,
+    "validFrom": "2026-10-23T18:20:06.502Z",
+    "validTo": null,
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "planner",
+     "at": "2026-10-23T18:20:06.502Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.502Z"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.502Z"
+  },
+  {
+   "id": "evt_20",
+   "seq": 20,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-D1",
+    "attrs": {
+     "status": "running"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T18:20:06.525Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.525Z",
+    "updatedAt": "2026-10-23T18:20:06.525Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.525Z"
+  },
+  {
+   "id": "evt_21",
+   "seq": 21,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "delegation",
+    "id": "delegation:vidhur:bt-B3-a8999ec4-D2",
+    "attrs": {
+     "status": "running"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "workflow",
+     "at": "2026-10-23T18:20:06.526Z",
+     "runId": "bt-B3-a8999ec4"
+    },
+    "createdAt": "2026-10-23T18:20:06.526Z",
+    "updatedAt": "2026-10-23T18:20:06.526Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T18:20:06.526Z"
+  },
+  {
+   "id": "evt_22",
+   "seq": 22,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+    "attrs": {
+     "title": "Investors send U.K. pound careening to 37-year low as government plan to avert recession backfires",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "Investors send U.K. pound careening to 37-year low as government plan to avert recession backfires",
+    "aliases": [
+     "Investors send U.K. pound careening to 37-year low as government plan to avert recession backfires"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_23",
+   "seq": 23,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_24",
+   "seq": 24,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_828368ea55ac1eca",
+    "from": "article:ingest:https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2022-09-23T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_25",
+   "seq": 25,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_26",
+   "seq": 26,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_6ec807f62bdacfd7",
+    "from": "article:ingest:https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2022-09-23T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_27",
+   "seq": 27,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_6dbb77a860601a2d",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "Fortune",
+    "aliases": [
+     "Fortune"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_28",
+   "seq": 28,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_af4a3978bb89c983",
+    "from": "article:ingest:https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+    "type": "mentions",
+    "to": "ent_6dbb77a860601a2d",
+    "validFrom": "2022-09-23T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_29",
+   "seq": 29,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+    "attrs": {
+     "title": "Bank of England hikes by 50 basis points, says UK may already be in recession",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "Bank of England hikes by 50 basis points, says UK may already be in recession",
+    "aliases": [
+     "Bank of England hikes by 50 basis points, says UK may already be in recession"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_30",
+   "seq": 30,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_31",
+   "seq": 31,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_81434fb9f5facb8f",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2022-09-22T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_32",
+   "seq": 32,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_33",
+   "seq": 33,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_e9af6d6dbedaf3d4",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2022-09-22T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_34",
+   "seq": 34,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_4f358fd513c4b44e",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "CNBC",
+    "aliases": [
+     "CNBC"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_35",
+   "seq": 35,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_77e95b1fe771329d",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+    "type": "mentions",
+    "to": "ent_4f358fd513c4b44e",
+    "validFrom": "2022-09-22T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_36",
+   "seq": 36,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+    "attrs": {
+     "title": "The U.S. and its allies are joining forces on chips. That could stop China reaching the next level",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "The U.S. and its allies are joining forces on chips. That could stop China reaching the next level",
+    "aliases": [
+     "The U.S. and its allies are joining forces on chips. That could stop China reaching the next level"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_37",
+   "seq": 37,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_38",
+   "seq": 38,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_b92a70ab2266b7c8",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2022-09-22T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_39",
+   "seq": 39,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_40",
+   "seq": 40,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_047aaffc95aeea42",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2022-09-22T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_41",
+   "seq": 41,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_4f358fd513c4b44e",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00",
+    "updatedAt": "2022-09-22T00:00:00+00:00",
+    "name": "CNBC",
+    "aliases": [
+     "CNBC"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_42",
+   "seq": 42,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_d606298fb5053130",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+    "type": "mentions",
+    "to": "ent_4f358fd513c4b44e",
+    "validFrom": "2022-09-22T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-22T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-22T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-22T00:00:00+00:00"
+  },
+  {
+   "id": "evt_43",
+   "seq": 43,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+    "attrs": {
+     "title": "Bank of England faces pivotal policy decision with pound at multi-decade lows",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-21T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-21T00:00:00+00:00",
+    "updatedAt": "2022-09-21T00:00:00+00:00",
+    "name": "Bank of England faces pivotal policy decision with pound at multi-decade lows",
+    "aliases": [
+     "Bank of England faces pivotal policy decision with pound at multi-decade lows"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-21T00:00:00+00:00"
+  },
+  {
+   "id": "evt_44",
+   "seq": 44,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-21T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-21T00:00:00+00:00",
+    "updatedAt": "2022-09-21T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-21T00:00:00+00:00"
+  },
+  {
+   "id": "evt_45",
+   "seq": 45,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_77bb6bf390c5ec60",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2022-09-21T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-21T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-21T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-21T00:00:00+00:00"
+  },
+  {
+   "id": "evt_46",
+   "seq": 46,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-21T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-21T00:00:00+00:00",
+    "updatedAt": "2022-09-21T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-21T00:00:00+00:00"
+  },
+  {
+   "id": "evt_47",
+   "seq": 47,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_eeb6632059f13317",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2022-09-21T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-21T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-21T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-21T00:00:00+00:00"
+  },
+  {
+   "id": "evt_48",
+   "seq": 48,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_4f358fd513c4b44e",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-21T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-21T00:00:00+00:00",
+    "updatedAt": "2022-09-21T00:00:00+00:00",
+    "name": "CNBC",
+    "aliases": [
+     "CNBC"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-21T00:00:00+00:00"
+  },
+  {
+   "id": "evt_49",
+   "seq": 49,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_4564ba6e941d81d4",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+    "type": "mentions",
+    "to": "ent_4f358fd513c4b44e",
+    "validFrom": "2022-09-21T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-21T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-21T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-21T00:00:00+00:00"
+  },
+  {
+   "id": "evt_50",
+   "seq": 50,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+    "attrs": {
+     "title": "The pound just fell to its weakest level since 1985 against the U.S. dollar",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-07T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-07T00:00:00+00:00",
+    "updatedAt": "2022-09-07T00:00:00+00:00",
+    "name": "The pound just fell to its weakest level since 1985 against the U.S. dollar",
+    "aliases": [
+     "The pound just fell to its weakest level since 1985 against the U.S. dollar"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-07T00:00:00+00:00"
+  },
+  {
+   "id": "evt_51",
+   "seq": 51,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-07T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-07T00:00:00+00:00",
+    "updatedAt": "2022-09-07T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-07T00:00:00+00:00"
+  },
+  {
+   "id": "evt_52",
+   "seq": 52,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_5917382aff6d887d",
+    "from": "article:ingest:https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2022-09-07T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-07T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-07T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-07T00:00:00+00:00"
+  },
+  {
+   "id": "evt_53",
+   "seq": 53,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-07T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-07T00:00:00+00:00",
+    "updatedAt": "2022-09-07T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-07T00:00:00+00:00"
+  },
+  {
+   "id": "evt_54",
+   "seq": 54,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_8b08545b08643bb9",
+    "from": "article:ingest:https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2022-09-07T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-07T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-07T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-07T00:00:00+00:00"
+  },
+  {
+   "id": "evt_55",
+   "seq": 55,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_6dbb77a860601a2d",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-07T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-07T00:00:00+00:00",
+    "updatedAt": "2022-09-07T00:00:00+00:00",
+    "name": "Fortune",
+    "aliases": [
+     "Fortune"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-07T00:00:00+00:00"
+  },
+  {
+   "id": "evt_56",
+   "seq": 56,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_48c420eb8c137f0d",
+    "from": "article:ingest:https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+    "type": "mentions",
+    "to": "ent_6dbb77a860601a2d",
+    "validFrom": "2022-09-07T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-07T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-07T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-07T00:00:00+00:00"
+  },
+  {
+   "id": "evt_57",
+   "seq": 57,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+    "attrs": {
+     "title": "Nvidia says U.S. government allows A.I. chip development in China",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-01T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-01T00:00:00+00:00",
+    "updatedAt": "2022-09-01T00:00:00+00:00",
+    "name": "Nvidia says U.S. government allows A.I. chip development in China",
+    "aliases": [
+     "Nvidia says U.S. government allows A.I. chip development in China"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_58",
+   "seq": 58,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-01T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-01T00:00:00+00:00",
+    "updatedAt": "2022-09-01T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_59",
+   "seq": 59,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_55f72d3416b5cb46",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2022-09-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-01T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_60",
+   "seq": 60,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-01T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-01T00:00:00+00:00",
+    "updatedAt": "2022-09-01T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_61",
+   "seq": 61,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_38ffc33cbfe971c9",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2022-09-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-01T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_62",
+   "seq": 62,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_4f358fd513c4b44e",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-01T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-01T00:00:00+00:00",
+    "updatedAt": "2022-09-01T00:00:00+00:00",
+    "name": "CNBC",
+    "aliases": [
+     "CNBC"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_63",
+   "seq": 63,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_f7f6472b380a952f",
+    "from": "article:ingest:https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+    "type": "mentions",
+    "to": "ent_4f358fd513c4b44e",
+    "validFrom": "2022-09-01T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-01T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-01T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-01T00:00:00+00:00"
+  },
+  {
+   "id": "evt_64",
+   "seq": 64,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+    "attrs": {
+     "title": "Nvidia stock falls after U.S. government restricts chip sales to China",
+     "text": null
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-08-31T00:00:00+00:00"
+    },
+    "createdAt": "2022-08-31T00:00:00+00:00",
+    "updatedAt": "2022-08-31T00:00:00+00:00",
+    "name": "Nvidia stock falls after U.S. government restricts chip sales to China",
+    "aliases": [
+     "Nvidia stock falls after U.S. government restricts chip sales to China"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-08-31T00:00:00+00:00"
+  },
+  {
+   "id": "evt_65",
+   "seq": 65,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_20bb008eae618158",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-08-31T00:00:00+00:00"
+    },
+    "createdAt": "2022-08-31T00:00:00+00:00",
+    "updatedAt": "2022-08-31T00:00:00+00:00",
+    "name": "Taiwan",
+    "aliases": [
+     "Taiwan"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-08-31T00:00:00+00:00"
+  },
+  {
+   "id": "evt_66",
+   "seq": 66,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_96d25bf4187ae7b8",
+    "from": "article:ingest:https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+    "type": "mentions",
+    "to": "ent_20bb008eae618158",
+    "validFrom": "2022-08-31T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-08-31T00:00:00+00:00"
+    },
+    "createdAt": "2022-08-31T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-08-31T00:00:00+00:00"
+  },
+  {
+   "id": "evt_67",
+   "seq": 67,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_741d972207793822",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-08-31T00:00:00+00:00"
+    },
+    "createdAt": "2022-08-31T00:00:00+00:00",
+    "updatedAt": "2022-08-31T00:00:00+00:00",
+    "name": "GangaAccel GA100 GPU Chip",
+    "aliases": [
+     "GangaAccel GA100 GPU Chip"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-08-31T00:00:00+00:00"
+  },
+  {
+   "id": "evt_68",
+   "seq": 68,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_3b6f023acb42ab7a",
+    "from": "article:ingest:https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+    "type": "mentions",
+    "to": "ent_741d972207793822",
+    "validFrom": "2022-08-31T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-08-31T00:00:00+00:00"
+    },
+    "createdAt": "2022-08-31T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-08-31T00:00:00+00:00"
+  },
+  {
+   "id": "evt_69",
+   "seq": 69,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_4f358fd513c4b44e",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-08-31T00:00:00+00:00"
+    },
+    "createdAt": "2022-08-31T00:00:00+00:00",
+    "updatedAt": "2022-08-31T00:00:00+00:00",
+    "name": "CNBC",
+    "aliases": [
+     "CNBC"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-08-31T00:00:00+00:00"
+  },
+  {
+   "id": "evt_70",
+   "seq": 70,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_26ea2be80b056a1d",
+    "from": "article:ingest:https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+    "type": "mentions",
+    "to": "ent_4f358fd513c4b44e",
+    "validFrom": "2022-08-31T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "rss",
+     "by": "geopolitics",
+     "url": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-08-31T00:00:00+00:00"
+    },
+    "createdAt": "2022-08-31T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-08-31T00:00:00+00:00"
+  },
+  {
+   "id": "evt_71",
+   "seq": 71,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "article",
+    "id": "article:ingest:https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+    "attrs": {
+     "title": "GBP/EUR ECB reference rates 2022-06-24 to 2022-09-23: +2.83% over 90 days, +4.65% over 30 days",
+     "text": "1 GBP = 1.1338 EUR on 2022-09-23 (was 1.1659 on 2022-06-24)."
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "GBP/EUR ECB reference rates 2022-06-24 to 2022-09-23: +2.83% over 90 days, +4.65% over 30 days",
+    "aliases": [
+     "GBP/EUR ECB reference rates 2022-06-24 to 2022-09-23: +2.83% over 90 days, +4.65% over 30 days"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_72",
+   "seq": 72,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "country",
+    "id": "ent_158170c7ace17e06",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "Germany",
+    "aliases": [
+     "Germany"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_73",
+   "seq": 73,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_ccfb35b418e649d1",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+    "type": "mentions",
+    "to": "ent_158170c7ace17e06",
+    "validFrom": "2022-09-23T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_74",
+   "seq": 74,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "part",
+    "id": "ent_bea80219b3e91e33",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "GangaCool Direct-to-Chip Loop",
+    "aliases": [
+     "GangaCool Direct-to-Chip Loop"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_75",
+   "seq": 75,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_f56c95cff31df64e",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+    "type": "mentions",
+    "to": "ent_bea80219b3e91e33",
+    "validFrom": "2022-09-23T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_76",
+   "seq": 76,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "publisher",
+    "id": "ent_002d27bef27c9711",
+    "attrs": {},
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00",
+    "updatedAt": "2022-09-23T00:00:00+00:00",
+    "name": "Frankfurter (ECB reference rates)",
+    "aliases": [
+     "Frankfurter (ECB reference rates)"
+    ],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  },
+  {
+   "id": "evt_77",
+   "seq": 77,
+   "kind": "relate",
+   "payload": {
+    "id": "rel_617db21566da2e02",
+    "from": "article:ingest:https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+    "type": "mentions",
+    "to": "ent_002d27bef27c9711",
+    "validFrom": "2022-09-23T00:00:00+00:00",
+    "schemaVersion": 1,
+    "source": {
+     "kind": "api",
+     "by": "currency",
+     "url": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+     "runId": "bt-B3-a8999ec4",
+     "at": "2022-09-23T00:00:00+00:00"
+    },
+    "createdAt": "2022-09-23T00:00:00+00:00"
+   },
+   "schemaVersion": 1,
+   "at": "2022-09-23T00:00:00+00:00"
+  }
+ ],
+ "audit": [
+  {
+   "seq": 1,
+   "at": "2026-10-23T17:56:59.383Z",
+   "kind": "upsertEntity",
+   "actor": "main",
+   "summary": "run:vidhur:bt-B3-a8999ec4-run (run)",
+   "eventId": "evt_1",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 2,
+   "at": "2026-10-23T18:20:06.219Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan (plan)",
+   "eventId": "evt_2",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 3,
+   "at": "2026-10-23T18:20:06.238Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "run:vidhur:bt-B3-a8999ec4-run -[has-plan]-> plan:vidhur:bt-B3-a8999ec4-plan",
+   "eventId": "evt_3",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 4,
+   "at": "2026-10-23T18:20:06.260Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-D1 (delegation)",
+   "eventId": "evt_4",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 5,
+   "at": "2026-10-23T18:20:06.281Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[delegates]-> delegation:vidhur:bt-B3-a8999ec4-D1",
+   "eventId": "evt_5",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 6,
+   "at": "2026-10-23T18:20:06.296Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-D2 (delegation)",
+   "eventId": "evt_6",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 7,
+   "at": "2026-10-23T18:20:06.311Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[delegates]-> delegation:vidhur:bt-B3-a8999ec4-D2",
+   "eventId": "evt_7",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 8,
+   "at": "2026-10-23T18:20:06.328Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-D3 (delegation)",
+   "eventId": "evt_8",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 9,
+   "at": "2026-10-23T18:20:06.337Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[delegates]-> delegation:vidhur:bt-B3-a8999ec4-D3",
+   "eventId": "evt_9",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 10,
+   "at": "2026-10-23T18:20:06.353Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-D4 (delegation)",
+   "eventId": "evt_10",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 11,
+   "at": "2026-10-23T18:20:06.372Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[delegates]-> delegation:vidhur:bt-B3-a8999ec4-D4",
+   "eventId": "evt_11",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 12,
+   "at": "2026-10-23T18:20:06.385Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-S1 (delegation)",
+   "eventId": "evt_12",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 13,
+   "at": "2026-10-23T18:20:06.399Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[skips]-> delegation:vidhur:bt-B3-a8999ec4-S1",
+   "eventId": "evt_13",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 14,
+   "at": "2026-10-23T18:20:06.415Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-S2 (delegation)",
+   "eventId": "evt_14",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 15,
+   "at": "2026-10-23T18:20:06.433Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[skips]-> delegation:vidhur:bt-B3-a8999ec4-S2",
+   "eventId": "evt_15",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 16,
+   "at": "2026-10-23T18:20:06.446Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-S3 (delegation)",
+   "eventId": "evt_16",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 17,
+   "at": "2026-10-23T18:20:06.462Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[skips]-> delegation:vidhur:bt-B3-a8999ec4-S3",
+   "eventId": "evt_17",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 18,
+   "at": "2026-10-23T18:20:06.480Z",
+   "kind": "upsertEntity",
+   "actor": "planner",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-S4 (delegation)",
+   "eventId": "evt_18",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 19,
+   "at": "2026-10-23T18:20:06.502Z",
+   "kind": "relate",
+   "actor": "planner",
+   "summary": "plan:vidhur:bt-B3-a8999ec4-plan -[skips]-> delegation:vidhur:bt-B3-a8999ec4-S4",
+   "eventId": "evt_19",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 20,
+   "at": "2026-10-23T18:20:06.525Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-D1 (delegation)",
+   "eventId": "evt_20",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 21,
+   "at": "2026-10-23T18:20:06.526Z",
+   "kind": "upsertEntity",
+   "actor": "workflow",
+   "summary": "delegation:vidhur:bt-B3-a8999ec4-D2 (delegation)",
+   "eventId": "evt_21",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 22,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/ (article)",
+   "eventId": "evt_22",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 23,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_23",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 24,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_25",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 25,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_6dbb77a860601a2d (publisher)",
+   "eventId": "evt_27",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 26,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html (article)",
+   "eventId": "evt_29",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 27,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_30",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 28,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_32",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 29,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_4f358fd513c4b44e (publisher)",
+   "eventId": "evt_34",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 30,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html (article)",
+   "eventId": "evt_36",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 31,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_37",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 32,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_39",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 33,
+   "at": "2022-09-22T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_4f358fd513c4b44e (publisher)",
+   "eventId": "evt_41",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 34,
+   "at": "2022-09-21T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html (article)",
+   "eventId": "evt_43",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 35,
+   "at": "2022-09-21T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_44",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 36,
+   "at": "2022-09-21T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_46",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 37,
+   "at": "2022-09-21T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_4f358fd513c4b44e (publisher)",
+   "eventId": "evt_48",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 38,
+   "at": "2022-09-07T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/ (article)",
+   "eventId": "evt_50",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 39,
+   "at": "2022-09-07T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_51",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 40,
+   "at": "2022-09-07T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_53",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 41,
+   "at": "2022-09-07T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_6dbb77a860601a2d (publisher)",
+   "eventId": "evt_55",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 42,
+   "at": "2022-09-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html (article)",
+   "eventId": "evt_57",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 43,
+   "at": "2022-09-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_58",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 44,
+   "at": "2022-09-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_60",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 45,
+   "at": "2022-09-01T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_4f358fd513c4b44e (publisher)",
+   "eventId": "evt_62",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 46,
+   "at": "2022-08-31T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "article:ingest:https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html (article)",
+   "eventId": "evt_64",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 47,
+   "at": "2022-08-31T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_20bb008eae618158 (country)",
+   "eventId": "evt_65",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 48,
+   "at": "2022-08-31T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_741d972207793822 (part)",
+   "eventId": "evt_67",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 49,
+   "at": "2022-08-31T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "geopolitics",
+   "summary": "ent_4f358fd513c4b44e (publisher)",
+   "eventId": "evt_69",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 50,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_4520fea7f748: 7 processed, 0 skipped",
+   "eventId": null,
+   "runId": "run_4520fea7f748"
+  },
+  {
+   "seq": 51,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "article:ingest:https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR (article)",
+   "eventId": "evt_71",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 52,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_158170c7ace17e06 (country)",
+   "eventId": "evt_72",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 53,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_bea80219b3e91e33 (part)",
+   "eventId": "evt_74",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 54,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "upsertEntity",
+   "actor": "currency",
+   "summary": "ent_002d27bef27c9711 (publisher)",
+   "eventId": "evt_76",
+   "runId": "bt-B3-a8999ec4"
+  },
+  {
+   "seq": 55,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_650ea701738e: 1 processed, 0 skipped",
+   "eventId": null,
+   "runId": "run_650ea701738e"
+  },
+  {
+   "seq": 56,
+   "at": "2022-09-23T00:00:00+00:00",
+   "kind": "ingest",
+   "actor": "pipeline",
+   "summary": "run run_4520fea7f748: 0 processed, 7 skipped",
+   "eventId": null,
+   "runId": "run_4520fea7f748"
+  }
+ ],
+ "observations": [
+  [
+   "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+   {
+    "id": "obs_02e200b61e0d",
+    "externalId": "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+    "entityId": "article:ingest:https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+    "checksum": "ee4771196c2e59395853274361b4e5ffe623f88606de55fb69dc0d149660086d",
+    "at": "2022-09-23T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_6dbb77a860601a2d",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_ceaa2825f2dc"
+   }
+  ],
+  [
+   "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+   {
+    "id": "obs_c4d1079ca9ab",
+    "externalId": "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+    "entityId": "article:ingest:https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+    "checksum": "fe16bbe513121b4ab1c6e8fc49a0b9c302f6ec95c4eb04eea0a0e870941af74d",
+    "at": "2022-09-22T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_ceaa2825f2dc"
+   }
+  ],
+  [
+   "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+   {
+    "id": "obs_dfd13f835677",
+    "externalId": "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+    "entityId": "article:ingest:https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html",
+    "checksum": "3c7279b51e48c81fe0a25316d7d82ff8cf783c13fe6abca1138a61a7dfb33c7a",
+    "at": "2022-09-22T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_ceaa2825f2dc"
+   }
+  ],
+  [
+   "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+   {
+    "id": "obs_7911ed6023c6",
+    "externalId": "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+    "entityId": "article:ingest:https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+    "checksum": "b1af94d998b74f554f36640b472d78e7ec6031e9244d5268a53f7cb245815175",
+    "at": "2022-09-21T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_ceaa2825f2dc"
+   }
+  ],
+  [
+   "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+   {
+    "id": "obs_53267d178c22",
+    "externalId": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+    "entityId": "article:ingest:https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+    "checksum": "88ed111df20f5d584fbbbae3d4e74e2aef3018fe539ed1706144d2422cb4fa9e",
+    "at": "2022-09-07T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_6dbb77a860601a2d",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_ceaa2825f2dc"
+   }
+  ],
+  [
+   "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+   {
+    "id": "obs_948e58f9f842",
+    "externalId": "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+    "entityId": "article:ingest:https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+    "checksum": "1cb29fe1ed1ae5881c1b420c1b2957a8d7382cc7cb13ea902133c445565cbb79",
+    "at": "2022-09-01T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_ceaa2825f2dc"
+   }
+  ],
+  [
+   "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+   {
+    "id": "obs_fb347a001e60",
+    "externalId": "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+    "entityId": "article:ingest:https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+    "checksum": "5428e051020be86b1a183ccbfef5cf24f761e74db1615ac5b4c794d9cc34ca3b",
+    "at": "2022-08-31T00:00:00+00:00",
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_741d972207793822"
+    ],
+    "stale": false,
+    "storyId": "story_ceaa2825f2dc"
+   }
+  ],
+  [
+   "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+   {
+    "id": "obs_f4361fb5c235",
+    "externalId": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+    "entityId": "article:ingest:https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+    "checksum": "8d1f0bbfea2ccdc1ead01aebe261e6c22fb1c5268b90a4a08612fc0534601746",
+    "at": "2022-09-23T00:00:00+00:00",
+    "entityIds": [
+     "ent_002d27bef27c9711",
+     "ent_158170c7ace17e06",
+     "ent_bea80219b3e91e33"
+    ],
+    "stale": false,
+    "storyId": "story_650ea701738e"
+   }
+  ]
+ ],
+ "stories": [
+  [
+   "story_ceaa2825f2dc",
+   {
+    "id": "story_ceaa2825f2dc",
+    "title": "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+    "memberIds": [
+     "https://fortune.com/2022/09/07/pound-fell-weakest-level-since-1985-against-us-dollar/",
+     "https://fortune.com/2022/09/23/liz-truss-uk-government-recession-spending-taxes-borrowing-pound-gilts/",
+     "https://www.cnbc.com/2022/08/31/nvidia-stock-falls-after-us-government-restricts-chip-sales-to-china.html",
+     "https://www.cnbc.com/2022/09/01/nvidia-says-us-government-allows-ai-chip-development-in-china.html",
+     "https://www.cnbc.com/2022/09/21/bank-of-england-faces-pivotal-policy-decision-with-pound-at-multi-decade-lows.html",
+     "https://www.cnbc.com/2022/09/22/bank-of-england-raises-rates-by-50-basis-points-in-seventh-consecutive-hike.html",
+     "https://www.cnbc.com/2022/09/22/semiconductor-alliances-between-us-and-asia-could-hold-back-china.html"
+    ],
+    "entityNames": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_6dbb77a860601a2d",
+     "ent_741d972207793822"
+    ],
+    "entityIds": [
+     "ent_20bb008eae618158",
+     "ent_4f358fd513c4b44e",
+     "ent_6dbb77a860601a2d",
+     "ent_741d972207793822"
+    ],
+    "sources": [],
+    "firstAt": "2022-08-31T00:00:00.000Z",
+    "lastAt": "2022-09-23T00:00:00.000Z",
+    "milestones": [
+     {
+      "kind": "multi-source",
+      "at": "2022-09-01T00:00:00.000Z"
+     }
+    ]
+   }
+  ],
+  [
+   "story_650ea701738e",
+   {
+    "id": "story_650ea701738e",
+    "title": "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR",
+    "memberIds": [
+     "https://api.frankfurter.dev/v1/2022-06-25..2022-09-23?base=GBP&symbols=EUR"
+    ],
+    "entityNames": [
+     "ent_002d27bef27c9711",
+     "ent_158170c7ace17e06",
+     "ent_bea80219b3e91e33"
+    ],
+    "entityIds": [
+     "ent_002d27bef27c9711",
+     "ent_158170c7ace17e06",
+     "ent_bea80219b3e91e33"
+    ],
+    "sources": [],
+    "firstAt": "2022-09-23T00:00:00.000Z",
+    "lastAt": "2022-09-23T00:00:00.000Z",
+    "milestones": []
+   }
+  ]
+ ],
+ "scores": [
+  {
+   "storyId": "story_650ea701738e",
+   "at": "2022-09-23T00:00:00.000Z",
+   "velocity1h": 1.0,
+   "velocity24h": 0.041666666666666664,
+   "velocity7d": 0.005952380952380952,
+   "trendDirection": 1
+  },
+  {
+   "storyId": "story_ceaa2825f2dc",
+   "at": "2022-09-23T00:00:00.000Z",
+   "velocity1h": 1.0,
+   "velocity24h": 0.041666666666666664,
+   "velocity7d": 0.023809523809523808,
+   "trendDirection": 1
+  }
+ ],
+ "mergeQueue": []
+}

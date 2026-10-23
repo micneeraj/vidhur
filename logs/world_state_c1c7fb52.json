@@ -1,0 +1,96 @@
+{
+ "events": [
+  {
+   "id": "evt_1",
+   "seq": 1,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "run",
+    "id": "run:vidhur:c1c7fb52-run",
+    "attrs": {
+     "status": "running",
+     "run_id": "c1c7fb52",
+     "demo_weak_claim": false,
+     "demo_untrusted_source": false,
+     "demo_red_team": false,
+     "started": "2026-10-23T15:55:25",
+     "quarter": "2026-Q3"
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "main",
+     "at": "2026-10-23T10:25:25.892Z",
+     "runId": "c1c7fb52"
+    },
+    "createdAt": "2026-10-23T10:25:25.892Z",
+    "updatedAt": "2026-10-23T10:25:25.892Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T10:25:25.892Z"
+  },
+  {
+   "id": "evt_2",
+   "seq": 2,
+   "kind": "upsertEntity",
+   "payload": {
+    "type": "run",
+    "id": "run:vidhur:c1c7fb52-run",
+    "attrs": {
+     "status": "partial",
+     "elapsed_seconds": 247,
+     "llm_ok": 0,
+     "llm_fail": 5,
+     "stopped": [
+      {
+       "agent": "Planner",
+       "stage": "planning",
+       "error": "InternalServerError: Error code: 502 - {'error': {'message': 'Meterless provider request failed.', 'type': 'api_error', 'code': 'provider_error', 'param': None, 'meterless_detail': 'provider_deadline'}, 'meterless': {'req"
+      }
+     ]
+    },
+    "schemaVersion": 1,
+    "source": {
+     "kind": "agent",
+     "by": "main",
+     "at": "2026-10-23T10:29:20.259Z",
+     "runId": "c1c7fb52"
+    },
+    "createdAt": "2026-10-23T10:29:20.259Z",
+    "updatedAt": "2026-10-23T10:29:20.259Z",
+    "name": null,
+    "aliases": [],
+    "state": "active"
+   },
+   "schemaVersion": 1,
+   "at": "2026-10-23T10:29:20.259Z"
+  }
+ ],
+ "audit": [
+  {
+   "seq": 1,
+   "at": "2026-10-23T10:25:25.892Z",
+   "kind": "upsertEntity",
+   "actor": "main",
+   "summary": "run:vidhur:c1c7fb52-run (run)",
+   "eventId": "evt_1",
+   "runId": "c1c7fb52"
+  },
+  {
+   "seq": 2,
+   "at": "2026-10-23T10:29:20.259Z",
+   "kind": "upsertEntity",
+   "actor": "main",
+   "summary": "run:vidhur:c1c7fb52-run (run)",
+   "eventId": "evt_2",
+   "runId": "c1c7fb52"
+  }
+ ],
+ "observations": [],
+ "stories": [],
+ "scores": [],
+ "mergeQueue": []
+}

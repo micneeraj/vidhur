@@ -27,7 +27,7 @@ def run_work_item(delegation, target, analysts, evaluator, world, zt, trace):
             result = audit_claim(world.latest_claim_key(work_id), target, work_id, analyst, evaluator, world, trace)
             if result.status == "PASS":
                 claim = world.get_claim(result.claim_key)
-                spend, quarter = quarterly_spend(zt, claim.part_id)
+                spend, quarter = quarterly_spend(zt, claim.part_id, quarter=target.quarter)
                 impact = compute_impact(spend, claim.pct_low, claim.pct_high, claim.direction)
                 confidence = confidence_level(result.verdict.independent_sources, result.retries, result.verdict.strength)
                 world.write_impact(work_id, result.claim_key, impact, confidence, quarter)

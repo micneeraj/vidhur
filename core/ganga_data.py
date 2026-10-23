@@ -14,13 +14,15 @@ class Target:
     quarterly_spend_gbp: float
 
 
-def latest_quarter(zt):
-    return zt.query("SELECT MAX(quarter) AS q FROM ganga.purchases")[0]["q"]
+def latest_quarter(zt, max_quarter=None):
+    """The newest quarter in the purchase data. max_quarter ("2022-Q2") caps it - used by the backtest so nothing after its as_of date is read."""
+    cap = f" WHERE quarter <= '{max_quarter}'" if max_quarter else ""
+    return zt.query(f"SELECT MAX(quarter) AS q FROM ganga.purchases{cap}")[0]["q"]
 
 
-def top_targets(zt, n=3):
-    """Top-n (part, supplier country) pairs by spend in the latest quarter."""
-    quarter = latest_quarter(zt)
+def top_targets(zt, n=3, max_quarter=None):
+    """Top-n (part, supplier country) pairs by spend in the latest quarter (or the latest one on or before max_quarter)."""
+    quarter = latest_quarter(zt, max_quarter)
     rows = zt.query(
         "SELECT p.part_id AS part_id, p.part_name AS part_name, p.category AS category, "
         "s.country AS country, s.supplier_name AS supplier_name, u.quarter AS quarter, u.total_gbp AS spend "

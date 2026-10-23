@@ -8,6 +8,9 @@ import requests
 from core import config
 
 REQUEST_TIMEOUT = 120
+TRANSIENT_STATUSES = (400, 500, 502, 503, 504)
+QUERY_RETRIES = 4
+QUERY_RETRY_WAIT_SECONDS = 10
 
 
 class ZetarisError(RuntimeError):
@@ -67,6 +70,14 @@ class ZetarisClient:
         started = time.monotonic()
         response = self._send("POST", f"{self.base}/sql-editor/sqls/run", headers=self._headers(), json=payload,
                               timeout=self.timeout or REQUEST_TIMEOUT)
+        # Zetaris occasionally answers a valid statement with HTTP 400 / 5xx under load (seen twice in long runs); a short retry clears it.
+        for _ in range(QUERY_RETRIES):
+            if response.status_code not in TRANSIENT_STATUSES:
+                break
+            time.sleep(QUERY_RETRY_WAIT_SECONDS)
+            payload["queryId"] = str(uuid.uuid4())
+            response = self._send("POST", f"{self.base}/sql-editor/sqls/run", headers=self._headers(), json=payload,
+                                  timeout=self.timeout or REQUEST_TIMEOUT)
         if response.status_code == 401:  # token expired: log in again once
             self._token = None
             response = self._send("POST", f"{self.base}/sql-editor/sqls/run", headers=self._headers(), json=payload,

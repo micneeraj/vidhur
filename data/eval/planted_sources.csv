@@ -1,0 +1,22 @@
+source_id,publisher,days_old,title,summary
+T1,Reuters,5,Taiwan tightens export licensing for advanced AI chips,Taiwan's economy ministry said exporters of advanced AI accelerators must now obtain licences before shipping abroad; analysts expect slower shipments and higher costs for overseas buyers.
+T2,Bloomberg,7,Taipei adds AI accelerator shipments to controlled export list,Officials in Taipei put AI accelerators on a controlled export list; buyers should expect licence delays and added compliance costs.
+T3,Financial Times,4,Chipmakers warn licence delays could lift GPU prices,Taiwanese GPU suppliers warned that the new licensing regime would add weeks to delivery and push up prices for foreign customers.
+T1COPY,The Guardian,5,Taiwan tightens export licensing for advanced AI chips,Taiwan's economy ministry said exporters of advanced AI accelerators must now obtain licences before shipping abroad; analysts expect slower shipments and higher costs for overseas buyers.
+T1B,Reuters,6,Taiwan AI chip makers brace for new licence regime,Taiwanese chip makers are preparing for the new export licence regime announced this week.
+TSTALE1,Reuters,75,Taiwan considers export licensing for AI chips,A Taiwanese ministry official said export licensing for AI chips is under consideration; no decision has been taken.
+TSTALE2,BBC News,80,Taiwan weighs tighter chip export rules,Taiwan is weighing tighter rules on chip exports according to officials; no decision announced.
+TBLOG1,ChipWatch Daily,3,Insiders say Taiwan GPU export crackdown will send prices soaring,An anonymous post claims Taiwan will crack down on GPU exports and prices will soar.
+TBLOG2,SiliconRumorMill,2,Taiwan about to choke AI chip exports?,A rumour site speculates that Taiwan is about to choke AI chip exports.
+TGLUT1,Reuters,4,Taiwan chip exports hit record as inventory glut pushes GPU prices lower,Taiwan's exports of chips rose to a record while an inventory glut pushed spot GPU prices lower; distributors are offering discounts.
+TGLUT2,Bloomberg,6,GPU prices slide as supply outpaces demand,Spot prices for data-centre GPUs fell as supply outpaced demand; buyers are negotiating lower contract prices.
+K1,Reuters,6,South Korea imposes new export licence rules for high-bandwidth memory,Seoul introduced licence requirements for exports of high-bandwidth memory stacks; makers said compliance would raise costs for buyers.
+K2,Bloomberg,8,Seoul's HBM export rules to add compliance costs for buyers,Analysts said Seoul's new HBM licence rules would add compliance costs that suppliers are likely to pass on to customers.
+KSUB1,Reuters,5,South Korea unveils subsidy package for memory chipmakers,Seoul announced subsidies and tax breaks for memory makers to expand production capacity.
+KSUB2,Financial Times,7,Seoul backs memory makers with cheap loans and tax relief,South Korea will offer cheap loans and tax relief to memory chipmakers; no new tariffs or trade restrictions were announced.
+J1,Nikkei Asia,8,Japan to restrict exports of advanced chip-substrate materials,Tokyo plans export controls on materials used in advanced chip substrates.
+J2,Reuters,9,Tokyo's new substrate material export rule sparks supply concerns,Buyers voiced concern about supply after Tokyo's new export rule on substrate materials.
+C1,Reuters,5,China widens licensing on gallium exports,Beijing extended its export licence requirement to more gallium compounds; exporters said shipments would slow.
+C2,BBC News,6,Beijing extends gallium export licences to compounds,China extended gallium export licensing to compounds used in power electronics; prices of gallium compounds rose.
+FXN1,Reuters,4,Pound and Asian currencies swing as central banks signal policy paths,Sterling and several Asian currencies moved as central banks signalled different interest rate paths.
+FXN2,Financial Times,6,Asian currencies and sterling: what is driving the moves,A look at what is driving moves between sterling and Asian currencies this autumn.
