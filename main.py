@@ -6,6 +6,7 @@ Meterless World Model (logs/world_state_<run_id>.json); the brief is built from 
 
 Usage:
     python main.py
+    python main.py --demo-red-team      # the first decision is told to be aggressive so the Red Team visibly challenges it
     python main.py --demo-weak-claim    # the Geopolitics Analyst's first attempt is told to cite only ONE source,
                                         # so you can watch the Evaluator catch it and send it back
 """
@@ -18,6 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from agents.currency_analyst import CurrencyAnalyst
+from agents.decision_maker import run_decisions
 from agents.evaluator import Evaluator
 from agents.geopolitics_analyst import GeopoliticsAnalyst
 from agents.planner import Planner
@@ -42,6 +44,10 @@ def parse_args():
                    help="DEMO: the Geopolitics Analyst's first attempt is shown the least-trusted articles first and told to cite only "
                         "the first two, so the Evaluator visibly sends it back (NO_TRUSTED_SOURCE / SOURCES_NOT_INDEPENDENT). "
                         "Real model calls and a real Evaluator check.")
+    p.add_argument("--demo-red-team", action="store_true",
+                   help="DEMO: the first proposed decision for the lowest-confidence verified claim is instructed to be aggressive "
+                        "(hedge 100%%), so the Red Team visibly objects and the Decision Maker revises or the decision ends CONTESTED. "
+                        "Real model calls and a real challenge loop.")
     p.add_argument("--workers", type=int, default=3, help="Analysts running in parallel (default 3).")
     p.add_argument("--refresh-news", action="store_true", help="Ignore the news cache and fetch live.")
     return p.parse_args()
@@ -54,6 +60,8 @@ def main():
     trace = Trace()
     world = RunWorld(trace.run_id)
     print(f"Vidhur Day 2 | run {trace.run_id} | trace: {trace.path} | world state: {world.path}")
+    if args.demo_red_team:
+        print("DEMO MODE --demo-red-team: the first decision for the lowest-confidence verified claim is instructed to be aggressive.")
     if args.demo_untrusted_source:
         print("DEMO MODE --demo-untrusted-source: the Geopolitics Analyst's first attempt is shown the least-trusted articles first.")
     if args.demo_weak_claim:
@@ -67,7 +75,7 @@ def main():
     targets = top_targets(zt, 99)
     by_part = {t.part_id: t for t in targets}
     catalog = part_country_catalog(zt)
-    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "started": datetime.now().isoformat(timespec="seconds"),
+    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "demo_red_team": args.demo_red_team, "started": datetime.now().isoformat(timespec="seconds"),
                      "quarter": targets[0].quarter})
 
     # The run's input, saved next to its brief (no secrets: lane ids and flags only)
@@ -76,7 +84,7 @@ def main():
     input_path.write_text(json.dumps({
         "command": "python main.py" + "".join(f" {f}" for f in sys.argv[1:]), "run_id": trace.run_id,
         "flags": {"demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source,
-                  "workers": args.workers, "refresh_news": args.refresh_news},
+                  "demo_red_team": args.demo_red_team, "workers": args.workers, "refresh_news": args.refresh_news},
         "config": {"analyst_lane": config.analyst_model(), "evaluator_planner_lane": config.evaluator_model(),
                    "evidence_max_age_days": config.evidence_max_age_days()},
         "ganga_spend_from_zetaris": [t.__dict__ for t in targets], "trace_file": f"logs/{trace.path.name}",
@@ -107,11 +115,15 @@ def main():
     if extra:
         process(extra)
 
-    # 6. Brief, built from the world state
+    # 6. Decision Maker proposes a decision per verified claim; the Red Team challenges it (max 2 rounds)
+    run_decisions(world.report(), world, targets, trace, demo_red_team=args.demo_red_team, workers=min(args.workers, 2))
+
+    # 7. Brief, built from the world state
     elapsed = round(time.monotonic() - started)
     world.finish_run({"elapsed_seconds": elapsed, "llm_ok": trace.stats["llm_ok"], "llm_fail": trace.stats["llm_fail"]})
     report = world.report()
-    brief = build_brief(report, world, trace.path, args.demo_weak_claim, trace.stats, args.demo_untrusted_source)
+    brief = build_brief(report, world, trace.path, args.demo_weak_claim, trace.stats, args.demo_untrusted_source,
+                        args.demo_red_team)
     OUTPUT_DIR.mkdir(exist_ok=True)
     out_path = OUTPUT_DIR / f"brief_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
     out_path.write_text(brief, encoding="utf-8")

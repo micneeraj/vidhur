@@ -44,14 +44,15 @@ def _client():
 
 
 def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000, temperature=0.2, retry_count=0,
-         expected_model=None):
+         expected_model=None, max_attempts=None):
     """Send chat messages to Nightshift. Retries automatically on network errors and runtime 5xx errors.
 
     Logs the agent, requested model, answering model, tokens and latency to the trace.
     """
+    attempts = max_attempts or MAX_ATTEMPTS
     client = _client()
     started = time.monotonic()
-    for attempt in range(1, MAX_ATTEMPTS + 1):
+    for attempt in range(1, attempts + 1):
         try:
             response = client.chat.completions.create(
                 model=model, messages=messages, max_tokens=max_tokens, temperature=temperature
@@ -60,10 +61,10 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
         except RETRYABLE_ERRORS as exc:
             if trace is not None:
                 trace.event(agent, f"llm:{step}:error", output_summary=f"{type(exc).__name__}: {str(exc)[:300]}",
-                            model=None, decision="RETRY" if attempt < MAX_ATTEMPTS else "GIVE_UP",
+                            model=None, decision="RETRY" if attempt < attempts else "GIVE_UP",
                             retry_count=retry_count, requested_model=model, requested_lane=model, answered_model=None,
                             llm_attempt=attempt)
-            if attempt == MAX_ATTEMPTS:
+            if attempt == attempts:
                 raise
             time.sleep(2)
 

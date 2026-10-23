@@ -5,6 +5,8 @@ Every agent writes what it decides here and reads what the others decided from h
   Analyst  -> `claim` entities (one per attempt, chained with `revised-into`), the fetched `article` observations
   Evaluator-> `verdict` entities linked to the claim they judged (`audited-by`); it READS the claim from here
   Impact   -> `impact` entities linked to the claim (`has-impact`)
+  Decision Maker -> `decision` entities (one per version, chained `revised-into`) linked to the delegation (`decided`)
+  Red Team -> `objection` entities linked to the decision they attacked (`challenged-by`), plus one `decision-outcome` per work item
 The CFO brief is built from `report()`, which only reads the world state.
 The whole event log is persisted to logs/world_state_<run_id>.json.
 """
@@ -140,6 +142,38 @@ class RunWorld:
     def write_error(self, work_id, message, by="main"):
         self.set_delegation_status(work_id, "NOT_ASSESSED", by, error=message)
 
+    # ------------------------------------------------------------------ decisions and the Red Team
+    def write_decision(self, work_id, decision, by="decision_maker"):
+        key = self._upsert("decision", f"{work_id}-v{decision['version']}", {**decision, "work_id": work_id}, by)
+        self._link(self.key("delegation", work_id), "decided", key, by, multi=True)
+        if decision["version"] > 1:
+            self._link(self.key("decision", f"{work_id}-v{decision['version'] - 1}"), "revised-into", key, by)
+        return key
+
+    def write_objection(self, work_id, objection, decision_version, by="red_team"):
+        """Idempotent: calling it again with the same id merges the response / status into the same entity."""
+        key = self._upsert("objection", f"{work_id}-{objection['id']}", {**objection, "work_id": work_id}, by)
+        self._link(self.key("decision", f"{work_id}-v{decision_version}"), "challenged-by", key, by, multi=True)
+        return key
+
+    def write_decision_outcome(self, work_id, outcome, by="decision_maker"):
+        return self._upsert("decision-outcome", work_id, {**outcome, "work_id": work_id}, by)
+
+    def decision_report(self):
+        """{work_id: {"versions": [...], "objections": [...], "outcome": {...}}}, read back from the world state."""
+        g = self.graph
+        out = {}
+        for e in g.query(type="decision"):
+            out.setdefault(e["attrs"]["work_id"], {"versions": [], "objections": [], "outcome": None})["versions"].append(e["attrs"])
+        for e in g.query(type="objection"):
+            out.setdefault(e["attrs"]["work_id"], {"versions": [], "objections": [], "outcome": None})["objections"].append(e["attrs"])
+        for e in g.query(type="decision-outcome"):
+            out.setdefault(e["attrs"]["work_id"], {"versions": [], "objections": [], "outcome": None})["outcome"] = e["attrs"]
+        for d in out.values():
+            d["versions"].sort(key=lambda v: v["version"])
+            d["objections"].sort(key=lambda o: int(o["id"][1:]))
+        return out
+
     def article(self, url):
         """A fetched article as stored in the world (title, publisher, published), or None."""
         e = self.graph.entity(external_id("article", "ingest", url))
@@ -171,4 +205,5 @@ class RunWorld:
             items.append(item)
         return {"run": run["attrs"] if run else {}, "plan": plan["attrs"] if plan else {},
                 "review": review["attrs"] if review else None, "items": items,
+                "decisions": self.decision_report(),
                 "event_count": len(self.world.events()), "path": str(self.path)}

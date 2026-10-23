@@ -15,20 +15,27 @@ reach the CFO brief; claims it cannot verify are sent back, and if they still fa
 ```mermaid
 flowchart LR
     Z[(Zetaris<br/>Ganga's purchase data<br/>via SQL)] --> P
-    N[Meterless Nightshift<br/>Nemotron lanes] -.model calls.-> P & G & C & E
+    N[Meterless Nightshift<br/>Nemotron, lane vidhur-analyst] -.model calls.-> P & G & C & E & D & R
     P["Planner - Vidhur<br/>who works on what, and why"] -->|delegates| G["Geopolitics Analyst<br/>news: export controls, tariffs"]
     P -->|delegates| C["Currency Analyst<br/>ECB FX data, computed in Python"]
-    G -->|claim| E["Evaluator - the auditor<br/>2+ independent fresh sources,<br/>real URLs, matches Ganga data"]
+    G -->|claim| E["Evaluator - audits the CLAIM<br/>2+ independent fresh sources,<br/>Tier 1/2 source, real URLs, matches Ganga data"]
     C -->|claim| E
     E -->|"SEND_BACK + reason (max 2)"| G & C
-    E -->|PASS| I[GBP impact<br/>plain Python from Zetaris]
+    E -->|"PASS + GBP impact (Python)"| D["Decision Maker<br/>picks an option; GBP computed in Python"]
     E -->|"UNVERIFIED after 2 retries"| W
-    I --> W
+    D -->|proposed decision| R["Red Team - audits the DECISION<br/>sceptical CFO: objections with evidence ids"]
+    R -->|"objections (high / medium / low)"| D
+    D -->|"REVISE or DEFEND (max 2 rounds)"| R
+    R -->|"high objection still open"| X["CONTESTED<br/>needs CFO judgement"]
     W[("Meterless World Model<br/>shared event-sourced memory<br/>logs/world_state_RUN.json")]
     P <-->|plan, review, re-delegate once| W
     G <--> W
     C <--> W
     E <--> W
+    D <--> W
+    R <--> W
+    D --> B
+    X --> B
     W --> B[CFO brief<br/>built from the world state]
     T[Trace log<br/>logs/run_TIMESTAMP.jsonl] -.every step.-> W
 ```
@@ -46,8 +53,28 @@ What happens in a run (`python main.py`):
    `SEND_BACK` returns the claim to the analyst with the reason (max 2 retries), then `UNVERIFIED`.
 5. **Planner reviews** the world state and may **re-delegate once** (e.g. ask the other analyst about a high-spend part that ended unverified).
 6. **GBP impact** is plain Python from Zetaris data (latest-quarter spend x % range); confidence comes from the Evaluator result.
-7. **CFO brief** (`output_examples/brief_<timestamp>.md`) is built from the world state: plan and reasons, verified claims with worst/likely/best GBP,
+7. **Decision Maker** proposes one decision per verified claim (no action / hedge a share / lock the price / second supplier) and the **Red Team**
+   challenges it (next section). The brief's *Recommended decisions* section compares the options in GBP.
+8. **CFO brief** (`output_examples/brief_<timestamp>.md`) is built from the world state: plan and reasons, verified claims with worst/likely/best GBP,
    UNVERIFIED items, evidence trail, and pointers to the trace and the world-state file.
+
+## Decision Maker and Red Team (the challenge loop)
+
+The Evaluator checks the **claims**; the **Red Team** checks the **decision** built on them, like a sceptical CFO or risk committee.
+
+- **Decision Maker** (`agents/decision_maker.py`) reads the verified claim from the World State and Ganga's spend from Zetaris and picks one option
+  with a rationale. **Every GBP figure is computed in Python** (`core/decisions.py`): cost under worst / likely / best and "if the forecast is
+  wrong" (the mirror of the likely case), for no action, a 50% hedge, a price lock and a 30% second-supplier shift. The protection premiums
+  are stated assumptions, not quotes.
+- **Red Team** (`core/red_team.py`) returns structured JSON objections of five kinds: forecast wrong (opposite scenario), cost of acting vs not
+  acting, concentration (supplier / country), weakest evidence, cheaper alternative. Each has a severity and must cite evidence ids (S1.., the
+  work id, an option name) or numbers present in the evidence. Objections without a reference are dropped; if none survive, the model is re-asked once.
+- **Challenge loop:** Red Team objects -> Decision Maker **REVISES** (new option or share, GBP recalculated in Python) or **DEFENDS** (needs evidence
+  references) every high and medium objection -> Red Team re-judges -> one more round at most. **Maximum 2 rounds.** A high objection still standing
+  afterwards marks the decision **CONTESTED - needs CFO judgement** instead of a confident recommendation.
+- Objections, responses, outcomes and every decision version are written to the World State and logged to the trace
+  (`objection`, `response`, `revised`, `review`, `round`, `outcome`). The brief shows, per decision, "Challenged by Red Team" with the top objections,
+  how each was handled and the before / after GBP.
 
 ## Meterless World Model engine
 
@@ -76,6 +103,7 @@ copy .env.example .env               # then fill in the token / Zetaris login (n
 python scripts/load_ganga_to_zetaris.py   # copies data/*.csv into Zetaris and registers tables; safe to run twice
 python main.py                            # the full run
 python main.py --demo-weak-claim          # watch the Evaluator catch a weak claim (below)
+python main.py --demo-red-team            # watch the Red Team challenge an aggressive decision (below)
 python main.py --demo-untrusted-source    # watch it catch a claim backed only by untrusted sources (below)
 python scripts/check_lanes.py             # which Nemotron model answers each Nightshift lane (3 calls per lane)
 python -m pytest tests                    # unit + engine tests; integration tests skip if Zetaris/Nightshift are down
@@ -90,6 +118,13 @@ With this flag the **Geopolitics Analyst's first attempt** gets one extra instru
 the Evaluator's check is real; only the analyst's instruction changes. The Evaluator then sends the claim back (`TOO_FEW_SOURCES`), the analyst
 revises it with the feedback, and the brief shows the full audit history. The flag is printed in the console, recorded in the trace
 (`demo_weak_claim: true`) and stated at the top of the brief. (The Currency Analyst always cites the FX data plus news, so the flag does not affect it.)
+
+### `--demo-red-team` (a demo flag, not hidden faking)
+
+With this flag the **first proposal for the lowest-confidence verified claim** gets one extra instruction: hedge 100% of that part's spend.
+The Decision Maker, the Red Team and the loop are real model calls with real validation; the Red Team decides what to object to, and the Decision
+Maker decides whether to revise or defend. The run ends with the decision revised, defended or `CONTESTED`. The flag is printed, recorded in the trace
+(`demo_aggressive: true`) and stated at the top of the brief.
 
 ### `--demo-untrusted-source` (a demo flag, not hidden faking)
 
@@ -125,6 +160,7 @@ Not every source is equal, so Vidhur ranks evidence by who published it, not onl
 | `agents/planner.py` | Planner (Vidhur): plan, delegations with reasons, review and one re-delegation |
 | `agents/geopolitics_analyst.py`, `agents/currency_analyst.py` | The two analysts |
 | `agents/evaluator.py` | The Evaluator and the send-back loop |
+| `agents/decision_maker.py`, `core/red_team.py`, `core/decisions.py` | Decision Maker, Red Team, and the option / GBP maths (Python) |
 | `agents/workflow.py` | One work item: analyst -> Evaluator loop -> GBP impact |
 | `engines/world_model/` | Meterless World Model engine |
 | `core/shared_state.py` | Vidhur's use of the world model (what each agent writes and reads) |
@@ -152,6 +188,15 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 - **The evaluator lane could not be pinned to a larger Nemotron in Nightshift**, so Lightning (`nemotron-3.5-lightning-30b-a3b`) is used for all
   agents. `scripts/check_lanes.py` showed `vidhur-evaluator` answered by Lightning in 3 of 3 calls, so the Planner and Evaluator are pointed at the
   `vidhur-analyst` lane on purpose (the pin is real, not accidental). If a larger lane is fixed, set `MODEL_EVALUATOR` / `MODEL_EVALUATOR_EXPECTED` in `.env`.
+- **The Red Team loop has not completed in a live run yet.** On 2026-10-23 the Nightshift provider answered 502 (`provider_error` /
+  `empty_response`) to 70-80% of attempts, for the Planner and analysts too. The Decision Maker produced proposals (in the `--demo-red-team` run it
+  proposed the aggressive 100% hedge), but every Red Team call failed after 8 attempts, so those decisions are labelled **NOT challenged** in the briefs
+  (never passed off as challenged). The loop, validation, revise/defend handling, the 2-round limit and CONTESTED escalation are covered by 24 tests with
+  scripted model replies; rerun `python main.py --demo-red-team` when the runtime is healthy. Tuning that did help on the live runtime: the
+  "Keep your private reasoning brief" hint, Python-computed checks so the model only judges severity, and 8 attempts per Red Team call
+  (`RED_TEAM_LLM_ATTEMPTS`).
+- **Hedge / lock / second-supplier premiums are assumptions** (1.5% / 2% / 3% of the protected spend), not market quotes, and the second supplier is assumed
+  to be unexposed to the claim's driver. Decisions are made per claim, so two claims on one part are not combined.
 - **Currency pass-through is assumed 100%** (an upper bound): the claim treats the supplier currency's move against the pound as the cost move.
   Ganga's data is USD-priced, so real exposure may be smaller. The Taiwan dollar is not published by the ECB, so Taiwan gets no FX claim.
 - **Geopolitics evidence is mostly headlines.** Google News RSS gives titles and publishers, not article text. The % ranges are the model's own
