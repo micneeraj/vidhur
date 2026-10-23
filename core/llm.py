@@ -61,7 +61,8 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
             if trace is not None:
                 trace.event(agent, f"llm:{step}:error", output_summary=f"{type(exc).__name__}: {str(exc)[:300]}",
                             model=None, decision="RETRY" if attempt < MAX_ATTEMPTS else "GIVE_UP",
-                            retry_count=retry_count, requested_model=model, llm_attempt=attempt)
+                            retry_count=retry_count, requested_model=model, requested_lane=model, answered_model=None,
+                            llm_attempt=attempt)
             if attempt == MAX_ATTEMPTS:
                 raise
             time.sleep(2)
@@ -86,6 +87,8 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
             model=result.model,
             retry_count=retry_count,
             requested_model=result.requested_model,
+            requested_lane=result.requested_model,
+            answered_model=result.model,
             expected_model=result.expected_model,
             pin_honoured=result.pin_honoured,
             prompt_tokens=result.prompt_tokens,

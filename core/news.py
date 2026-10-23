@@ -17,6 +17,7 @@ from urllib.parse import quote_plus
 import requests
 
 from core import config
+from core.source_trust import trust_of
 
 CACHE_DIR = config.ROOT / "data" / "news_cache"
 USER_AGENT = "Mozilla/5.0 (Vidhur hackathon research agent; RSS reader)"
@@ -222,3 +223,46 @@ def rank_articles(articles, keyword_groups, k=8, now=None):
         return points + 3 * max(0.0, 1 - age_days / 30)
 
     return sorted(articles, key=lambda a: (score(a), a.published), reverse=True)[:k]
+
+
+RELEVANCE_WEIGHT, TRUST_WEIGHT = 0.6, 0.4  # combined_score = 0.6 * relevance + 0.4 * trust_score
+MAX_DROPPED_LOGGED = 40
+
+
+def relevance_scores(articles, keyword_groups, now=None):
+    """Raw relevance per article (same formula as rank_articles), normalised to 0-1 by the best article in the set."""
+    now = now or datetime.now(timezone.utc)
+    raw = []
+    for a in articles:
+        text = f"{a.title} {a.summary}".lower()
+        points = sum(weight for words, weight in keyword_groups for w in words if w.lower() in text)
+        age_days = max((now - datetime.fromisoformat(a.published)).total_seconds() / 86400, 0)
+        raw.append(points + 3 * max(0.0, 1 - age_days / 30))
+    best = max(raw, default=0)
+    return [r / best if best > 0 else 0.0 for r in raw]
+
+
+def score_articles(articles, keyword_groups, now=None):
+    """[(article, info)] with info = publisher, tier, relevance, trust, combined (all rounded for the trace)."""
+    scored = []
+    for a, rel in zip(articles, relevance_scores(articles, keyword_groups, now)):
+        publisher, tier, trust = trust_of(a.url, a.publisher)
+        combined = RELEVANCE_WEIGHT * rel + TRUST_WEIGHT * trust
+        scored.append((a, {"title": a.title[:80], "publisher": publisher, "tier": tier, "relevance": round(rel, 3),
+                           "trust": trust, "combined": round(combined, 3)}))
+    return scored
+
+
+def rank_by_trust(articles, keyword_groups, k=8, now=None, trace=None, agent="news", label=""):
+    """Keep the k articles with the best combined_score (relevance + source trust), before any model sees them.
+
+    Kept and dropped items are logged to the trace with their scores, so the evidence stays traceable.
+    """
+    ordered = sorted(score_articles(articles, keyword_groups, now), key=lambda t: (t[1]["combined"], t[0].published), reverse=True)
+    kept, dropped = ordered[:k], ordered[k:]
+    if trace is not None:
+        trace.event(agent, "evidence:rank", input_summary=label,
+                    output_summary=f"kept {len(kept)} of {len(ordered)} (combined = 0.6*relevance + 0.4*trust)",
+                    sources=[a.url for a, _ in kept], kept=[i for _, i in kept],
+                    dropped=[i for _, i in dropped[:MAX_DROPPED_LOGGED]], dropped_total=len(dropped))
+    return [a for a, _ in kept]

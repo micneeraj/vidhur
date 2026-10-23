@@ -1,6 +1,9 @@
 """The CFO brief. Built ONLY from the world-state report (RunWorld.report()), never from local variables."""
 
-from agents.geopolitics_analyst import DEMO_WEAK_CLAIM_INSTRUCTION
+from agents.evaluator import source_profile
+from agents.geopolitics_analyst import DEMO_UNTRUSTED_INSTRUCTION, DEMO_WEAK_CLAIM_INSTRUCTION
+from core.news import Article
+from core.source_trust import trust_of
 
 
 def gbp(value):
@@ -15,9 +18,18 @@ def _sources(world, claim):
     lines = []
     for url in claim.source_urls:
         art = world.article(url)
-        lines.append(f"{art['publisher']} - {art['published'][:10]} - {art['title']} - <{url}>" if art
-                     else f"{url[:100]} (NOT in the fetched evidence)")
+        if art:
+            _, tier, score = trust_of(url, art["publisher"])
+            lines.append(f"{art['publisher']} - Tier {tier} (trust {score:g}) - {art['published'][:10]} - {art['title']} - <{url}>")
+        else:
+            lines.append(f"{url[:100]} (NOT in the fetched evidence)")
     return lines
+
+
+def _evidence_strength(world, claim):
+    arts = [Article(a["title"], a["publisher"], url, a["published"]) for url in dict.fromkeys(claim.source_urls)
+            if (a := world.article(url))]
+    return source_profile(arts)["summary"] if arts else "no fetched sources"
 
 
 def console_summary(report):
@@ -43,7 +55,7 @@ def console_summary(report):
     return "\n".join(lines)
 
 
-def build_brief(report, world, trace_path, demo_weak_claim, stats):
+def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untrusted_source=False):
     items = [i for i in report["items"] if i["delegation"].get("action") == "run"]
     skipped = [i["delegation"] for i in report["items"] if i["delegation"].get("action") == "skip"]
     passed = [i for i in items if _outcome(i) == "PASS" and i["impact"]]
@@ -61,6 +73,10 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats):
     if demo_weak_claim:
         out += [f"- **Demo flag `--demo-weak-claim` was on.** The Geopolitics Analyst's first attempt was given this extra instruction: "
                 f"*\"{DEMO_WEAK_CLAIM_INSTRUCTION}\"* The model calls and Evaluator checks are real."]
+
+    if demo_untrusted_source:
+        out += [f"- **Demo flag `--demo-untrusted-source` was on.** The Geopolitics Analyst's first attempt was shown the least-trusted articles "
+                f"first and given this extra instruction: *\"{DEMO_UNTRUSTED_INSTRUCTION}\"* The model calls and Evaluator checks are real."]
 
     out += ["", "## The Planner's plan", "", plan.get("summary", "")]
     if plan.get("fallback"):
@@ -108,7 +124,8 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats):
             out.append(f"- GBP: baseline {imp['quarter']} spend £{imp['baseline_quarterly_spend_gbp']:,.0f}; worst {gbp(imp['worst_gbp'])}, likely "
                        f"{gbp(imp['likely_gbp'])}, best {gbp(imp['best_gbp'])}; confidence **{imp['confidence']}** (computed in Python from Zetaris data)")
         out.append(f"- Reasoning: {c.reasoning}")
-        out += ["- Sources cited in the final attempt:"] + [f"  - {s}" for s in _sources(world, c)]
+        out += [f"- Evidence strength: **{_evidence_strength(world, c)}** (publisher tiers from `data/source_trust.csv`)"]
+        out += ["- Sources cited in the final attempt (publisher, tier, date):"] + [f"  - {s}" for s in _sources(world, c)]
         out.append("- Audit history (from the world state):")
         for a in i["attempts"]:
             for v in a["verdicts"]:

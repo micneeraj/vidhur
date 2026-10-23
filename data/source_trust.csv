@@ -1,0 +1,62 @@
+domain,publisher,tier,score
+reuters.com,Reuters,1,1.0
+bloomberg.com,Bloomberg,1,1.0
+ft.com,Financial Times,1,1.0
+wsj.com,The Wall Street Journal,1,1.0
+apnews.com,Associated Press,1,1.0
+bbc.co.uk,BBC News,1,1.0
+bbc.com,BBC News,1,1.0
+nikkei.com,Nikkei Asia,1,1.0
+economist.com,The Economist,1,1.0
+wto.org,World Trade Organization,1,1.0
+imf.org,International Monetary Fund,1,1.0
+worldbank.org,World Bank,1,1.0
+oecd.org,OECD,1,1.0
+bis.org,Bank for International Settlements,1,1.0
+ecb.europa.eu,European Central Bank,1,1.0
+europa.eu,European Union,1,1.0
+federalreserve.gov,US Federal Reserve,1,1.0
+bankofengland.co.uk,Bank of England,1,1.0
+ons.gov.uk,UK Office for National Statistics,1,1.0
+gov.uk,UK Government,1,1.0
+census.gov,US Census Bureau,1,1.0
+bls.gov,US Bureau of Labor Statistics,1,1.0
+trade.gov,US International Trade Administration,1,1.0
+bis.gov,US Bureau of Industry and Security,1,1.0
+commerce.gov,US Department of Commerce,1,1.0
+semiconductors.org,Semiconductor Industry Association,1,1.0
+semi.org,SEMI,1,1.0
+frankfurter.dev,Frankfurter (ECB reference rates),1,1.0
+cnbc.com,CNBC,2,0.7
+theguardian.com,The Guardian,2,0.7
+scmp.com,South China Morning Post,2,0.7
+digitimes.com,DigiTimes,2,0.7
+trendforce.com,TrendForce,2,0.7
+eetimes.com,EE Times,2,0.7
+theverge.com,The Verge,2,0.7
+techcrunch.com,TechCrunch,2,0.7
+focustaiwan.tw,Focus Taiwan,2,0.7
+koreaherald.com,The Korea Herald,2,0.7
+koreajoongangdaily.joins.com,Korea JoongAng Daily,2,0.7
+dw.com,DW,2,0.7
+aljazeera.com,Al Jazeera,2,0.7
+npr.org,NPR,2,0.7
+nytimes.com,The New York Times,2,0.7
+washingtonpost.com,The Washington Post,2,0.7
+forbes.com,Forbes,2,0.7
+fortune.com,Fortune,2,0.7
+businessinsider.com,Business Insider,2,0.7
+cnn.com,CNN,2,0.7
+straitstimes.com,The Straits Times,2,0.7
+japantimes.co.jp,The Japan Times,2,0.7
+taipeitimes.com,Taipei Times,2,0.7
+koreatimes.co.kr,The Korea Times,2,0.7
+yna.co.kr,Yonhap News Agency,2,0.7
+thediplomat.com,The Diplomat,2,0.7
+thehindu.com,The Hindu,2,0.7
+livemint.com,Mint,2,0.7
+economictimes.indiatimes.com,The Economic Times,2,0.7
+tomshardware.com,Tom's Hardware,2,0.7
+arstechnica.com,Ars Technica,2,0.7
+wired.com,Wired,2,0.7
+semiconductor-digest.com,Semiconductor Digest,2,0.7

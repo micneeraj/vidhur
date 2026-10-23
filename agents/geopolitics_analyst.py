@@ -2,7 +2,7 @@
 
 from agents.analyst_base import AnalystBase, number
 from core.claims import Claim
-from core.news import fetch_news, rank_articles
+from core.news import fetch_news, rank_by_trust, score_articles
 
 MAX_ARTICLES_SHOWN = 8  # most relevant articles only, pre-ranked in Python
 
@@ -11,6 +11,13 @@ MAX_ARTICLES_SHOWN = 8  # most relevant articles only, pre-ranked in Python
 DEMO_WEAK_CLAIM_INSTRUCTION = (
     "DEMO MODE (deliberate weak-claim test, requested by the operator): in source_ids list exactly ONE "
     "article id, even if several articles support the claim."
+)
+
+# --demo-untrusted-source: the FIRST attempt is shown the least-trusted articles first and told to cite only the
+# first two. Real model call, real Evaluator check; only the evidence offered to the analyst differs.
+DEMO_UNTRUSTED_INSTRUCTION = (
+    "DEMO MODE (deliberate untrusted-source test, requested by the operator): in source_ids list exactly the first two "
+    "article ids, A1 and A2, and no others, even if later articles support the claim better."
 )
 
 SYSTEM_PROMPT = (
@@ -47,7 +54,7 @@ class GeopoliticsAnalyst(AnalystBase):
             return f"{target.country} {target.category} supply chain"
         return f"{target.country} {target.category} export controls OR sanctions OR tariffs OR tensions"
 
-    def _research(self, target, work_id, broaden=False):
+    def _research(self, target, work_id, broaden=False, low_trust_first=False):
         query = self._query(target, broaden)
         articles, info = fetch_news(query, refresh=self.refresh_news)
         self._add_to_pool(articles)
@@ -63,7 +70,14 @@ class GeopoliticsAnalyst(AnalystBase):
         known.extend(a for a in articles if a.url not in have)
         keywords = [([target.country], 3), (target.category.split() + target.part_name.split()[1:3], 2),
                     (["export", "sanction", "tariff", "control", "ban", "tension", "trade", "restrict", "subsid", "chip"], 1)]
-        return rank_articles(known, keywords, k=MAX_ARTICLES_SHOWN)
+        label = f"{work_id}: {query}"
+        if low_trust_first:
+            scored = sorted(score_articles(known, keywords), key=lambda t: (t[1]["trust"], -t[1]["relevance"]))[:MAX_ARTICLES_SHOWN]
+            self.trace.event(self.name, "evidence:demo-untrusted", input_summary=label,
+                             output_summary="first attempt shows the least-trusted articles first (demo flag)",
+                             sources=[a.url for a, _ in scored], kept=[i for _, i in scored], demo_untrusted_source=True)
+            return [a for a, _ in scored]
+        return rank_by_trust(known, keywords, k=MAX_ARTICLES_SHOWN, trace=self.trace, agent=self.name, label=label)
 
     @staticmethod
     def _numbered(articles):
@@ -75,7 +89,7 @@ class GeopoliticsAnalyst(AnalystBase):
 
     # ------------------------------------------------------------------ claims
     def draft(self, target, work_id):
-        shown = self._research(target, work_id)
+        shown = self._research(target, work_id, low_trust_first=self.demo_untrusted_source)
         return self._ask(target, work_id, shown, attempt=1, feedback=None)
 
     def revise(self, target, work_id):
@@ -96,6 +110,8 @@ class GeopoliticsAnalyst(AnalystBase):
             task = "Write the cost claim for this part and country.\n" + CLAIM_FORMAT
             if self.demo_weak_claim:
                 task += "\n" + DEMO_WEAK_CLAIM_INSTRUCTION
+            if self.demo_untrusted_source:
+                task += "\n" + DEMO_UNTRUSTED_INSTRUCTION
         else:
             task = (f"Your previous claim was sent back by the Evaluator (the auditor).\nPrevious claim: {previous.claim}\n"
                     f"Evaluator feedback: {' | '.join(feedback)}\nRevise the claim so it fixes every point of feedback. "
@@ -123,5 +139,6 @@ class GeopoliticsAnalyst(AnalystBase):
             self.name, "claim:draft" if previous is None else "claim:revised", input_summary=f"{target.part_id} / {target.country}",
             output_summary=f"{claim.direction} {claim.pct_low}-{claim.pct_high}%: {claim.claim}", model=result.model,
             sources=claim.source_urls, retry_count=attempt - 1, demo_weak_claim=bool(self.demo_weak_claim and previous is None),
+            demo_untrusted_source=bool(self.demo_untrusted_source and previous is None),
         )
         return claim

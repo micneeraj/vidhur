@@ -14,6 +14,7 @@ from difflib import SequenceMatcher
 
 from core import config, llm
 from core.claims import AuditResult, Verdict
+from core.source_trust import publisher_key, trust_of
 
 MAX_RETRIES = 2
 SYNDICATION_TITLE_SIMILARITY = 0.88  # headlines this alike are treated as one story, not two sources
@@ -71,7 +72,8 @@ def independent_groups(articles):
 
     for i in range(len(articles)):
         for j in range(i + 1, len(articles)):
-            same_publisher = _norm_publisher(articles[i].publisher) == _norm_publisher(articles[j].publisher)
+            same_publisher = (_norm_publisher(articles[i].publisher) == _norm_publisher(articles[j].publisher)
+                              or publisher_key(articles[i].url, articles[i].publisher) == publisher_key(articles[j].url, articles[j].publisher))
             similar_title = (
                 SequenceMatcher(None, _norm_title(articles[i].title), _norm_title(articles[j].title)).ratio()
                 >= SYNDICATION_TITLE_SIMILARITY
@@ -99,6 +101,36 @@ def _currency_consistency(claim):
         out.append(Finding("FX_MISMATCH", f"The FX data (90d {m90:+.2f}%) implies {expected_dir}, not {claim.direction}."))
     if abs(claim.pct_low - low) > FX_TOLERANCE or abs(claim.pct_high - high) > FX_TOLERANCE:
         out.append(Finding("FX_MISMATCH", f"The range must be the computed FX moves {low}-{high}%, not {claim.pct_low}-{claim.pct_high}%."))
+    return out
+
+
+def source_profile(articles):
+    """Evidence strength of a set of sources: independent count, tier counts, and a one-line summary."""
+    groups = independent_groups(list(articles)) if articles else []
+    tiers = [trust_of(a.url, a.publisher)[1] for a in articles]
+    best_per_group = [min(trust_of(a.url, a.publisher)[1] for a in g) for g in groups]
+    summary = f"{len(groups)} independent source{'s' if len(groups) != 1 else ''}"
+    parts = [f"{best_per_group.count(t)} Tier {t}" for t in (1, 2, 3) if best_per_group.count(t)]
+    return {"independent": len(groups), "tiers": tiers, "summary": summary + (", " + ", ".join(parts) if parts else "")}
+
+
+def trust_findings(known, now, max_age_days):
+    """NO_TRUSTED_SOURCE / SOURCES_NOT_INDEPENDENT / STALE_SOURCES for the sources a claim cites (all already fetched)."""
+    cutoff = now - timedelta(days=max_age_days)
+    fresh = [a for a in known if datetime.fromisoformat(a.published) >= cutoff]
+    stale = [a for a in known if a not in fresh]
+    out = []
+    groups = independent_groups(fresh) if fresh else []
+    if stale and len(groups) < 2:
+        out.append(Finding("STALE_SOURCES", f"{len(stale)} cited source(s) are older than {max_age_days} days and do not count; only "
+                           f"{len(groups)} independent fresh source(s) remain, at least 2 are required."))
+    if known and not any(trust_of(a.url, a.publisher)[1] <= 2 for a in fresh):
+        names = ", ".join(sorted({f"{a.publisher} (Tier {trust_of(a.url, a.publisher)[1]})" for a in known}))
+        out.append(Finding("NO_TRUSTED_SOURCE", f"No fresh cited source is Tier 1 or Tier 2 (cited: {names}). "
+                           "Cite at least one wire service, major business press or official source."))
+    if len(fresh) >= 2 and len(groups) < 2:
+        out.append(Finding("SOURCES_NOT_INDEPENDENT", f"{len(fresh)} fresh sources collapse to {len(groups)} independent one "
+                           "(same publisher domain or near-identical headline count once)."))
     return out
 
 
@@ -150,6 +182,9 @@ def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None):
             "NOT_INDEPENDENT",
             f"The cited sources are not independent (publishers: {', '.join(names)}; same publisher or the same "
             "story syndicated). Cite sources from different publishers reporting separately."))
+
+    # 3b. trust layer: only fresh sources count; one of them must be Tier 1 or 2; copies of one report count once
+    findings.extend(trust_findings(known, now, max_age_days))
 
     # 4. analyst-specific consistency with computed data
     if claim.analyst == "currency":

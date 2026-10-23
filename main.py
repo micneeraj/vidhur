@@ -11,6 +11,7 @@ Usage:
 """
 
 import argparse
+import json
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -29,6 +30,7 @@ from core.trace import Trace
 from core.zetaris_client import ZetarisClient
 
 OUTPUT_DIR = config.ROOT / "output_examples"
+INPUT_DIR = config.ROOT / "input_examples"
 
 
 def parse_args():
@@ -36,6 +38,10 @@ def parse_args():
     p.add_argument("--demo-weak-claim", action="store_true",
                    help="DEMO: instruct the Geopolitics Analyst's first attempt to cite only one source so the Evaluator visibly "
                         "catches it. Real model calls and a real Evaluator check; only the analyst's instruction changes.")
+    p.add_argument("--demo-untrusted-source", action="store_true",
+                   help="DEMO: the Geopolitics Analyst's first attempt is shown the least-trusted articles first and told to cite only "
+                        "the first two, so the Evaluator visibly sends it back (NO_TRUSTED_SOURCE / SOURCES_NOT_INDEPENDENT). "
+                        "Real model calls and a real Evaluator check.")
     p.add_argument("--workers", type=int, default=3, help="Analysts running in parallel (default 3).")
     p.add_argument("--refresh-news", action="store_true", help="Ignore the news cache and fetch live.")
     return p.parse_args()
@@ -48,6 +54,8 @@ def main():
     trace = Trace()
     world = RunWorld(trace.run_id)
     print(f"Vidhur Day 2 | run {trace.run_id} | trace: {trace.path} | world state: {world.path}")
+    if args.demo_untrusted_source:
+        print("DEMO MODE --demo-untrusted-source: the Geopolitics Analyst's first attempt is shown the least-trusted articles first.")
     if args.demo_weak_claim:
         print("DEMO MODE --demo-weak-claim: the Geopolitics Analyst's first attempt is instructed to cite only one source.")
 
@@ -59,13 +67,26 @@ def main():
     targets = top_targets(zt, 99)
     by_part = {t.part_id: t for t in targets}
     catalog = part_country_catalog(zt)
-    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "started": datetime.now().isoformat(timespec="seconds"),
+    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "started": datetime.now().isoformat(timespec="seconds"),
                      "quarter": targets[0].quarter})
+
+    # The run's input, saved next to its brief (no secrets: lane ids and flags only)
+    INPUT_DIR.mkdir(exist_ok=True)
+    input_path = INPUT_DIR / f"input_{trace.path.stem.removeprefix('run_')}.json"
+    input_path.write_text(json.dumps({
+        "command": "python main.py" + "".join(f" {f}" for f in sys.argv[1:]), "run_id": trace.run_id,
+        "flags": {"demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source,
+                  "workers": args.workers, "refresh_news": args.refresh_news},
+        "config": {"analyst_lane": config.analyst_model(), "evaluator_planner_lane": config.evaluator_model(),
+                   "evidence_max_age_days": config.evidence_max_age_days()},
+        "ganga_spend_from_zetaris": [t.__dict__ for t in targets], "trace_file": f"logs/{trace.path.name}",
+    }, indent=2, ensure_ascii=False), encoding="utf-8")
 
     # 2. The team
     pool = {}  # url -> Article: everything fetched this run
     analysts = {
-        "geopolitics": GeopoliticsAnalyst(trace, world, pool, demo_weak_claim=args.demo_weak_claim, refresh_news=args.refresh_news),
+        "geopolitics": GeopoliticsAnalyst(trace, world, pool, demo_weak_claim=args.demo_weak_claim, refresh_news=args.refresh_news,
+                                          demo_untrusted_source=args.demo_untrusted_source),
         "currency": CurrencyAnalyst(trace, world, pool, refresh_news=args.refresh_news),
     }
     evaluator = Evaluator(catalog, pool, world, trace)
@@ -90,7 +111,7 @@ def main():
     elapsed = round(time.monotonic() - started)
     world.finish_run({"elapsed_seconds": elapsed, "llm_ok": trace.stats["llm_ok"], "llm_fail": trace.stats["llm_fail"]})
     report = world.report()
-    brief = build_brief(report, world, trace.path, args.demo_weak_claim, trace.stats)
+    brief = build_brief(report, world, trace.path, args.demo_weak_claim, trace.stats, args.demo_untrusted_source)
     OUTPUT_DIR.mkdir(exist_ok=True)
     out_path = OUTPUT_DIR / f"brief_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
     out_path.write_text(brief, encoding="utf-8")

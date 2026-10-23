@@ -11,7 +11,7 @@ BRIEF_REASONING = "Keep your private reasoning brief: decide quickly, then answe
 class AnalystBase:
     name = "analyst"
 
-    def __init__(self, trace, world, pool, model=None, demo_weak_claim=False, refresh_news=False):
+    def __init__(self, trace, world, pool, model=None, demo_weak_claim=False, refresh_news=False, demo_untrusted_source=False):
         self.trace = trace
         self.world = world  # core.shared_state.RunWorld
         self.pool = pool  # url -> Article, shared by all analysts and the Evaluator
@@ -19,6 +19,7 @@ class AnalystBase:
         self.model = model or config.analyst_model()
         self.expected_model = config.analyst_expected() if model is None else model
         self.demo_weak_claim = demo_weak_claim
+        self.demo_untrusted_source = demo_untrusted_source
         self.refresh_news = refresh_news
 
     def _add_to_pool(self, articles):

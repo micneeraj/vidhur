@@ -42,6 +42,7 @@ What happens in a run (`python main.py`):
    Currency Analyst computes the real 30/90-day move of the supplier's currency against the pound from ECB data in Python and the model only explains it.
 4. **Evaluator** reads each claim from the world state: deterministic checks first (2+ sources, different publishers, fresh, every URL really
    fetched, part and country exist in Zetaris, FX numbers match the computed ones), then a Nemotron "do the sources support the claim?" check.
+   Then the trust rules: at least one fresh Tier 1 or Tier 2 source, copies of one report count once, stale sources do not count.
    `SEND_BACK` returns the claim to the analyst with the reason (max 2 retries), then `UNVERIFIED`.
 5. **Planner reviews** the world state and may **re-delegate once** (e.g. ask the other analyst about a high-spend part that ended unverified).
 6. **GBP impact** is plain Python from Zetaris data (latest-quarter spend x % range); confidence comes from the Evaluator result.
@@ -75,6 +76,8 @@ copy .env.example .env               # then fill in the token / Zetaris login (n
 python scripts/load_ganga_to_zetaris.py   # copies data/*.csv into Zetaris and registers tables; safe to run twice
 python main.py                            # the full run
 python main.py --demo-weak-claim          # watch the Evaluator catch a weak claim (below)
+python main.py --demo-untrusted-source    # watch it catch a claim backed only by untrusted sources (below)
+python scripts/check_lanes.py             # which Nemotron model answers each Nightshift lane (3 calls per lane)
 python -m pytest tests                    # unit + engine tests; integration tests skip if Zetaris/Nightshift are down
 ```
 
@@ -87,6 +90,33 @@ With this flag the **Geopolitics Analyst's first attempt** gets one extra instru
 the Evaluator's check is real; only the analyst's instruction changes. The Evaluator then sends the claim back (`TOO_FEW_SOURCES`), the analyst
 revises it with the feedback, and the brief shows the full audit history. The flag is printed in the console, recorded in the trace
 (`demo_weak_claim: true`) and stated at the top of the brief. (The Currency Analyst always cites the FX data plus news, so the flag does not affect it.)
+
+### `--demo-untrusted-source` (a demo flag, not hidden faking)
+
+With this flag the **Geopolitics Analyst's first attempt** is shown the *least-trusted* articles first (Tier 3 before Tier 1) and is told to
+cite only the first two. The model call and the Evaluator's check are real; only the evidence offered to the analyst and the instruction change.
+The Evaluator sends the claim back (`NO_TRUSTED_SOURCE`, and `SOURCES_NOT_INDEPENDENT` if the two share a publisher), the analyst revises
+from the normal trust-ranked evidence, and the claim passes on retry or ends `UNVERIFIED`. The flag is printed, recorded in the trace
+(`demo_untrusted_source: true`) and stated at the top of the brief.
+
+## Trusted-source ranking
+
+
+Not every source is equal, so Vidhur ranks evidence by who published it, not only by how relevant it is.
+
+- **The list** is `data/source_trust.csv` (`domain,publisher,tier,score`), a curated, editable config (see `data/SOURCE_TRUST_README.md`).
+  Tier 1 = 1.0 (wires, top business press, central banks, statistics offices, WTO / IMF / World Bank, semiconductor trade bodies),
+  Tier 2 = 0.7 (known business and trade press), Tier 3 = 0.3 (any unlisted domain, the default).
+- **Mapping** (`core/source_trust.py`): URL -> (publisher, tier, score). Subdomains count as their parent (`uk.reuters.com` is `reuters.com`).
+  Google News links point at `news.google.com`, so for those the publisher name decides.
+- **Ranking before the AI sees anything:** `combined_score = 0.6 * relevance + 0.4 * trust_score`, relevance being the existing keyword and recency
+  score normalised to 0-1. Only the top N (unchanged) go to the model, which cuts tokens. Kept and dropped articles are logged to the trace
+  with their scores (`evidence:rank`).
+- **Evaluator rules** (added to the existing checks, new send-back codes): `NO_TRUSTED_SOURCE` (no fresh Tier 1 or 2 source),
+  `SOURCES_NOT_INDEPENDENT` (same domain root or near-identical headlines count once), `STALE_SOURCES` (sources older than `EVIDENCE_MAX_AGE_DAYS`,
+  default 30, do not count), next to `TOO_FEW_SOURCES`. Max 2 retries, then UNVERIFIED, as before.
+- **CFO brief:** every source shows publisher, tier and date, and each claim has an evidence-strength line such as
+  "2 independent sources, 1 Tier 1".
 
 ## Where things are
 
@@ -101,29 +131,33 @@ revises it with the feedback, and the brief shows the full audit history. The fl
 | `core/zetaris_client.py` | Zetaris REST client - one Lightning SQL statement per request |
 | `core/llm.py` | Meterless Nightshift client (OpenAI-compatible), retries, pin tracking |
 | `core/trace.py` | Append-only JSONL trace (agent, target, model, tokens, latency, sources, decision) |
-| `core/news.py`, `core/fx.py` | Real evidence: RSS news and ECB exchange rates |
+| `core/news.py`, `core/fx.py` | Real evidence: RSS news and ECB exchange rates; trust-aware ranking |
+| `core/source_trust.py`, `data/source_trust.csv` | Publisher trust tiers (curated list) |
+| `scripts/check_lanes.py` | Calls each Nightshift lane 3 times and prints which model answered |
 | `core/impact.py`, `core/brief.py` | GBP maths and confidence; the CFO brief |
 | `scripts/load_ganga_to_zetaris.py` | Registers Ganga's CSVs as Zetaris tables |
 | `docs/meterless_engine.md` | The World Model spec we followed and the test results |
 
 ## Notes on the AI runtime
 
-All product AI calls go through Meterless Nightshift. Analysts use the lane `vidhur-analyst` (nvidia/nemotron-3.5-lightning-30b-a3b);
-the Evaluator and Planner use the lane `vidhur-evaluator` (nvidia/nemotron-3-super-120b-a12b). `.env` holds the lane id to request
-(`MODEL_*`) and the Nemotron model that must answer (`MODEL_*_EXPECTED`). The trace records the requested model, the expected model, the
-model that actually answered and `pin_honoured` for every call. The runtime enforces a ~45 s per-request deadline and answers 502 when a long
-reasoning call overruns it, so the client retries automatically (`LLM_MAX_ATTEMPTS`) and logs every failed attempt.
+All product AI calls go through Meterless Nightshift, and every AI call is Nvidia Nemotron. **All agents (Planner, both analysts, Evaluator) use the
+lane `vidhur-analyst`** (`nvidia/nemotron-3.5-lightning-30b-a3b`); see Known limitations for why. `.env` holds the lane to request (`MODEL_*`) and the
+Nemotron model that must answer (`MODEL_*_EXPECTED`). **Every AI call line in the trace records `requested_lane`, `answered_model` and `pin_honoured`**
+(failed attempts record `answered_model: null`). `python scripts/check_lanes.py` re-tests the lanes. The runtime enforces a ~45 s per-request deadline
+and answers 502 when a long reasoning call overruns it, so the client retries automatically (`LLM_MAX_ATTEMPTS`) and logs every failed attempt.
 
-## Limitations / not built yet
+## Known limitations
 
 - **Two analysts of six.** Commodity, logistics, trade & tariff and supplier-health analysts are not built. There is no Red Team and no Docker packaging.
-- **The evaluator lane does not pin.** Requests for `vidhur-evaluator` (and the super-120b model) are answered by the lightning model, so the
-  Evaluator and Planner currently run on the same model as the analysts. The trace shows this per call (`pin_honoured: false`).
+- **The evaluator lane could not be pinned to a larger Nemotron in Nightshift**, so Lightning (`nemotron-3.5-lightning-30b-a3b`) is used for all
+  agents. `scripts/check_lanes.py` showed `vidhur-evaluator` answered by Lightning in 3 of 3 calls, so the Planner and Evaluator are pointed at the
+  `vidhur-analyst` lane on purpose (the pin is real, not accidental). If a larger lane is fixed, set `MODEL_EVALUATOR` / `MODEL_EVALUATOR_EXPECTED` in `.env`.
 - **Currency pass-through is assumed 100%** (an upper bound): the claim treats the supplier currency's move against the pound as the cost move.
   Ganga's data is USD-priced, so real exposure may be smaller. The Taiwan dollar is not published by the ECB, so Taiwan gets no FX claim.
 - **Geopolitics evidence is mostly headlines.** Google News RSS gives titles and publishers, not article text. The % ranges are the model's own
   estimates, not source figures; the GBP maths on top is exact.
-- **No "trusted publisher" list yet.** Independence and freshness are checked; whether a publisher is reputable is not.
+- **The trust list is a hand-curated config**, not a measure of accuracy: it ranks who published, not whether a given story is right. Unlisted
+  publishers are Tier 3 by default, and a Google News link is classified by its publisher name, not by fetching the article.
 - **Baseline is one quarter** (the latest in the data); no seasonality, hedging or contract terms.
 - **Runs are slow and flaky** because of the runtime's per-request deadline and provider errors; a work item whose model calls keep failing is
   reported as "not assessed" rather than guessed.

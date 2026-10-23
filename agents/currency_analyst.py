@@ -9,7 +9,7 @@ in full (an upper-bound assumption, stated in every claim).
 from agents.analyst_base import AnalystBase
 from core import fx
 from core.claims import Claim
-from core.news import fetch_news, rank_articles
+from core.news import fetch_news, rank_by_trust
 
 MATERIAL_MOVE_PCT = 1.0  # a move smaller than this (in either window) is not worth a claim
 MAX_ARTICLES_SHOWN = 6
@@ -50,8 +50,8 @@ class CurrencyAnalyst(AnalystBase):
                          output_summary=f"{len(articles)} articles ({'cache' if info['from_cache'] else 'live'}, fetched {info['fetched_at']})",
                          sources=[a.url for a in articles[:5]])
         name = fx.CURRENCY_NAME.get(currency, currency).split()
-        return rank_articles(articles, [(name, 3), (["pound", "sterling", "gbp", "exchange", "currency", "forex"], 2)],
-                             k=MAX_ARTICLES_SHOWN)
+        return rank_by_trust(articles, [(name, 3), (["pound", "sterling", "gbp", "exchange", "currency", "forex"], 2)],
+                             k=MAX_ARTICLES_SHOWN, trace=self.trace, agent=self.name, label=query)
 
     def _move(self, target, work_id):
         currency = fx.COUNTRY_CURRENCY.get(target.country)
