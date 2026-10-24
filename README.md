@@ -249,7 +249,7 @@ and quantities) is made up; see `data/README_DATA.md`. The **evidence is real**:
 Al Jazeera, NPR, DW) and exchange rates from the free ECB-based Frankfurter API.
 
 `data/decision_assumptions.csv` (`option,premium_pct,note`) holds the premiums the Decision Maker uses for a hedge (1.5%), a price lock (2%) and a second
-supplier (3%), and the SCENARIO rows the calculator uses (`SCENARIO_SMALL/LIKELY/LARGE_MOVE_PCT` = 2 / 6 / 12, `FX_PASS_THROUGH_PCT` = 100), and `RERUN_FX_MOVE_PCT` = 2, the FX move after which a person should re-run Vidhur). They are **illustrative
+supplier (3%), and the SCENARIO rows the calculator uses (`SCENARIO_SMALL/LIKELY/LARGE_MOVE_PCT` = 2 / 6 / 12, `FX_PASS_THROUGH_PCT` = 100), and `RERUN_FX_MOVE_PCT` = 2 (the FX move, in percent, after which a person should re-run Vidhur). They are **illustrative
 assumptions, not market quotes**, and the CFO brief points to the file under every option comparison and calculation.
 
 ## Why two drivers
@@ -548,10 +548,10 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 ## Limitations
 
 - **Nemotron Super is not available on this account (404).** Checked 2026-10-24 on Nightshift 1.2.3: `nvidia/nemotron-3-super-120b-a12b` answers 502 `nvidia_404 ... Function not found for account` and `nvidia/llama-3.3-nemotron-super-49b-v1.5` answers 410 Gone. `vidhur-evaluator` still resolves to Lightning, so every agent runs on Lightning (`vidhur-analyst`). That means **no cross-model check: the same model drafts, audits and challenges.** The separation is of roles and prompts, not of models. If a larger lane is fixed, set `MODEL_EVALUATOR` / `MODEL_EVALUATOR_EXPECTED` in `.env`.
-- **Live runs are slow and the runtime is flaky.** Demo runs took 341-990 s (about 6-16 minutes); full runs take 15-20 minutes on a healthy runtime and 35-50 minutes on a busy one, because there are many sequential model calls against a per-request deadline of about 45 s. Nightshift 502s (`provider_error`, `empty_response`, `provider_deadline`) can stop a step. Vidhur then retries with bounded attempts and timeouts, finishes with **partial results labelled honestly** ("Red Team review could not run", "Could not verify"), saves what completed, and exits non-zero (`2`). The JSONL trace shows where it failed. Several kept sample runs are partial for this reason and are marked so.
+- **Live runs are slow and the runtime is flaky.** Demo runs took 341-990 s (about 6-16 minutes); full runs take 15-20 minutes on a healthy runtime and longer when it is busy, because there are many sequential model calls against a per-request deadline of about 45 s. Nightshift 502s (`provider_error`, `empty_response`, `provider_deadline`) can stop a step. Vidhur then retries with bounded attempts and timeouts, finishes with **partial results labelled honestly** ("Red Team review could not run", "Could not verify"), saves what completed, and exits non-zero (`2`). The JSONL trace shows where it failed. Several kept sample runs are partial for this reason and are marked so.
 - **TWD is proxied by USD.** The ECB does not publish a Taiwan dollar rate. Zetaris prices the Taiwan GPU in USD, and the backtest uses USD as the proxy for TWD; Vidhur's own Currency Analyst reports "no data" for TWD and is skipped for that part. A production version would use a treasury or FX provider with direct TWD rates (not built).
 - **Freight is left out.** There is no freight analyst; Ganga's high-value parts mostly ship by air, so freight is a small share of landed cost, but it is not modelled. Duties and part-price changes are not modelled either.
-- **Two analysts of six.** Commodity, logistics, trade and tariff, and supplier-health analysts are not built.
+- **Two analysts today.** Geopolitics and currency only. Commodity, logistics, trade and supplier-health analysts are not built.
 - **The deterministic checks miss 3 of 20 planted claims** (cause not supported, F17; wrong date, F19 and F20). Those need the model check, which is itself one small model.
 - **The synthetic data is declared.** Ganga AI Solutions and its purchase history are made up; news and FX are real.
 - **The backtest is future work.** It produced no scored result (see Evaluation); no claim is made that Vidhur beats a baseline.

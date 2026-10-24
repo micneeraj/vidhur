@@ -17,8 +17,7 @@ not a probability. "Correct" means arithmetic on the stated inputs, not that the
 **What happens if a source is missing?**
 The claim goes back to the analyst with the reason (max 2 send-backs). If it still lacks independent, fresh, trusted support, it is shown as
 "Could not verify" with no GBP figure, and the brief says that is not zero impact. If the model runtime is down, the step is labelled as not run
-(for example NOT_CHALLENGED) instead of being passed off as done. In our demo runs one driver was withdrawn this way on three of the
-earlier attempts.
+(for example NOT_CHALLENGED) instead of being passed off as done. In the kept live run (`output_examples/live_run_20261024_could_not_verify/`) the Taiwan driver ended this way.
 
 **Why multiple agents?**
 Separation of duties. The analyst that proposes a claim is not the one that audits it (Evaluator), and the decision is attacked by a third
@@ -29,7 +28,7 @@ model (Nemotron Lightning), so this separates roles and prompts, not independent
 A spreadsheet holds numbers and cannot tell you whether the story behind them is supported. Vidhur ties a news event to Ganga's own spend, refuses
 to put a number on an unsupported claim, shows the calculation and the sources behind each figure, and records the objections to its own
 recommendation. It does not replace the spreadsheet: the arithmetic is the same kind a spreadsheet does, done in Python. What it adds is the
-evidence check and the challenge. Limits: synthetic company data, two analysts of six, premiums are assumptions, and the backtest against
+evidence check and the challenge. Limits: synthetic company data, two analysts, premiums are assumptions, and the backtest against
 baselines is future work, so we make no accuracy claim.
 
 **Why use this instead of an analyst?**
@@ -71,4 +70,4 @@ No, but it is two analysts today. In a normal run the Planner (a model call, val
 in Zetaris and gives a reason for each; in `--demo` the two drivers are fixed by a documented rule. Two feedback loops sit on top: the Evaluator send-back loop
 (the analyst must fix a claim or give up) and the Decision Maker and Red Team challenge loop (objections must cite evidence; a revision needs a written reason).
 All agents share one event-sourced World State. Adding an analyst is a small registration (write the class, register it in `agents/planner.py` and `main.py`);
-it is not zero code, and four more analysts are not built.
+it is not zero code, and no other analyst is built.
