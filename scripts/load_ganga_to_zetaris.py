@@ -42,6 +42,11 @@ def copy_into_zetaris_volume(csv_files):
     subprocess.run(["docker", "exec", "-u", "root", container, "chmod", "-R", "a+rX", VOLUME_DIR], check=True, capture_output=True)
 
 
+def csv_header(path):
+    with open(path, newline="", encoding="utf-8") as f:
+        return next(csv.reader(f))
+
+
 def create_table_sql(table, database=DATABASE):
     return (
         f"CREATE LIGHTNING FILESTORE TABLE {table} FROM {database} FORMAT CSV OPTIONS ("
@@ -73,10 +78,13 @@ def main():
         expected = csv_row_count(path)
         if table in existing:
             actual = int(zt.query(f"SELECT COUNT(*) AS n FROM {DATABASE}.{table}")[0]["n"])
-            if actual == expected:
+            sample = zt.query(f"SELECT * FROM {DATABASE}.{table} LIMIT 1")
+            same_columns = not sample or list(sample[0]) == csv_header(path)
+            if actual == expected and same_columns:
                 print(f"  {DATABASE}.{table}: already loaded ({actual} rows) - nothing to do")
                 continue
-            print(f"  {DATABASE}.{table}: {actual} rows in Zetaris but {expected} in CSV - re-registering")
+            print(f"  {DATABASE}.{table}: {actual} rows in Zetaris but {expected} in CSV"
+                  f"{'' if same_columns else ' (columns differ from the CSV header)'} - re-registering")
             zt.query(f"DROP LIGHTNING DATABASE TABLE {DATABASE}.{table}")
         zt.query(create_table_sql(table))
         actual = int(zt.query(f"SELECT COUNT(*) AS n FROM {DATABASE}.{table}")[0]["n"])

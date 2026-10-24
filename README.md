@@ -2,6 +2,8 @@
 
 **The Agent That Can Explain Why** - Open Agent Hackathon 2026 (GenAI Works), Track 2.
 
+*I built an AI auditor for cost decisions. It connects external events to actual company exposure, checks whether the evidence supports the numbers, and challenges its own recommendation before a CFO acts on it.*
+
 Company data is synthetic for privacy; FX and news are live.
 
 ## What it is
@@ -270,7 +272,8 @@ The Evaluator's deterministic checks (no AI, run before the model check) enforce
 |---|---|
 | `NUMBER_NOT_IN_SOURCE` | a % or figure in the claim is not in a cited excerpt and is not tagged `(SCENARIO)` (a range labelled FORECAST must be printed by a source) |
 | `FX_MISMATCH` | a claimed FX rate differs from the real ECB rate for its date by more than 2%, the claimed move does not follow from its own rates, or the rate cannot be checked |
-| `CURRENCY_COUNTRY_MISMATCH` | the currency is not the supplier country's (Taiwan: TWD, USD as proxy; Korea: KRW; Germany: EUR; China: CNY; also Japan JPY, Malaysia MYR) |
+| `CURRENCY_COUNTRY_MISMATCH` | the currency is neither the supplier country's (Taiwan: TWD, USD as proxy; Korea: KRW; Germany: EUR; China: CNY; also Japan JPY, Malaysia MYR) nor the currency Zetaris prices the part in |
+| `FX_PAIR_MISMATCH` | the FX pair of a currency claim differs from the currency of the Zetaris purchase row the GBP calculation used (for example a GBP/EUR claim on a part priced in USD) |
 | `GBP_MISMATCH` | a GBP figure in the claim is more than 10% away from every calculator result for that part (or there is no calculator result to check it) |
 | `DUPLICATE_SOURCE` | sources with the same outlet, the same original outlet ("via X"), the same headline or a near-identical excerpt count as one and fewer than two independent sources remain |
 | `STALE_SOURCE` | a source is older than `EVIDENCE_MAX_AGE_DAYS` (config, default 30) |
@@ -289,7 +292,10 @@ assumptions, not market quotes**, and the CFO brief points to the file under eve
 ## Sample inputs and outputs
 
 `input_examples/input_<time>.json` is saved by `main.py` for each run (the command, flags, lanes and Ganga spend read from Zetaris, no secrets);
-`output_examples/brief_<time>.md` is the CFO brief it produced; the trace is `logs/run_<time>.jsonl`. These are real runs; outputs are never edited by hand. **They predate `--demo`, the calculator records and the evidence trail page (older output schema); fresh samples are pending, see Known limitations.**
+`output_examples/brief_<time>.md` is the CFO brief it produced; the trace is `logs/run_<time>.jsonl`. These are real runs; outputs are never edited by hand. **The runs in the table below predate `--demo`, the calculator records and the evidence trail page (older output schema).** The current-schema samples are the two `--demo` folders:
+
+- `output_examples/demo_run_20261024_v2/` (input `input_20261024_144545.json`): the current complete `--demo` run, after the currency and hedge-logic fixes. D1 (Taiwan, geopolitics) was sent back once for `TOO_FEW_SOURCES`, passed, and its 100 % hedge was revised by the Red Team loop to a 20 % second-supplier shift. D2 (Germany, currency) uses GBP/EUR on a row Zetaris prices in EUR, shows only the assumption it used (`FX_PASS_THROUGH_PCT`), and ends at NO_ACTION because the move is a cost fall. In that run the live FX call timed out, so the calculation used the rate stored on the Zetaris row and the brief says so.
+- `output_examples/demo_run_20261024/`: an earlier complete run, **kept for the record but made before the currency and hedge-logic fixes** (its D2 priced the German part in USD and used GBP/USD against a GBP/EUR claim, and the decision logic could recommend a hedge on a cost fall). Do not cite its D2.
 
 | Input | Output (brief) | What it shows |
 |---|---|---|
@@ -310,6 +316,9 @@ The Evaluator checks the **claims**; the **Red Team** checks the **decision** bu
   with a rationale. **Every GBP figure is computed in Python** (`core/decisions.py`): cost under worst / likely / best and "if the forecast is
   wrong" (the mirror of the likely case), for no action, a 50% hedge, a price lock and a 30% second-supplier shift. The protection premiums
   are stated assumptions, not quotes.
+- **No hedge on a cost fall (deterministic rule, before the AI proposal):** if the worst case of the scenario range is not a cost increase (every scenario is a saving),
+  `decisions.rule_choice` fixes the decision to NO_ACTION / monitor, with no model call and no hedge, price lock or second supplier. This holds in the aggressive demo too, and a
+  Red Team revision cannot bring a hedge back. Unit-tested in `tests/test_calculator.py`.
 - **Red Team** (`core/red_team.py`) returns structured JSON objections of five kinds: forecast wrong (opposite scenario), cost of acting vs not
   acting, concentration (supplier / country), weakest evidence, cheaper alternative. Each has a severity and must cite evidence ids (S1.., the
   work id, an option name) or numbers present in the evidence. Objections without a reference are dropped; if none survive, the model is re-asked once.
@@ -389,9 +398,9 @@ not a substitute for it. The old run had F18 caught by the model; the new run ca
 intended check (N01 fabricated number, N02 FX rate, N03 wrong currency, N04 GBP figure, N05 duplicate source, N06 stale source). The only harness change: the old code `NOT_INDEPENDENT` was
 renamed `DUPLICATE_SOURCE`. Same limits as above: builder-written cases, one run, synthetic articles.
 
-### 2. Backtest against baselines - NOT completed
+### 2. Backtest against baselines - FUTURE WORK (not completed, no result claimed)
 
-`python scripts/eval_backtest.py` compares (a) a naive "always flat" baseline, (b) one Nemotron call with the same inputs and (c) Vidhur, on 5 historical cases, scoring
+**Status: future work.** The script exists and is tested, but it never produced a scored result, so nothing here should be read as evidence that Vidhur beats a baseline. `python scripts/eval_backtest.py` compares (a) a naive "always flat" baseline, (b) one Nemotron call with the same inputs and (c) Vidhur, on 5 historical cases, scoring
 the direction of Ganga's landed cost in GBP over the next 91 days (up / down / flat within +/-2 %) and whether Vidhur's GBP range contained the real outcome.
 Real outcomes use real ECB rates (Frankfurter) and Ganga's synthetic purchase mix. **Taiwan dollar is proxied by USD because the ECB does not publish TWD**
 (Taiwan is the GPU chip supplier and Ganga's largest spend, so this matters; Vidhur's own Currency Analyst reports "no data" for TWD).
@@ -454,17 +463,15 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 
 ## Known limitations
 
-- **Demo mode has not yet produced a clean, complete run on the live runtime.** On 2026-10-24 (Nightshift 1.2.3) five consecutive `--demo` attempts each ended
-  partial: Nightshift calls took 30-170 s and several hit the 60 s timeout, so the time budget stopped the run and the affected drivers were correctly shown
-  as **Could not verify** (the degradation paths work; they are covered by `tests/test_demo_mode.py`). The slowest steps were the long geopolitics prompts and
-  the Decision Maker. One attempt finished both analysts and the Evaluator in about 3.5 minutes. The three required sample outputs for the current schema are
-  therefore still to be recorded when the runtime is healthy; the samples below predate the calculator and are labelled as such.
+- **Demo mode now has a complete live run, but it is not guaranteed.** `output_examples/demo_run_20261024_v2/` is a full `--demo` run (905 s, 14 model calls ok, 1 failed attempt retried); the older `demo_run_20261024/` was made before the currency and hedge-logic fixes. Earlier the same day three attempts ended partial because the Decision Maker and Red Team calls came back empty (runtime 502 `empty_response`). The fix is in `core/llm.py`: those two agents run with the model's reasoning on, an 8000-token budget and a longer timeout (Red Team 300 s), and an empty response is retried with a 1.5x larger budget. A run can still end partial if the runtime is busy; the brief then says which step could not run.
 - **Nemotron Super is not available on this account.** Checked 2026-10-24 on Nightshift 1.2.3: explicit model ids are honoured (a wrong id gets a clean 404), but
   `nvidia/nemotron-3-super-120b-a12b` answers 502 `nvidia_404 ... Function not found for account` and `nvidia/llama-3.3-nemotron-super-49b-v1.5` answers 410 Gone.
   `vidhur-evaluator` still resolves to Lightning. Planner and Evaluator therefore stay on `vidhur-analyst`.
 
+- **Latency.** Nightshift enforces a per-request deadline of roughly 45 s on the runtime; long reasoning calls (Decision Maker, Red Team) took 2-4 minutes and sometimes failed. A `--demo` run takes about 15-20 minutes, a full run longer.
+- **The backtest is future work.** It produced no scored result (see Evaluation).
 - **Two analysts of six.** Commodity, logistics, trade & tariff and supplier-health analysts are not built.
-- **Lightning is used for all agents.** The evaluator lane could not be pinned to a larger Nemotron in Nightshift: `scripts/check_lanes.py` showed `vidhur-evaluator`
+- **Lightning is used for all agents, so there is no cross-model check: the same model drafts, audits and challenges.** The evaluator lane could not be pinned to a larger Nemotron in Nightshift: `scripts/check_lanes.py` showed `vidhur-evaluator`
   answered by Lightning (`nemotron-3.5-lightning-30b-a3b`) in 3 of 3 calls, so the Planner and Evaluator are pointed at the `vidhur-analyst` lane on purpose
   (the pin is real, not accidental). If a larger lane is fixed, set `MODEL_EVALUATOR` / `MODEL_EVALUATOR_EXPECTED` in `.env`.
 - **Runtime 502s can stop the Red Team.** The Nightshift 1.2.1 provider often answers 502 (`provider_error`, `empty_response` or `provider_deadline`). In the
