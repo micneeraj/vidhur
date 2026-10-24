@@ -12,6 +12,13 @@ class Target:
     supplier_name: str
     quarter: str
     quarterly_spend_gbp: float
+    currency: str = ""  # the currency Zetaris prices this part in (the invoice currency); "" = unknown, fall back to the country's
+
+    @property
+    def fx_currency(self):
+        """The currency whose GBP rate drives this part's cost: the Zetaris row's currency, else the supplier country's."""
+        from core import fx
+        return self.currency or fx.COUNTRY_CURRENCY.get(self.country)
 
 
 def latest_quarter(zt, max_quarter=None):
@@ -25,14 +32,14 @@ def top_targets(zt, n=3, max_quarter=None):
     quarter = latest_quarter(zt, max_quarter)
     rows = zt.query(
         "SELECT p.part_id AS part_id, p.part_name AS part_name, p.category AS category, "
-        "s.country AS country, s.supplier_name AS supplier_name, u.quarter AS quarter, u.total_gbp AS spend "
+        "s.country AS country, s.supplier_name AS supplier_name, u.quarter AS quarter, u.total_gbp AS spend, u.currency AS currency "
         "FROM ganga.purchases u "
         "JOIN ganga.parts p ON u.part_id = p.part_id "
         "JOIN ganga.suppliers s ON p.supplier_id = s.supplier_id "
         f"WHERE u.quarter = '{quarter}' ORDER BY u.total_gbp DESC"
     )
     return [
-        Target(r["part_id"], r["part_name"], r["category"], r["country"], r["supplier_name"], r["quarter"], float(r["spend"]))
+        Target(r["part_id"], r["part_name"], r["category"], r["country"], r["supplier_name"], r["quarter"], float(r["spend"]), r["currency"])
         for r in rows[:n]
     ]
 
@@ -63,10 +70,10 @@ def purchase_rows(zt, part_id, quarter):
     safe_part, safe_quarter = part_id.replace("'", ""), quarter.replace("'", "")
     rows = zt.query(
         "SELECT p.part_id AS part_id, p.part_name AS part_name, s.country AS country, u.quarter AS quarter, u.quantity AS quantity, "
-        "u.unit_price_usd AS unit_price, u.usd_gbp_rate AS rate, u.total_gbp AS total_gbp "
+        "u.currency AS currency, u.unit_price AS unit_price, u.gbp_per_currency_unit AS rate, u.total_gbp AS total_gbp "
         "FROM ganga.purchases u JOIN ganga.parts p ON u.part_id = p.part_id JOIN ganga.suppliers s ON p.supplier_id = s.supplier_id "
         f"WHERE u.part_id = '{safe_part}' AND u.quarter = '{safe_quarter}'")
     if not rows:
         raise LookupError(f"No purchases for {part_id} in {quarter}")
-    return [PurchaseRow(r["part_id"], r["part_name"], r["country"], float(r["quantity"]), float(r["unit_price"]), "USD", r["quarter"],
+    return [PurchaseRow(r["part_id"], r["part_name"], r["country"], float(r["quantity"]), float(r["unit_price"]), r["currency"], r["quarter"],
                         float(r["total_gbp"]), float(r["rate"])) for r in rows]

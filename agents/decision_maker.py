@@ -79,7 +79,8 @@ def apply_responses(ev, decision, actionable, data):
     revised = None
     if isinstance(rd, dict):
         choice = decisions.normalize_choice(rd.get("kind"), rd.get("share_pct"))
-        if choice and choice != (decision["kind"], decision["share_pct"]):
+        if choice and choice != (decision["kind"], decision["share_pct"]) and not (
+                decisions.rule_choice(ev["impact"]) and choice[0] != "NO_ACTION"):  # the no-hedge rule also binds revisions
             revised = (*choice, str(rd.get("rationale", "")).strip())  # no rationale = no usable revision (no fallback to the old one)
 
     responses = {}
@@ -133,6 +134,10 @@ class DecisionMaker:
             return None
 
     def propose(self, ev, aggressive=False):
+        fixed = decisions.rule_choice(ev["impact"])
+        if fixed:  # deterministic rule first: no model call, not even in the aggressive demo
+            self.trace.event(self.name, "propose:rule", input_summary=ev["work_id"], decision="NO_ACTION", output_summary=fixed[2])
+            return make_decision(ev["spend_gbp"], ev["impact"], fixed[0], fixed[1], fixed[2], 1, "rule")
         rows = decisions.compare_options(ev["spend_gbp"], ev["impact"])
         prompt = (f"{evidence_block(ev, rows, None)}\n\nRecommend ONE option for next quarter. Options: {', '.join(decisions.KINDS)}. "
                   "Weigh the cost of protection against the downside it removes, the confidence in the forecast, and concentration. "

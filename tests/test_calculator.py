@@ -49,7 +49,7 @@ def test_calculation_record_has_inputs_fx_formula_and_assumptions():
     assert rec["inputs"][0] == {"part_id": "P001", "part_name": "GPU", "supplier_country": "Taiwan", "quantity": 1000,
                                 "unit_price": 1000.0, "currency": "USD", "quarter": "2026-Q3", "label": "OBSERVED"}
     assert rec["fx"] == {"currency": "USD", "units_per_gbp": 1.25, "date": "2026-10-23", "source": "Frankfurter", "label": "OBSERVED"}
-    assert "quantity x unit_price" in rec["formula"] and rec["assumptions"] == ASSUMPTIONS
+    assert "quantity x unit_price" in rec["formula"] and rec["assumptions"] == {"SCENARIO_LARGE_MOVE_PCT": 12.0, "SCENARIO_LIKELY_MOVE_PCT": 6.0, "SCENARIO_SMALL_MOVE_PCT": 2.0}
     assert rec["observed_total_gbp_in_zetaris"] == 767000.0
 
 
@@ -105,3 +105,63 @@ def test_brief_shows_the_why_line_and_a_calculation_section():
     assert "How this number was calculated" in text and "1 GBP = 1.25 USD on 2026-10-23" in text and "OBSERVED" in text
     assert "scenario range" in text.lower() and "SCENARIO_LARGE_MOVE_PCT = 12" in text
     assert "no claim passed" in _why_it_matters([]).lower()
+
+
+def test_assumptions_recorded_are_only_the_ones_used():
+    scenario = calc.compute(ROWS, claim(), 1.25, "2026-10-23", "F", ASSUMPTIONS).calc["assumptions"]
+    observed = calc.compute(ROWS, claim(label="OBSERVED", low=1.0, high=3.0), 1.25, "2026-10-23", "F", ASSUMPTIONS).calc["assumptions"]
+    forecast = calc.compute(ROWS, claim(label="FORECAST", low=1.0, high=3.0), 1.25, "2026-10-23", "F", ASSUMPTIONS).calc["assumptions"]
+    assert set(scenario) == {"SCENARIO_LARGE_MOVE_PCT", "SCENARIO_LIKELY_MOVE_PCT", "SCENARIO_SMALL_MOVE_PCT"}
+    assert observed == {"FX_PASS_THROUGH_PCT": 100.0}  # an observed move shows no 12 / 6 / 2 scenario percentages
+    assert forecast == {}
+
+
+def test_fx_pair_must_match_the_currency_of_the_zetaris_row():
+    from agents.evaluator import fx_pair_findings
+    eur_rows = [calc.PurchaseRow("P006", "Cooling", "Germany", 291, 1896.47, "EUR", "2026-Q3")]
+    usd_rows = [calc.PurchaseRow("P006", "Cooling", "Germany", 291, 2150.0, "USD", "2026-Q3")]
+    eur_claim = Claim("D2", "x", "P006", "Cooling", "Germany", "cost_up", 1.0, 2.0, [], currency="EUR")
+    assert fx_pair_findings(eur_claim, calc.compute(eur_rows, eur_claim, 1.17, "2026-10-23", "F", ASSUMPTIONS).calc) == []
+    found = fx_pair_findings(eur_claim, calc.compute(usd_rows, eur_claim, 1.33, "2026-10-23", "F", ASSUMPTIONS).calc)
+    assert [f.code for f in found] == ["FX_PAIR_MISMATCH"] and "GBP/EUR" in found[0].message and "USD" in found[0].message
+
+
+def test_p006_is_priced_in_eur_in_the_synthetic_purchase_data():
+    import csv
+    from core import config
+    rows = list(csv.DictReader(open(config.ROOT / "data" / "purchases.csv", newline="", encoding="utf-8")))
+    assert {r["currency"] for r in rows if r["part_id"] == "P006"} == {"EUR"}
+    assert {r["currency"] for r in rows if r["part_id"] != "P006"} == {"USD"}
+    latest = [r for r in rows if r["part_id"] == "P006"][-1]  # still equals the recorded GBP total
+    assert abs(float(latest["quantity"]) * float(latest["unit_price"]) * float(latest["gbp_per_currency_unit"]) - float(latest["total_gbp"])) < 1
+
+
+def test_no_hedge_when_the_worst_case_is_a_saving():
+    from agents.decision_maker import DecisionMaker, apply_responses
+    from core import decisions
+    saving = {"worst_gbp": -1000.0, "likely_gbp": -3000.0, "best_gbp": -6000.0}
+    increase = {"worst_gbp": 6000.0, "likely_gbp": 3000.0, "best_gbp": 1000.0}
+    kind, share, why = decisions.rule_choice(saving)
+    assert (kind, share) == ("NO_ACTION", 0) and "not a cost increase" in why
+    assert decisions.rule_choice(increase) is None
+
+    class NoModel(DecisionMaker):  # a model call here would be a failure of the rule
+        def __init__(self):
+            self.name = "decision_maker"
+            self.trace = type("T", (), {"event": lambda *a, **k: None})()
+
+        def _ask(self, *a, **k):
+            raise AssertionError("the model must not be called when the rule fires")
+
+    ev = {"work_id": "D2", "spend_gbp": 100000.0, "impact": saving}
+    for aggressive in (False, True):  # even the aggressive demo cannot hedge a saving
+        d = NoModel().propose(ev, aggressive=aggressive)
+        assert (d["kind"], d["source"]) == ("NO_ACTION", "rule") and d["premium_gbp"] == 0
+    first = NoModel().propose(ev)
+    ev = {**ev, "sources": [], "claim": "c", "part_id": "P006", "part_name": "Cooling", "direction": "cost_down", "pct_low": 1, "pct_high": 2,
+          "confidence": "Medium", "strength_line": "", "analyst": "currency", "retries": 0, "strength": "",
+          "concentration": {"total_spend_gbp": 1, "part_share_pct": 1, "country": "Germany", "country_share_pct": 1, "supplier": "S", "supplier_share_pct": 1}}
+    objection = [{"id": "O1", "severity": "high", "type": "x", "text": "t", "evidence_refs": [], "suggested_change": ""}]
+    reply = {"responses": [{"objection_id": "O1", "action": "REVISE", "reason": "r", "evidence_refs": ["£100,000"]}],
+             "revised_decision": {"kind": "HEDGE", "share_pct": 50, "rationale": "r"}}
+    assert apply_responses(ev, first, objection, reply)[1] is None  # a revision cannot reintroduce a hedge

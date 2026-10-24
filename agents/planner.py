@@ -79,8 +79,8 @@ class Planner:
 
         rows = "\n".join(
             f"{t.part_id} | {t.part_name} | {t.country} | GBP {t.quarterly_spend_gbp:,.0f} ({t.quarterly_spend_gbp / total:.0%} of spend) | "
-            f"supplier currency {fx.COUNTRY_CURRENCY.get(t.country, '?')} "
-            f"{'(FX data available)' if fx.COUNTRY_CURRENCY.get(t.country) in supported else '(NO FX data from the ECB)'}"
+            f"priced in {t.fx_currency or '?'} "
+            f"{'(FX data available)' if t.fx_currency in supported else '(NO FX data from the ECB)'}"
             for t in targets)
         news = "\n".join(f"{c}: " + " || ".join(h) if h else f"{c}: (no recent headlines)" for c, h in headlines.items())
         analysts = "\n".join(f"- {k}: {v}" for k, v in ANALYSTS.items())

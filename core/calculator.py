@@ -78,6 +78,16 @@ def percentage_basis(claim, assumptions):
             "no source states a percentage; scenario assumption from data/decision_assumptions.csv")
 
 
+def assumptions_used(label):
+    """The assumption names a calculation of this basis label actually used. A sourced percentage (FORECAST) uses none; an observed FX
+    move uses only the pass-through share; a SCENARIO range uses the three move sizes."""
+    if label == FORECAST:
+        return ()
+    if label == OBSERVED:
+        return ("FX_PASS_THROUGH_PCT",)
+    return ("SCENARIO_LARGE_MOVE_PCT", "SCENARIO_LIKELY_MOVE_PCT", "SCENARIO_SMALL_MOVE_PCT")
+
+
 def compute(rows, claim, units_per_gbp, fx_date, fx_source, assumptions):
     """Impact (with its calculation record) for one claim on one part. Pure function: no I/O.
 
@@ -113,7 +123,7 @@ def compute(rows, claim, units_per_gbp, fx_date, fx_source, assumptions):
         "formula": FORMULA, "direction": claim.direction,
         "result_gbp": {"worst": round(worst, 2), "likely": round(mid, 2), "best": round(best, 2), "label": SCENARIO,
                        "note": RANGE_NOTE},
-        "assumptions": {k: assumptions[k] for k in REQUIRED_ASSUMPTIONS},
+        "assumptions": {k: assumptions[k] for k in assumptions_used(label)},
     }
     return Impact(baseline_quarterly_spend_gbp=round(baseline, 2), worst_gbp=round(worst, 2), likely_gbp=round(mid, 2),
                   best_gbp=round(best, 2), pct_low=small, pct_high=large, direction=claim.direction, pct_label=label, calc=record)

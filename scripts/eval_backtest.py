@@ -337,7 +337,7 @@ def main():
             mtrace = Trace(quiet=True)
             mtrace.path = mtrace.path.with_name(f"backtest_{case['case_id']}_modelonly_{mtrace.path.stem.removeprefix('run_')}.jsonl")
             fx_lines = []
-            for cur in sorted({c for c in (fx.COUNTRY_CURRENCY.get(t.country) for t in targets) if c}):
+            for cur in sorted({c for c in (t.fx_currency for t in targets) if c}):
                 try:
                     mv = fx.fetch_fx_move(cur)
                     fx_lines.append(f"GBP vs {cur}: 30-day {mv.move_30d_pct:+.2f} %, 90-day {mv.move_90d_pct:+.2f} % (positive = {cur} dearer in pounds)")

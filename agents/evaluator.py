@@ -194,9 +194,22 @@ def currency_country_findings(claim):
     """CURRENCY_COUNTRY_MISMATCH: the currency a claim is about must be the supplier country's (Taiwan: TWD, with USD as proxy)."""
     cur = (claim.currency or (claim.computed or {}).get("currency") or "").upper()
     allowed = fx.COUNTRY_CURRENCIES.get(claim.supplier_country)
+    invoice = ((claim.computed or {}).get("invoice_currency") or "").upper()
+    if invoice:  # Zetaris prices the part in this currency, so it is the exposure whatever the supplier's home currency
+        allowed = {*(allowed or ()), invoice}
     if cur and allowed and cur not in allowed:
         return [Finding("CURRENCY_COUNTRY_MISMATCH", f"{cur} is not the currency of {claim.supplier_country} "
                         f"({'/'.join(sorted(allowed))}); the claim must use the supplier country's currency.")]
+    return []
+
+
+def fx_pair_findings(claim, calc):
+    """FX_PAIR_MISMATCH: the FX pair of a currency claim must be the currency of the Zetaris row the GBP calculation used."""
+    cur = (claim.currency or (claim.computed or {}).get("currency") or "").upper()
+    priced = ((calc or {}).get("fx") or {}).get("currency", "").upper()
+    if cur and priced and cur != priced:
+        return [Finding("FX_PAIR_MISMATCH", f"The claim is about GBP/{cur} but Ganga's Zetaris row for {claim.part_id} is priced in "
+                        f"{priced}, so the calculation used GBP/{priced}; the FX pair must match the row's currency.")]
     return []
 
 
@@ -347,6 +360,7 @@ def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None, calc
     # 5. numbers: every figure is traceable to a source, the data or the calculator
     findings.extend(number_findings(claim, known))
     findings.extend(currency_country_findings(claim))
+    findings.extend(fx_pair_findings(claim, calc))
     findings.extend(fx_rate_findings(claim, fx_rate_fn or fx.rate_on))
     findings.extend(gbp_findings(claim, calc))
     return findings

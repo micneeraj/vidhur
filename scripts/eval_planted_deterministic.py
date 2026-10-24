@@ -13,6 +13,7 @@ Output: output_examples/eval_planted_deterministic.md and logs/eval_planted_det_
 """
 
 import csv
+import dataclasses
 import importlib.util
 import json
 import os
@@ -169,8 +170,8 @@ def main():
     for r in purchases:
         if r["quarter"] == quarter:
             rows_by_part.setdefault(r["part_id"], []).append(calculator.PurchaseRow(
-                r["part_id"], parts[r["part_id"]]["part_name"], catalog[r["part_id"]]["country"], float(r["quantity"]), float(r["unit_price_usd"]),
-                "USD", quarter, float(r["total_gbp"]), float(r["usd_gbp_rate"])))
+                r["part_id"], parts[r["part_id"]]["part_name"], catalog[r["part_id"]]["country"], float(r["quantity"]), float(r["unit_price"]),
+                r["currency"], quarter, float(r["total_gbp"]), float(r["gbp_per_currency_unit"])))
     assumptions = calculator.load_assumptions()
     try:
         usd_rate, usd_day = fx.rate_on("USD")
@@ -188,7 +189,10 @@ def main():
         except Exception as exc:
             print(f"FX data for {cur} unavailable ({type(exc).__name__}); its cases will be NOT_EVALUATED")
 
-    baselines = {pid: calculator.compute(rs, _stub_claim(pid), usd_rate, usd_day, "ECB", assumptions).baseline_quarterly_spend_gbp
+    def units_per_gbp(rs):  # live USD rate for USD rows; the stored row rate for any other currency (e.g. P006 in EUR)
+        return usd_rate if rs[0].currency == "USD" else 1 / rs[0].row_rate_gbp_per_unit
+
+    baselines = {pid: calculator.compute(rs, _stub_claim(pid), units_per_gbp(rs), usd_day, "ECB", assumptions).baseline_quarterly_spend_gbp
                  for pid, rs in rows_by_part.items()}
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     results_file = config.ROOT / "logs" / f"eval_planted_det_{stamp}.jsonl"
@@ -202,7 +206,10 @@ def main():
         claim = planted.build_claim(row, pool, fx_articles, fx_moves, baselines, names={p: c["part_name"] for p, c in catalog.items()})
         if row.get("fx_mode") == "bad_rate":
             claim.computed["end_rate"] = round(float(claim.computed["end_rate"]) * 1.08, 4)  # 8% away from the real rate
-        calc = calculator.compute(rows_by_part[claim.part_id], claim, usd_rate, usd_day, "ECB", assumptions).calc
+        # the planted claims are written for each supplier country's own currency; price the stub rows in the claim's currency so only
+        # the planted fault is under test (the FX-pair check has its own unit test)
+        stub_rows = [dataclasses.replace(r, currency=claim.currency or r.currency) for r in rows_by_part[claim.part_id]]
+        calc = calculator.compute(stub_rows, claim, units_per_gbp(rows_by_part[claim.part_id]), usd_day, "ECB", assumptions).calc
         findings = deterministic_checks(claim, pool, catalog, now=now, calc=calc, fx_rate_fn=fx.rate_on)
         verdict = Verdict("SEND_BACK", [f"{f.code}: {f.message}" for f in findings]) if findings else Verdict("PASS", ["deterministic checks passed"])
         rec = planted.classify({**row, "expected_codes": rec_base["expected_codes"]}, verdict)

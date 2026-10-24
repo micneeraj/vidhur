@@ -58,6 +58,16 @@ def normalize_choice(kind, share_pct):
     return kind, int(round(min(max(share, MIN_SHARE), MAX_SHARE)))
 
 
+def rule_choice(impact):
+    """Deterministic rule applied BEFORE any model proposal: protection only makes sense against a cost increase. If the worst case
+    of the scenario range is not a cost increase (every scenario is a saving or zero), the choice is fixed to NO_ACTION / monitor.
+    Returns (kind, share_pct, rationale) when the rule fires, else None. impact: worst_gbp."""
+    if impact["worst_gbp"] > 0:
+        return None
+    return ("NO_ACTION", 0, f"Rule: the worst case is {gbp(impact['worst_gbp'])}, not a cost increase, so there is nothing to protect "
+            "against; no hedge, price lock or second supplier. Monitor.")
+
+
 def scenarios(impact):
     """The four scenario changes in quarterly cost (GBP) for doing nothing. impact: worst_gbp / likely_gbp / best_gbp."""
     return {"worst": impact["worst_gbp"], "likely": impact["likely_gbp"], "best": impact["best_gbp"],

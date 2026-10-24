@@ -57,7 +57,7 @@ class CurrencyAnalyst(AnalystBase):
                              k=MAX_ARTICLES_SHOWN, trace=self.trace, agent=self.name, label=query)
 
     def _move(self, target, work_id):
-        currency = fx.COUNTRY_CURRENCY.get(target.country)
+        currency = target.fx_currency
         if currency is None:
             self.notes[work_id] = f"no currency mapped for {target.country}"
             return None, None
@@ -106,7 +106,7 @@ class CurrencyAnalyst(AnalystBase):
         numbers = (f"Computed from ECB reference rates (Frankfurter API): the cost of 1 {currency} in pounds changed "
                    f"{m30:+.2f}% over 30 days (to {move.end_date}) and {m90:+.2f}% over 90 days (from {move.date_90d}). "
                    f"1 GBP = {move.end_rate} {currency} now, {move.start_rate} on {move.date_90d}.\n"
-                   f"Part: {target.part_id} {target.part_name}, bought from {target.country} (supplier currency {currency}); "
+                   f"Part: {target.part_id} {target.part_name}, bought from {target.country} (priced in {currency} in Ganga's Zetaris data); "
                    f"Ganga spent GBP {target.quarterly_spend_gbp:,.0f} on it in {target.quarter}. "
                    f"Assume the move passes through to Ganga's cost in full (an upper bound). Direction: "
                    f"{'cost UP' if direction == 'cost_up' else 'cost DOWN'}; estimated range {pct_low}-{pct_high}%.\n\n")
@@ -135,7 +135,7 @@ class CurrencyAnalyst(AnalystBase):
             evidence=evidence_for([move_article] + [by_id[s] for s in data.get("source_ids", []) if s in by_id]),
             computed={"currency": currency, "move_30d_pct": m30, "move_90d_pct": m90, "start_date": move.start_date,
                       "end_date": move.end_date, "start_rate": move.start_rate, "end_rate": move.end_rate,
-                      "pass_through": "100% (upper bound)"},
+                      "pass_through": "100% (upper bound)", "invoice_currency": currency},
         )
         self.world.write_claim(claim, work_id, self.name)
         self.trace.event(self.name, "claim:draft" if previous is None else "claim:revised",
