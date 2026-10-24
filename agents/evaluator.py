@@ -40,6 +40,10 @@ SCOPE = {
     "currency": ("This is the CURRENCY analyst. One source is the ECB exchange-rate data (its title carries the computed "
                  "moves) - treat those numbers as fact. The news sources need only be relevant to the currency or what "
                  "drives it. Answer supported=false if the explanation contradicts the rate data or the news."),
+    "supplier_commodity": ("This is the SUPPLIER & COMMODITY analyst: the driver must be a memory-chip price or supply development "
+                           "(HBM/DRAM prices, supplier capacity or allocation, shortages, supplier concentration or disruption, export rules "
+                           "that limit the supplier). If the claim rests on currency moves or on tariffs/sanctions that say nothing about "
+                           "memory chips or this supplier, answer supported=false and say it is out of scope."),
 }
 
 

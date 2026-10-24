@@ -172,7 +172,7 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
          f"<div class='sub'>Ganga AI Solutions (synthetic data) - run {escape(str(run.get('run_id', '')))} - {run.get('elapsed_seconds', '?')} s - "
          f"{stats.get('llm_ok', '?')} model calls ok, {stats.get('llm_fail', '?')} failed attempts (retried) - trace <code>{escape(trace_file)}</code></div>"]
     if evidence_date:
-        h.append(f"<div class='banner'>Evidence cached on {escape(evidence_date)} (real news saved that day). FX rates are live. Demo mode: two drivers, "
+        h.append(f"<div class='banner'>Evidence cached on {escape(evidence_date)} (real news saved that day). FX rates are live. Demo mode: three drivers, "
                  "one planted weak claim, one forced-aggressive first decision.</div>")
     elif flags.get("weak") or flags.get("red_team"):
         h.append("<div class='banner'>Demo flag on: " + escape(", ".join(k for k in ("weak", "red_team") if flags.get(k))) + ". Model calls and checks are real.</div>")
@@ -184,7 +184,7 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
     for i in items:
         d = i["delegation"]
         c = i["attempts"][-1]["claim"] if i["attempts"] else None
-        name = escape((c.driver or c.claim)[:70]) if c else escape(d["analyst"] + " analyst")
+        name = escape((c.driver or c.claim)[:70]) if c else escape(d["analyst"].replace("_", " ") + " analyst")
         part = escape(f"{c.part_name} ({c.supplier_country})") if c else escape(d.get("part_id", ""))
         if d.get("status") == "PASS" and i["impact"]:
             m = i["impact"]
@@ -209,7 +209,7 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
 
     for i in items:
         d = i["delegation"]
-        h.append(f"<div class='card'><h3>{d['work_id']} - {escape(d['analyst'])} analyst on {escape(d.get('part_id', ''))} {status_pill(d.get('status'))}</h3>"
+        h.append(f"<div class='card'><h3>{d['work_id']} - {escape(d['analyst'].replace('_', ' '))} analyst on {escape(d.get('part_id', ''))} {status_pill(d.get('status'))}</h3>"
                  f"<div class='sub'>Plan: {escape(d.get('reason', ''))}</div>")
         why = escape(d.get("note") or d.get("error") or "no claim was produced")
         if not i["attempts"]:

@@ -28,7 +28,7 @@ model (Nemotron Lightning), so this separates roles and prompts, not independent
 A spreadsheet holds numbers and cannot tell you whether the story behind them is supported. Vidhur ties a news event to Ganga's own spend, refuses
 to put a number on an unsupported claim, shows the calculation and the sources behind each figure, and records the objections to its own
 recommendation. It does not replace the spreadsheet: the arithmetic is the same kind a spreadsheet does, done in Python. What it adds is the
-evidence check and the challenge. Limits: synthetic company data, two analysts, premiums are assumptions, and the backtest against
+evidence check and the challenge. Limits: synthetic company data, three analysts, premiums are assumptions, and the backtest against
 baselines is future work, so we make no accuracy claim.
 
 **Why use this instead of an analyst?**
@@ -66,8 +66,9 @@ when to re-run (a currency move beyond `RERUN_FX_MOVE_PCT` from the rate used, o
 investigate, not a number to act on.
 
 **Is this just two scripts?**
-No, but it is two analysts today. In a normal run the Planner (a model call, validated in Python) chooses which analyst works on which part from Ganga's spend
-in Zetaris and gives a reason for each; in `--demo` the two drivers are fixed by a documented rule. Two feedback loops sit on top: the Evaluator send-back loop
+No: three analysts today (geopolitics, currency, and a supplier & commodity analyst for the South Korean HBM memory part). In a normal run the Planner
+(a model call, validated in Python) chooses which analyst works on which part from Ganga's spend in Zetaris and gives a reason for each, or for skipping; in
+`--demo` the three drivers (D1 Taiwan GPU, D2 EUR cooling, D3 Korea memory) are fixed by a documented rule. Two feedback loops sit on top: the Evaluator send-back loop
 (the analyst must fix a claim or give up) and the Decision Maker and Red Team challenge loop (objections must cite evidence; a revision needs a written reason).
-All agents share one event-sourced World State. Adding an analyst is a small registration (write the class, register it in `agents/planner.py` and `main.py`);
-it is not zero code, and no other analyst is built.
+All agents share one event-sourced World State. Adding an analyst is a small registration (write the class, register it in `agents/planner.py` and `main.py`); the third one was added that way and reuses the
+news-evidence pipeline and the Evaluator unchanged. It is not zero code, and no freight analyst is built.

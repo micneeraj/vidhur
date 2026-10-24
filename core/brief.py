@@ -210,7 +210,7 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         "> **SYNTHETIC DATA.** Ganga AI Solutions is a fictional company. Its purchase history is made up for the "
         "Open Agent Hackathon 2026. " + (f"**Evidence cached on {demo_evidence_date}** (real news saved that day; FX rates are live)."
                                          if demo_evidence_date else "News and exchange-rate evidence is real, fetched live from free sources."), "",
-        f"- Run `{run.get('run_id', '')}` - {run.get('elapsed_seconds', '?')} s - team: Planner (Vidhur), Geopolitics Analyst, Currency Analyst, Evaluator",
+        f"- Run `{run.get('run_id', '')}` - {run.get('elapsed_seconds', '?')} s - team: Planner (Vidhur), Geopolitics Analyst, Currency Analyst, Supplier & Commodity Analyst, Evaluator",
         f"- Shared memory (Meterless World Model, {report['event_count']} events): `{report['path'].replace(chr(92), '/').split('/vidhur/')[-1]}`",
         f"- Trace log (every step, model, tokens, latency): `{str(trace_path).replace(chr(92), '/').split('/vidhur/')[-1]}`",
         f"- Model calls: {stats['llm_ok']} succeeded, {stats['llm_fail']} failed attempts (retried automatically)",
@@ -222,7 +222,7 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
                 f"*\"{DEMO_WEAK_CLAIM_INSTRUCTION}\"* The model calls and Evaluator checks are real."]
 
     if demo_evidence_date:
-        out += [f"- **Demo mode `--demo`:** two drivers only, evidence cached on {demo_evidence_date}, one planted weak claim and one forced-aggressive "
+        out += [f"- **Demo mode `--demo`:** three drivers only, evidence cached on {demo_evidence_date}, one planted weak claim and one forced-aggressive "
                 "first decision so the Evaluator send-back and the Red Team challenge are always shown. The Planner model is not called (fixed plan)."]
 
     if demo_untrusted_source:

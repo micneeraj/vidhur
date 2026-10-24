@@ -63,6 +63,8 @@ def pct_from(raw, by_id, assumptions):
 
 class GeopoliticsAnalyst(AnalystBase):
     name = "geopolitics"
+    SYSTEM_PROMPT = SYSTEM_PROMPT  # subclasses (supplier_commodity) override the prompt, the format and the ranking keywords
+    CLAIM_FORMAT = CLAIM_FORMAT
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -89,8 +91,7 @@ class GeopoliticsAnalyst(AnalystBase):
         known = self._candidates.setdefault(work_id, [])
         have = {a.url for a in known}
         known.extend(a for a in articles if a.url not in have)
-        keywords = [([target.country], 3), (target.category.split() + target.part_name.split()[1:3], 2),
-                    (["export", "sanction", "tariff", "control", "ban", "tension", "trade", "restrict", "subsid", "chip"], 1)]
+        keywords = self._keywords(target)
         label = f"{work_id}: {query}"
         if low_trust_first:
             scored = sorted(score_articles(known, keywords), key=lambda t: (t[1]["trust"], -t[1]["relevance"]))[:MAX_ARTICLES_SHOWN]
@@ -99,6 +100,11 @@ class GeopoliticsAnalyst(AnalystBase):
                              sources=[a.url for a, _ in scored], kept=[i for _, i in scored], demo_untrusted_source=True)
             return [a for a, _ in scored]
         return rank_by_trust(known, keywords, k=MAX_ARTICLES_SHOWN, trace=self.trace, agent=self.name, label=label)
+
+    @staticmethod
+    def _keywords(target):
+        return [([target.country], 3), (target.category.split() + target.part_name.split()[1:3], 2),
+                (["export", "sanction", "tariff", "control", "ban", "tension", "trade", "restrict", "subsid", "chip"], 1)]
 
     @staticmethod
     def _numbered(articles):
@@ -138,7 +144,7 @@ class GeopoliticsAnalyst(AnalystBase):
                     f"Evaluator feedback: {' | '.join(feedback)}\nRevise the claim so it fixes every point of feedback. "
                     "Use only the articles above.\n" + CLAIM_FORMAT)
 
-        data, result = self._ask_json(SYSTEM_PROMPT, header + task, "claim" if previous is None else "revise", attempt - 1)
+        data, result = self._ask_json(self.SYSTEM_PROMPT, header + task, "claim" if previous is None else "revise", attempt - 1)
         raw = ((data or {}).get("claims") or [None])[0]
         if not raw:
             self.trace.event(self.name, "claim:none", output_summary="analyst returned no claim", model=result.model,

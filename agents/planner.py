@@ -17,6 +17,9 @@ ANALYSTS = {
                    "estimates a % cost change. Slow (several model calls).",
     "currency": "computes the real 30/90-day move of the supplier country's currency against the pound from ECB data and explains it; "
                 "fast and numeric, but has NO data for some currencies (e.g. Taiwan dollar).",
+    "supplier_commodity": "reads recent news on commodity/component price moves (e.g. HBM and DRAM contract prices), supplier capacity, "
+                          "concentration and disruption for one part; estimates a % cost change. Best for memory and other commodity-driven parts. "
+                          "Slow (several model calls).",
 }
 MAX_DELEGATIONS = int(config.env("PLANNER_MAX_DELEGATIONS", "4"))
 MAX_TOKENS = 4000
@@ -90,7 +93,7 @@ class Planner:
             f"Decide at most {MAX_DELEGATIONS} delegations in total. Put effort where spend is large or the headlines show a real "
             "risk; skip low-spend parts and analyst/part pairs that cannot work (say why). Every reason must cite spend, a headline, "
             "or data coverage. Reply exactly:\n"
-            '{"summary": "<one sentence>", "delegations": [{"analyst": "geopolitics" or "currency", "part_id": "P00X", "reason": "..."}], '
+            '{"summary": "<one sentence>", "delegations": [{"analyst": "geopolitics" or "currency" or "supplier_commodity", "part_id": "P00X", "reason": "..."}], '
             '"skipped": [{"analyst": "...", "part_id": "...", "reason": "..."}]}')
         data, result = self._ask(prompt, "plan")
         plan = self._validate(data, targets)

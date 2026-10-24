@@ -21,7 +21,7 @@ How well that works is measured, not asserted: see **Evaluation** below.
 | **Before** | An analyst manually checks the news, FX rates and supplier exposure, builds a spreadsheet, and spends hours defending the assumptions in it. |
 | **After** | Vidhur produces a ranked cost-impact brief with citations, calculation records, Red Team objections and a recommended action in minutes. |
 
-The honest number for "minutes": a live `--demo` run (two drivers) took **341 s to 990 s (about 6 to 16 minutes)** across the five recent runs, and the two kept complete runs took 738 s and 905 s. A full run is 15-20 minutes on a healthy runtime and longer when the runtime is busy. That time buys verification (parallel analysts, SQL cross-checks, deterministic checks, a Red Team loop), not just text generation.
+The honest number for "minutes": a live `--demo` run (two drivers, before the third analyst was added) took **341 s to 990 s (about 6 to 16 minutes)** across the five recent runs, and the two kept complete runs took 738 s and 905 s. A full run is 15-20 minutes on a healthy runtime and longer when the runtime is busy. That time buys verification (parallel analysts, SQL cross-checks, deterministic checks, a Red Team loop), not just text generation.
 
 ## Three proof moments
 
@@ -38,7 +38,7 @@ It is built only from saved run files (`world_state_<id>.json` and the JSONL tra
 ## How it works
 
 Vidhur is an **auditor's agent for cost risk**. For a fictional UK AI-server maker, **Ganga AI Solutions**, it looks at what the company buys, asks
-specialist analysts what could push those costs up (export controls, tariffs, currency moves), and then **checks every claim before it counts**:
+specialist analysts what could push those costs up (export controls, tariffs, currency moves, memory-chip prices and supplier concentration), and then **checks every claim before it counts**:
 against trusted, independent, fresh sources (ranked by publisher) and against the company's own purchase data (read from Zetaris with SQL).
 Claims that cannot be verified get no number. The claims that survive become a **decision** (hedge, lock the price, add a second supplier, or do
 nothing) and a **Red Team** challenges that decision, like a sceptical CFO, **before it reaches the CFO brief**. Every GBP figure is computed in
@@ -58,11 +58,11 @@ The loop, in one picture:
                            |
                        Planner  --- decides who works on what, and why
                            |
-              +------------+-------------+
-              v                          v
-     Geopolitics Analyst          Currency Analyst        (run in parallel)
-              |   claim                  |   claim
-              +------------+-------------+
+        +------------------+------------------+
+        v                  v                  v
+ Geopolitics Analyst  Currency Analyst  Supplier & Commodity Analyst   (run in parallel)
+        |   claim          |   claim          |   claim
+        +------------------+------------------+
                            v
                       Evaluator  --- audits the CLAIM: 2+ independent fresh sources, trusted tier,
                        |    |        real URLs, matches Ganga data
@@ -86,9 +86,11 @@ flowchart LR
     N[Meterless Nightshift<br/>Nemotron, lane vidhur-analyst] -.model calls.-> P & G & C & E & D & R
     P["Planner - Vidhur<br/>who works on what, and why"] -->|delegates| G["Geopolitics Analyst<br/>news: export controls, tariffs"]
     P -->|delegates| C["Currency Analyst<br/>ECB FX data, computed in Python"]
+    P -->|delegates| S["Supplier & Commodity Analyst<br/>news: HBM/DRAM prices, supplier capacity"]
+    S -->|claim| E
     G -->|claim| E["Evaluator - audits the CLAIM<br/>2+ independent fresh sources,<br/>Tier 1/2 source, real URLs, matches Ganga data"]
     C -->|claim| E
-    E -->|"SEND_BACK + reason (max 2)"| G & C
+    E -->|"SEND_BACK + reason (max 2)"| G & C & S
     E -->|"PASS + GBP impact (Python)"| D["Decision Maker<br/>picks an option; GBP computed in Python"]
     E -->|"UNVERIFIED after 2 retries"| W
     D -->|proposed decision| R["Red Team - audits the DECISION<br/>sceptical CFO: objections with evidence ids"]
@@ -114,7 +116,11 @@ What happens in a run (`python main.py`):
 2. **Planner (Vidhur)** reads that spend plus a quick headline scan and decides *which analysts run for which parts and why* (a real
    model call; the plan is validated in Python and may skip analyst/part pairs, e.g. no FX data exists for the Taiwan dollar).
 3. **Analysts run in parallel** (3 workers). The Geopolitics Analyst turns the 8 most relevant news articles into a claim; the
-   Currency Analyst computes the real 30/90-day move of the supplier's currency against the pound from ECB data in Python and the model only explains it.
+   Currency Analyst computes the real 30/90-day move of the supplier's currency against the pound from ECB data in Python and the model only explains it;
+   the Supplier & Commodity Analyst runs the same news pipeline (trust-ranked evidence, claims in the same format) on memory-chip price moves, supplier capacity,
+   concentration and disruption (e.g. HBM/DRAM contract prices, export rules that stop the supplier shipping). It is built for the South Korean HBM part and any
+   other commodity-driven part the Planner picks. Its % range is `FORECAST` only if a cited article prints the figure, otherwise a labelled `SCENARIO` assumption;
+   it has no price series of its own, so it never reports `OBSERVED`.
 4. **Evaluator** reads each claim from the world state: deterministic checks first (2+ sources, different publishers, fresh, every URL really
    fetched, part and country exist in Zetaris, FX numbers match the computed ones), then a Nemotron "do the sources support the claim?" check.
    Then the trust rules: at least one fresh Tier 1 or Tier 2 source, copies of one report count once, stale sources do not count.
@@ -258,9 +264,9 @@ Al Jazeera, NPR, DW) and exchange rates from the free ECB-based Frankfurter API.
 supplier (3%), and the SCENARIO rows the calculator uses (`SCENARIO_SMALL/LIKELY/LARGE_MOVE_PCT` = 2 / 6 / 12, `FX_PASS_THROUGH_PCT` = 100), and `RERUN_FX_MOVE_PCT` = 2 (the FX move, in percent, after which a person should re-run Vidhur). They are **illustrative
 assumptions, not market quotes**, and the CFO brief points to the file under every option comparison and calculation.
 
-## Why two drivers
+## Why these drivers
 
-For Ganga, two exposures are far larger than the rest. In the latest quarter in the data (2026-Q3, GBP at the rates stored on the purchase rows, total about £2.55m):
+For Ganga, three exposures cover most of the spend. In the latest quarter in the data (2026-Q3, GBP at the rates stored on the purchase rows, total about £2.55m):
 
 | Part | Supplier country | Currency | Quarterly spend | Share |
 |---|---|---|---|---|
@@ -269,12 +275,12 @@ For Ganga, two exposures are far larger than the rest. In the latest quarter in 
 | P002 GangaHBM-8H Memory Stack | South Korea | USD | £330,120 | 12.9% |
 | the other five parts | China, Malaysia, Japan | USD | £409,633 | 16.0% |
 
-So Taiwan chip supply (geopolitics) and the EUR-priced German cooling parts (currency) together are about 71% of spend, and `--demo` runs exactly those two drivers. In a normal run the Planner chooses which analyst works on which part, with a written reason, from the Zetaris spend.
+So Taiwan chip supply (geopolitics), the EUR-priced German cooling parts (currency) and the South Korean HBM memory stack (supplier and commodity) together are about 84% of spend (52.7% + 18.4% + 12.9%, from the Zetaris data), and `--demo` runs exactly those three drivers, D1, D2 and D3. The Korean part is priced in USD in the data, not KRW, so its currency exposure is GBP/USD; the new analyst covers the risk the other two do not: memory contract prices and the concentration of supply in one supplier (Hanseong Memory Works, S002). In a normal run the Planner chooses which analyst works on which part, with a written reason, from the Zetaris spend.
 
-Two analysts (geopolitics, currency) exist today. **Adding another analyst is a small registration, not a rewrite, but it is not zero code:** write the analyst class, then register it in `ANALYSTS` in `agents/planner.py` and in the `analysts` dict in `main.py`. The Planner prompt, delegation validation and the work-item loop (`agents/workflow.py`) already accept any registered name.
+Three analysts (geopolitics, currency, supplier & commodity) exist today. **Adding another analyst is a small registration, not a rewrite, but it is not zero code:** write the analyst class, then register it in `ANALYSTS` in `agents/planner.py` and in the `analysts` dict in `main.py`. The Planner prompt, delegation validation and the work-item loop (`agents/workflow.py`) already accept any registered name.
 
 - **No freight analyst in this version.** Ganga's high value parts (GPUs, memory chips, AI servers) mostly ship by air and freight is a small share of landed cost,
-  so it would add little to the CFO decision. A freight or commodity analyst is future work. Adding one is a small change, not a rewrite: write the analyst class and
+  so it would add little to the CFO decision. A freight analyst is future work (a memory-price analyst now exists, see above). Adding one is a small change, not a rewrite: write the analyst class and
   register it in `ANALYSTS` (`agents/planner.py`) and in the `analysts` dict in `main.py`; the Planner's prompt, its validation of delegations and the work-item
   loop (`agents/workflow.py`) already accept any registered analyst name. It is not zero-code: the registration is needed.
 - **Numbers are computed in Python, never by the model.** FX moves, GBP impacts and decision costs come from Zetaris data and plain arithmetic; the model explains and picks.
@@ -447,7 +453,7 @@ the image sets `VIDHUR_IN_DOCKER=1` and `core/config.py` rewrites `localhost` / 
 
 ```powershell
 python main.py                            # the full run (15-20 minutes on a healthy runtime)
-python main.py --demo                     # FAST DEMO: 2 drivers, cached dated evidence, send-back + Red Team challenge (below)
+python main.py --demo                     # FAST DEMO: 3 drivers, cached dated evidence, send-back + Red Team challenge (below)
 python main.py --demo-weak-claim          # watch the Evaluator catch a weak claim (below)
 python main.py --demo-untrusted-source    # watch it catch a claim backed only by untrusted sources (below)
 python main.py --demo-red-team            # watch the Red Team challenge an aggressive decision (below)
@@ -464,13 +470,13 @@ Decision premiums: `data/decision_assumptions.csv`.
 
 ### `--demo` (fast demo mode)
 
-One company run limited to the two biggest-spend drivers: the Taiwan GPU chip (geopolitics) and the largest-spend part whose currency has ECB data
-(the euro-supplied cooling loop; currency). What is different, and nothing else is:
+One company run limited to three drivers: D1 the Taiwan GPU chip (geopolitics), D2 the largest-spend part whose currency has ECB data
+(the euro-supplied cooling loop; currency) and D3 the South Korean HBM memory stack (supplier & commodity; omitted if Ganga buys no memory part). What is different, and nothing else is:
 
 - **Cached, dated evidence.** The news comes from `data/demo_evidence/` (saved by `python scripts/save_demo_evidence.py` from a real live fetch; `manifest.json`
   holds the date). The brief and the evidence page say "Evidence cached on <date>". **FX stays live** (Frankfurter / ECB). The Evaluator judges the cached
   articles' freshness as of the cache date, so the demo keeps working later.
-- **Fixed plan, no Planner call.** The two drivers are picked by a documented rule (`core/demo.py`), so the Planner model is not called in demo mode.
+- **Fixed plan, no Planner call.** The three drivers are picked by a documented rule (`core/demo.py`), so the Planner model is not called in demo mode.
 - **Both demo instructions on.** The Geopolitics Analyst's first attempt cites one source (the Evaluator sends it back), and the first decision is told to be
   aggressive (the Red Team challenges it and writes its reason). Real model calls, real checks; the flags are printed and recorded in the brief.
 - **Bounded AI calls.** 180 s timeout per call in demo mode, 3 attempts, a 25-minute time budget for the whole run (no call starts after it), and the model's long private
@@ -514,7 +520,7 @@ from the normal trust-ranked evidence, and the claim passes on retry or ends `UN
 | Path | What |
 |---|---|
 | `agents/planner.py` | Planner (Vidhur): plan, delegations with reasons, review and one re-delegation |
-| `agents/geopolitics_analyst.py`, `agents/currency_analyst.py` | The two analysts |
+| `agents/geopolitics_analyst.py`, `agents/currency_analyst.py`, `agents/supplier_commodity.py` | The three analysts (the third reuses the geopolitics pipeline with its own prompt, query and keywords) |
 | `agents/evaluator.py` | The Evaluator and the send-back loop |
 | `agents/decision_maker.py`, `core/red_team.py`, `core/decisions.py` | Decision Maker, Red Team, and the option / GBP maths (Python) |
 | `agents/workflow.py` | One work item: analyst -> Evaluator loop -> GBP impact |
@@ -540,7 +546,7 @@ from the normal trust-ranked evidence, and the claim passes on retry or ends `UN
 
 ## Notes on the AI runtime
 
-All product AI calls go through Meterless Nightshift, and every AI call is Nvidia Nemotron. **All agents (Planner, both analysts, Evaluator) use the
+All product AI calls go through Meterless Nightshift, and every AI call is Nvidia Nemotron. **All agents (Planner, all three analysts, Evaluator) use the
 lane `vidhur-analyst`** (`nvidia/nemotron-3.5-lightning-30b-a3b`); see Known limitations for why. `.env` holds the lane to request (`MODEL_*`) and the
 Nemotron model that must answer (`MODEL_*_EXPECTED`). **Every AI call line in the trace records `requested_lane`, `answered_model` and `pin_honoured`**
 (failed attempts record `answered_model: null`). `python scripts/check_lanes.py` re-tests the lanes. The runtime enforces a ~45 s per-request deadline

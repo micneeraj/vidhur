@@ -47,7 +47,7 @@ header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 26px}
 .chip{background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:5px 14px;font-size:14px;color:var(--ink)}
 .chip.t{border-color:var(--teal);color:var(--teal)}.chip.w{border-color:var(--warn);color:var(--warn)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 24px;cursor:pointer;display:flex;flex-direction:column;gap:12px}
 .card:hover,.card.open{border-color:var(--teal)}
 .card h3{margin:0;font-size:21px;line-height:1.3}.card .part{color:var(--mute);font-size:15px}
@@ -252,7 +252,7 @@ def _proof_chips(run, report, drivers):
 def _card(run, report, item, ok, chain_id):
     d = item["delegation"]
     c = item["attempts"][-1]["claim"] if item["attempts"] else None
-    name = _short(c.driver or c.claim) if c else d.get("analyst", "") + " analyst"
+    name = _short(c.driver or c.claim) if c else d.get("analyst", "").replace("_", " ") + " analyst"
     part = f"{c.part_name} ({c.supplier_country})" if c else d.get("part_id", "")
     h = [f'<div class="card" tabindex="0" role="button" aria-controls="{chain_id}" data-chain="{chain_id}">',
          f'<div><span class="badge {"b-ok" if ok else "b-warn"}">{"VERIFIED" if ok else "COULD NOT VERIFY"}</span></div>',

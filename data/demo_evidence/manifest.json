@@ -21,6 +21,16 @@
    "query": "Germany economy currency central bank euro sterling",
    "articles": 39,
    "file": "germany-economy-currency-central-bank-eu_032ab86439.json"
+  },
+  {
+   "query": "South Korea HBM memory price OR shortage OR capacity OR export",
+   "articles": 74,
+   "file": "south-korea-hbm-memory-price-or-shortage_c9c01257f4.json"
+  },
+  {
+   "query": "HBM memory DRAM contract price South Korea supplier",
+   "articles": 50,
+   "file": "hbm-memory-dram-contract-price-south-kor_7db7159b18.json"
   }
  ]
 }

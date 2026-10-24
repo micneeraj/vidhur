@@ -6,7 +6,7 @@ Meterless World Model (logs/world_state_<run_id>.json); the brief is built from 
 
 Usage:
     python main.py
-    python main.py --demo               # fast demo: 2 drivers, cached dated evidence, planted weak claim + Red Team challenge, up to 25 min budget
+    python main.py --demo               # fast demo: 3 drivers, cached dated evidence, planted weak claim + Red Team challenge, up to 25 min budget
     python main.py --demo-red-team      # the first decision is told to be aggressive so the Red Team visibly challenges it
     python main.py --demo-weak-claim    # the Geopolitics Analyst's first attempt is told to cite only ONE source,
                                         # so you can watch the Evaluator catch it and send it back
@@ -28,6 +28,7 @@ from agents.evaluator import Evaluator
 from agents import geopolitics_analyst
 from agents.geopolitics_analyst import GeopoliticsAnalyst
 from agents.planner import Planner
+from agents.supplier_commodity import SupplierCommodityAnalyst
 from agents.workflow import run_work_item
 from core import config, demo as demo_mode, llm, news
 from core import failures
@@ -53,7 +54,7 @@ INPUT_DIR = config.ROOT / "input_examples"
 def parse_args():
     p = argparse.ArgumentParser(description="Vidhur Day 2: Planner + analysts + auditing Evaluator over a shared World Model.")
     p.add_argument("--demo", action="store_true",
-                   help="FAST DEMO: two drivers only (the biggest-spend part + one currency driver), a dated cached evidence set from "
+                   help="FAST DEMO: three drivers only (the biggest-spend part, one currency driver, the Korean memory part), a dated cached evidence set from "
                         "data/demo_evidence/ (FX stays live), the weak-claim and Red Team demos both on, timeouts and bounded retries on every "
                         "AI call. A driver whose call fails is shown as 'Could not verify'. Target: under 5 minutes.")
     p.add_argument("--demo-weak-claim", action="store_true",
@@ -112,7 +113,7 @@ def main():
     world = RunWorld(trace.run_id)
     print(f"Vidhur Day 2 | run {trace.run_id} | trace: {trace.path} | world state: {world.path}")
     if args.demo:
-        print(f"DEMO MODE --demo: 2 drivers, evidence cached on {evidence_date} (FX live), timeouts {demo_mode.CALL_TIMEOUT_SECONDS} s, "
+        print(f"DEMO MODE --demo: 3 drivers, evidence cached on {evidence_date} (FX live), timeouts {demo_mode.CALL_TIMEOUT_SECONDS} s, "
               f"{demo_mode.CALL_MAX_ATTEMPTS} attempts per call, time budget {demo_mode.TIME_BUDGET_SECONDS} s.")
     if args.demo_red_team:
         print("DEMO MODE --demo-red-team: the first decision for the lowest-confidence verified claim is instructed to be aggressive.")
@@ -155,6 +156,7 @@ def main():
         "geopolitics": GeopoliticsAnalyst(trace, world, pool, demo_weak_claim=args.demo_weak_claim, refresh_news=args.refresh_news,
                                           demo_untrusted_source=args.demo_untrusted_source),
         "currency": CurrencyAnalyst(trace, world, pool, refresh_news=args.refresh_news),
+        "supplier_commodity": SupplierCommodityAnalyst(trace, world, pool, refresh_news=args.refresh_news),  # no weak-claim / untrusted-source demo flags
     }
     calc = CalcService(zt, targets[0].quarter)  # every GBP figure comes from here (core/calculator.py), never from a model
     # The cached demo evidence is dated: judge its freshness as of the day it was saved, so the demo keeps working later.
