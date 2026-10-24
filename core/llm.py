@@ -104,7 +104,8 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
     Logs the agent, requested model, answering model, tokens and latency to the trace.
     """
     attempts = min(max_attempts or MAX_ATTEMPTS, _limits["max_attempts"] or 99)
-    timeout = min(timeout or TIMEOUT_SECONDS, _limits["timeout"] or 10**6)
+    # think=True calls (Decision Maker, Red Team) may ask for a longer timeout than the run-wide cap: their reasoning takes 2-4 minutes
+    timeout = timeout if think and timeout else min(timeout or TIMEOUT_SECONDS, _limits["timeout"] or 10**6)
     client = _client(timeout)
     started = time.monotonic()
     budget = max(max_tokens, THINK_MAX_TOKENS) if think and _limits["fast"] else max_tokens

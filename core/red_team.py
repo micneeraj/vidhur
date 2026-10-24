@@ -15,6 +15,7 @@ TYPES = ("forecast_wrong", "cost_of_acting", "concentration", "weak_evidence", "
 STATUSES = ("resolved", "stands")
 MAX_OBJECTIONS = 3
 MAX_TOKENS = 4000
+CALL_TIMEOUT_SECONDS = 300  # the Red Team reasons for 2-4 minutes on the live runtime; overrides the demo run-wide 180 s cap
 MAX_ATTEMPTS = int(config.env("RED_TEAM_LLM_ATTEMPTS", "8"))  # these calls sit near the runtime deadline, so more tries per call
 # Measured on the live runtime: with this hint 3 of 4 proposal calls were answered; with "/no_think" or no hint, 0 of 4.
 BRIEF_REASONING = " Keep your private reasoning brief."
@@ -96,6 +97,18 @@ def lean_block(ev, rows, decision):
             f"Claim: {ev['claim']} Confidence {ev['confidence']}; evidence: {ev['strength_line']}; baseline spend GBP {ev['spend_gbp']:,.0f}.\n"
             f"Sources: {sources}\n"
             f"Option costs (worst | likely | best | if forecast wrong):\n{decisions.options_table_text(rows)}")
+
+
+def red_team_block(ev, decision):
+    """What the Red Team needs and no more: the decision and its reasons, its GBP scenario range, the claim and an evidence summary.
+    No option table (the computed checks already carry the comparisons) and no article text, to keep the call inside the runtime deadline."""
+    sources = "; ".join(f"{s['id']} {s['publisher']} Tier {s['tier']} {s['date']}" for s in ev["sources"])
+    cost = decision["cost"]
+    return (f"Decision {ev['work_id']} on {ev['part_name']} ({ev['concentration']['country']}), version {decision['version']}: "
+            f"{decisions.describe(decision['kind'], decision['share_pct'])}. Rationale: {decision['rationale']}\n"
+            f"Its cost: worst {decisions.gbp(cost['worst'])}, likely {decisions.gbp(cost['likely'])}, best {decisions.gbp(cost['best'])}, "
+            f"if forecast wrong {decisions.gbp(cost['forecast_wrong'])}. Baseline spend GBP {ev['spend_gbp']:,.0f}.\n"
+            f"Claim: {ev['claim']} Confidence {ev['confidence']}; evidence: {ev['strength_line']}. Sources: {sources}")
 
 
 COUNTRY_CONCENTRATION_PCT, SUPPLIER_CONCENTRATION_PCT = 30.0, 20.0  # shares of total spend that make concentration worth raising
@@ -207,7 +220,7 @@ class RedTeam:
         result = llm.chat([{"role": "system", "content": SYSTEM_PROMPT + BRIEF_REASONING},
                            {"role": "user", "content": prompt}],
                           model=self.model, expected_model=self.expected_model, agent=self.name, step=step,
-                          trace=self.trace, retry_count=retry_count, max_tokens=MAX_TOKENS, max_attempts=MAX_ATTEMPTS, think=True)
+                          trace=self.trace, retry_count=retry_count, max_tokens=MAX_TOKENS, max_attempts=MAX_ATTEMPTS, think=True, timeout=CALL_TIMEOUT_SECONDS)
         try:
             return llm.extract_json(result.text)
         except ValueError:
@@ -221,7 +234,7 @@ class RedTeam:
         self.last_clear = not checks
         if not checks:
             return []
-        prompt = (f"{lean_block(ev, rows, decision)}\n\nChecks that apply, computed for you:\n{checks}\n\nFor each check say whether it is a "
+        prompt = (f"{red_team_block(ev, decision)}\n\nChecks that apply, computed for you:\n{checks}\n\nFor each check say whether it is a "
                   f"real problem (at most {MAX_OBJECTIONS} objections, most serious first); severity high only if the decision should not "
                   "go ahead as proposed. Cite the numbers or ids above. Reply exactly:\n" + OBJECTION_FORMAT)
         valid, rejected = parse_objections(self._ask(prompt, "challenge"), ids, numbers)
@@ -240,7 +253,7 @@ class RedTeam:
         listing = "\n".join(
             f"{o['id']} [{o['severity']}, {o['type']}]: {o['text']}\n    Response: {responses.get(o['id'], {}).get('action', 'NONE')} - "
             f"{responses.get(o['id'], {}).get('reason', 'no response')}" for o in objections)
-        prompt = (f"{lean_block(ev, rows, decision)}\n\nObjections you raised and the Decision Maker's responses (the decision above is the CURRENT version, "
+        prompt = (f"{red_team_block(ev, decision)}\n\nObjections you raised and the Decision Maker's responses (the decision above is the CURRENT version, "
                   f"after any revision):\n{listing}\n\nFor each objection id say whether it is now resolved or still stands, with a "
                   "reason (max 25 words) that cites evidence.")
         fmt = ('{"statuses": [{"objection_id": "O1", "status": "resolved" or "stands", "reason": "<one sentence citing evidence>"}]'
