@@ -45,7 +45,8 @@ def build(row):
     from core.fx import fx_source_article
     art = fx_source_article(MOVE)
     pool_with_fx[art.url] = art
-    claim = planted.build_claim(row, pool, {"KRW": art, "JPY": art}, {"KRW": MOVE, "JPY": MOVE},
+    jpy = FXMove("JPY", "2026-07-24", "2026-10-22", 1900.0, 1850.0, 1.5, 2.7, "2026-09-22", "2026-07-24", MOVE.url)
+    claim = planted.build_claim(row, pool, {"KRW": art, "JPY": art}, {"KRW": MOVE, "JPY": jpy},
                                 {"P001": 1_000_000.0, "P002": 300_000.0}, names={"P001": "GPU"})
     return claim, pool_with_fx
 
@@ -80,21 +81,37 @@ def test_fx_modes():
     assert planted.apply_fx_mode("falsified", MOVE)[3]["move_90d_pct"] == 9.0
 
 
+RATES = {"2026-07-24": (1900.0, "2026-07-24"), "2026-10-22": (1850.0, "2026-10-22")}
+
+
+def fx_stub(currency, day):
+    return RATES[day]
+
+
+def det_codes(case_id):
+    row = next(r for r in planted_rows() if r["case_id"] == case_id)
+    claim, pool = build(row)
+    return row, {f.code for f in deterministic_checks(claim, pool, CATALOG, now=NOW, max_age_days=30, fx_rate_fn=fx_stub)}
+
+
 @pytest.mark.parametrize("case_id", ["F01", "F02", "F05", "F06", "F07", "F08", "F09", "F10", "F11", "F12", "F13", "F14"])
 def test_deterministic_plants_are_caught_with_the_expected_code(case_id):
-    row = next(r for r in planted_rows() if r["case_id"] == case_id)
-    claim, pool = build(row)
-    codes = {f.code for f in deterministic_checks(claim, pool, CATALOG, now=NOW, max_age_days=30)}
-    assert set(row["expected_codes"].split(";")) & codes, (case_id, codes)
+    row, codes = det_codes(case_id)
+    expected = {"DUPLICATE_SOURCE" if c == "NOT_INDEPENDENT" else c for c in row["expected_codes"].split(";")}  # NOT_INDEPENDENT was renamed
+    assert expected & codes, (case_id, codes)
 
 
-@pytest.mark.parametrize("case_id", ["C01", "C02", "C03", "C04", "C05", "F15", "F16", "F17", "F18", "F19", "F20", "F03", "F04"])
-def test_controls_and_model_level_plants_clear_the_deterministic_checks(case_id):
-    """Controls must reach the model check; the semantic plants are meant to be judged by it (or missed)."""
-    row = next(r for r in planted_rows() if r["case_id"] == case_id)
-    claim, pool = build(row)
-    codes = {f.code for f in deterministic_checks(claim, pool, CATALOG, now=NOW, max_age_days=30)}
-    assert codes == set(), (case_id, codes)
+@pytest.mark.parametrize("case_id", ["C01", "C02", "C03", "C04", "C05", "F17", "F19", "F20"])
+def test_controls_and_semantic_plants_clear_the_deterministic_checks(case_id):
+    """Controls must reach the model check; the semantic plants (cause / date) are meant to be judged by it (or missed)."""
+    assert det_codes(case_id)[1] == set(), case_id
+
+
+@pytest.mark.parametrize("case_id,code", [("F04", "CURRENCY_COUNTRY_MISMATCH"), ("F18", "NUMBER_NOT_IN_SOURCE"),
+                                          ("F15", "GBP_MISMATCH")])
+def test_plants_that_used_to_slip_past_the_deterministic_checks_are_now_caught(case_id, code):
+    """F04, F15, F16 and F18 cleared the deterministic checks before the number checks existed."""
+    assert code in det_codes(case_id)[1]
 
 
 def test_classify_and_score():

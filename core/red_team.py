@@ -49,8 +49,19 @@ def _number_tokens(text):
 def known_ids(ev, rows):
     """Evidence ids an objection may cite: source ids, the work id, the option names, CLAIM."""
     ids = {s["id"].upper() for s in ev["sources"]}
-    ids |= {ev["work_id"].upper(), "CLAIM", "CONFIDENCE"} | {k for k in decisions.KINDS}
+    ids |= {ev["work_id"].upper(), "CLAIM", "CONFIDENCE", "CALC"} | {k for k in decisions.KINDS}
     return ids
+
+
+def calc_line(ev):
+    """One line describing how the GBP figures were calculated (id CALC), from the calculator's record; empty if there is none."""
+    calc = (ev.get("impact") or {}).get("calc")
+    if not calc:
+        return ""
+    m, fx = calc["move_pct"], calc["fx"]
+    return (f"CALC (calculated in Python, never by a model): baseline GBP {calc['baseline_gbp']:,.0f} = Zetaris purchase rows at 1 GBP = "
+            f"{fx['units_per_gbp']} {fx['currency']} on {fx['date']}; move {m['small']:g}% / {m['likely']:g}% / {m['large']:g}% ({m['label']}, "
+            f"{m['basis']}); pass-through {calc['pass_through']['pct']:g}%. The worst / likely / best figures are a scenario range, not a probability.\n")
 
 
 def evidence_block(ev, rows, decision):
@@ -63,6 +74,7 @@ def evidence_block(ev, rows, decision):
         f"Estimate: cost {ev['direction'].replace('cost_', '')} {ev['pct_low']:g}-{ev['pct_high']:g}%. Confidence: {ev['confidence']}. "
         f"Evidence strength: {ev['strength_line']}. Evaluator rated support: {ev['strength'] or 'n/a'}.\n"
         f"Baseline quarterly spend on this part: GBP {ev['spend_gbp']:,.0f}.\n"
+        f"{calc_line(ev)}"
         f"Sources (ids to cite):\n{sources}\n"
         f"Concentration: this part is {c['part_share_pct']}% of Ganga's GBP {c['total_spend_gbp']:,} quarterly spend; {c['country']} is "
         f"{c['country_share_pct']}% and supplier {c['supplier']} is {c['supplier_share_pct']}%.\n"

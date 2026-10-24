@@ -29,6 +29,7 @@ from agents.planner import Planner
 from agents.workflow import run_work_item
 from core import config
 from core import failures
+from core.calculator import CalcService
 from core.brief import build_brief, console_summary
 from core.ganga_data import part_country_catalog, top_targets
 from core.preflight import RUNTIME_BUSY_EARLY, RUNTIME_BUSY_MESSAGE, ZETARIS_START_HINT, run_checks
@@ -127,7 +128,8 @@ def main():
                                           demo_untrusted_source=args.demo_untrusted_source),
         "currency": CurrencyAnalyst(trace, world, pool, refresh_news=args.refresh_news),
     }
-    evaluator = Evaluator(catalog, pool, world, trace)
+    calc = CalcService(zt, targets[0].quarter)  # every GBP figure comes from here (core/calculator.py), never from a model
+    evaluator = Evaluator(catalog, pool, world, trace, calc_fn=calc.for_claim)
     planner = Planner(trace, world)
 
     stopped = []  # stages that a service outage cut short: {agent, stage, error}
@@ -149,7 +151,7 @@ def main():
     # 4. Analysts work in parallel; each work item runs draft -> Evaluator loop -> impact
     def process(delegation):
         try:
-            run_work_item(delegation, by_part[delegation["part_id"]], analysts, evaluator, world, zt, trace)
+            run_work_item(delegation, by_part[delegation["part_id"]], analysts, evaluator, world, zt, trace, calc=calc)
         except SERVICE_ERRORS as exc:  # run_work_item reports its own; this is the safety net
             world.write_error(delegation["work_id"], f"{type(exc).__name__}: {str(exc)[:200]}")
 

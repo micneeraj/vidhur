@@ -80,20 +80,21 @@ def apply_responses(ev, decision, actionable, data):
     if isinstance(rd, dict):
         choice = decisions.normalize_choice(rd.get("kind"), rd.get("share_pct"))
         if choice and choice != (decision["kind"], decision["share_pct"]):
-            revised = (*choice, str(rd.get("rationale", "")).strip() or decision["rationale"])
+            revised = (*choice, str(rd.get("rationale", "")).strip())  # no rationale = no usable revision (no fallback to the old one)
 
     responses = {}
     for o in actionable:
         r = raw.get(o["id"], {})
         action, reason = str(r.get("action", "")).strip().upper(), str(r.get("reason", "")).strip()
         refs = [x for x in (r.get("evidence_refs") or []) if ref_valid(x, ids, numbers)] if isinstance(r.get("evidence_refs"), list) else []
-        if action == "REVISE" and reason and revised:
+        if action == "REVISE" and reason and revised and revised[2] and refs:
             responses[o["id"]] = {"action": "REVISE", "reason": reason, "evidence_refs": refs}
         elif action == "DEFEND" and reason and refs:
             responses[o["id"]] = {"action": "DEFEND", "reason": reason, "evidence_refs": refs}
         else:
             why = ("DEFEND without a specific evidence reference" if action == "DEFEND" else
-                   "REVISE without a usable, different revised decision" if action == "REVISE" else "no valid response")
+                   "REVISE without a written reason tied to evidence or a calculation" if action == "REVISE" and revised and not (reason and refs)
+                   else "REVISE without a usable, different revised decision" if action == "REVISE" else "no valid response")
             responses[o["id"]] = {"action": "NONE", "reason": f"invalid: {why}", "evidence_refs": []}
     new = None
     if revised and any(v["action"] == "REVISE" for v in responses.values()):
@@ -151,7 +152,8 @@ class DecisionMaker:
                             f"Suggested: {o['suggested_change'] or 'none'}" for o in actionable)
         prompt = (f"{lean_block(ev, rows, decision)}\n\nThe Red Team raised these objections to your decision:\n{listing}\n\n"
                   "Respond to EVERY objection id: REVISE (change the decision) or DEFEND (keep it, with a reason that cites evidence ids "
-                  "or numbers from above). If you revise, give one revised_decision that addresses the objections (for example a smaller "
+                  "or numbers from above). A REVISE is only accepted with a written reason that cites evidence (an S-id) or a calculation "
+                  "(a number from the calculation line) in evidence_refs, and a rationale in revised_decision. If you revise, give one revised_decision that addresses the objections (for example a smaller "
                   "share, another option, or a second supplier); do not write GBP figures. Reply exactly:\n" + RESPONSE_FORMAT)
         return apply_responses(ev, decision, actionable, self._ask(prompt, "respond"))
 

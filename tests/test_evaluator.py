@@ -46,11 +46,11 @@ def test_same_url_cited_twice_counts_once():
 
 
 def test_same_publisher_twice_is_not_independent():
-    assert "NOT_INDEPENDENT" in codes(claim(["https://example.test/1", "https://example.test/3"]))
+    assert "DUPLICATE_SOURCE" in codes(claim(["https://example.test/1", "https://example.test/3"]))
 
 
 def test_syndicated_story_under_different_publishers_is_not_independent():
-    assert "NOT_INDEPENDENT" in codes(claim(["https://example.test/1", "https://example.test/4"]))
+    assert "DUPLICATE_SOURCE" in codes(claim(["https://example.test/1", "https://example.test/4"]))
 
 
 def test_stale_source_is_sent_back():

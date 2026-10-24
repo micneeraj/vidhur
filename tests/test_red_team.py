@@ -140,7 +140,7 @@ OBJ = {"id": "O1", "severity": "high", "type": "forecast_wrong", "text": "t", "e
 
 def test_revise_recalculates_gbp_in_python_and_ignores_model_numbers(env):
     first = make_decision(100000.0, IMPACT, "HEDGE", 100, "r", 1, "model")
-    reply = {"responses": [{"objection_id": "O1", "action": "REVISE", "reason": "smaller hedge"}],
+    reply = {"responses": [{"objection_id": "O1", "action": "REVISE", "reason": "smaller hedge", "evidence_refs": ["S2"]}],
              "revised_decision": {"kind": "HEDGE", "share_pct": 30, "rationale": "cut to 30%", "cost": {"worst": 1, "likely": 1},
                                   "likely_gbp": 1}}
     responses, new = apply_responses(EV, first, [OBJ], reply)
@@ -163,6 +163,29 @@ def test_defend_needs_evidence_and_revise_needs_a_different_decision():
     assert apply_responses(EV, first, [OBJ], None)[0]["O1"]["action"] == "NONE"
 
 
+def test_a_revision_needs_a_written_reason_tied_to_evidence_or_a_calculation():
+    first = make_decision(100000.0, IMPACT, "HEDGE", 100, "r", 1, "model")
+    revised = {"kind": "HEDGE", "share_pct": 30, "rationale": "cut to 30%"}
+
+    def attempt(**response):
+        reply = {"responses": [{"objection_id": "O1", "action": "REVISE", **response}], "revised_decision": revised}
+        return apply_responses(EV, first, [OBJ], reply)
+
+    ok, new = attempt(reason="Only a Tier 3 blog backs the rise (S2).", evidence_refs=["S2"])
+    assert ok["O1"]["action"] == "REVISE" and new["share_pct"] == 30
+    calc_ok, new = attempt(reason="Premium on the protected spend is 450.", evidence_refs=["100000"])  # a number from the calculation
+    assert calc_ok["O1"]["action"] == "REVISE" and new is not None
+    for bad in ({"reason": "", "evidence_refs": ["S2"]},          # no written reason
+                {"reason": "smaller is safer"},                      # reason tied to nothing
+                {"reason": "smaller is safer", "evidence_refs": ["S99", "trust me"]}):  # refs that do not exist
+        rejected, new = attempt(**bad)
+        assert rejected["O1"]["action"] == "NONE" and new is None, bad
+        assert "written reason tied to evidence or a calculation" in rejected["O1"]["reason"]
+    no_rationale = {"responses": [{"objection_id": "O1", "action": "REVISE", "reason": "r", "evidence_refs": ["S2"]}],
+                    "revised_decision": {"kind": "HEDGE", "share_pct": 30}}
+    assert apply_responses(EV, first, [OBJ], no_rationale)[1] is None
+
+
 def test_handling_labels():
     base = {"severity": "high", "status": "resolved", "response": {"action": "REVISE"}}
     assert handling(base) == "REVISED"
@@ -174,7 +197,7 @@ def test_handling_labels():
 
 # ---- the loop ---------------------------------------------------------------------------------
 PROPOSE_AGGRESSIVE = {"kind": "HEDGE", "share_pct": 100, "rationale": "Hedge it all."}
-REVISE_30 = {"responses": [{"objection_id": "O1", "action": "REVISE", "reason": "cut"}],
+REVISE_30 = {"responses": [{"objection_id": "O1", "action": "REVISE", "reason": "cut because S2 is a Tier 3 blog", "evidence_refs": ["S2"]}],
              "revised_decision": {"kind": "HEDGE", "share_pct": 30, "rationale": "30% only"}}
 DEFEND = {"responses": [{"objection_id": "O1", "action": "DEFEND", "reason": "Reuters Tier 1 source", "evidence_refs": ["S1"]}]}
 RESOLVED = {"statuses": [{"objection_id": "O1", "status": "resolved", "reason": "ok now"}], "new_objections": []}

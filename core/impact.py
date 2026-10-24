@@ -4,7 +4,7 @@ Sign convention: a positive number is extra cost for Ganga, a negative number is
 "worst" is always the outcome most expensive for Ganga, "best" the cheapest.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 CONFIDENCE_LEVELS = ["Low", "Medium", "High"]
 
@@ -18,6 +18,8 @@ class Impact:
     pct_low: float
     pct_high: float
     direction: str
+    pct_label: str = ""  # FORECAST / OBSERVED / SCENARIO: where the percentage range comes from
+    calc: dict = field(default_factory=dict)  # the calculation record (core/calculator.py): inputs, FX rate + date, formula, assumptions
 
 
 def compute_impact(quarterly_spend_gbp, pct_low, pct_high, direction):

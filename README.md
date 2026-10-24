@@ -15,7 +15,9 @@ plain Python, every step is traced, and the brief says which evidence supports e
 
 **Professional scepticism.** The **Evaluator** and the **Red Team** are Vidhur's *professional scepticism* layer: the auditor's way of never accepting a
 claim, or a recommendation, without evidence. The Evaluator will not let a claim reach the CFO unless independent, fresh, trusted sources support it and it matches
-Ganga's own data; the Red Team then attacks the resulting decision before the CFO sees it. How well that works is measured, not asserted: see **Evaluation** below.
+Ganga's own data; the Red Team then attacks the resulting decision before the CFO sees it. The Evaluator checks every number in a claim against the cited
+excerpt, the real FX rate and the calculator; the Red Team rejects any revision that does not give a written reason tied to evidence or a calculation.
+How well that works is measured, not asserted: see **Evaluation** below.
 
 ## Architecture
 
@@ -214,6 +216,41 @@ from the normal trust-ranked evidence, and the claim passes on retry or ends `UN
 (`demo_untrusted_source: true`) and stated at the top of the brief.
 
 
+## Numbers are calculated in Python, never by the AI
+
+The model never produces a GBP figure. The analysts output only a **driver**, a **direction** (cost up / down), **evidence** (url, publisher, date and an excerpt taken from
+the fetched article, not from the model) and, **only if a cited source prints one**, a percentage. `core/calculator.py` then computes the GBP impact deterministically from
+Ganga's Zetaris purchase rows (part, supplier country, quantity, unit price, currency), a real ECB FX rate **with its date**, and the explicit assumptions in
+`data/decision_assumptions.csv`:
+
+```
+baseline_gbp = sum(quantity x unit_price / units_of_currency_per_GBP)
+change_gbp   = baseline_gbp x move% x pass_through%      (+ cost up, - saving)
+```
+
+Every figure in the CFO brief carries a **calculation record** (input rows, FX rate and date, formula, assumptions) and one label:
+
+| Label | Meaning | Example |
+|---|---|---|
+| **OBSERVED** | read from data | Zetaris quantity and price, the ECB rate, the baseline spend |
+| **FORECAST** | stated by a cited source | a percentage an article prints (the Evaluator checks it is in the excerpt) |
+| **SCENARIO** | our assumption | the 2% / 6% / 12% move, the FX pass-through, the hedge premium |
+
+When no source states a percentage the move comes from the SCENARIO rows of `data/decision_assumptions.csv`. Worst / likely / best is called a **scenario range, not a
+probability**. The brief opens with one line, from the calculator, on why this matters (what a wrong 50% hedge would cost in GBP) and has a **"How this number was
+calculated"** section for every driver. If the live FX call fails the rate stored on the Zetaris row is used and the record says so.
+
+The Evaluator's deterministic checks (no AI, run before the model check) enforce this; a failed check uses the normal send-back loop (max 2 retries, then UNVERIFIED):
+
+| Code | Fails when |
+|---|---|
+| `NUMBER_NOT_IN_SOURCE` | a % or figure in the claim is not in a cited excerpt and is not tagged `(SCENARIO)` (a range labelled FORECAST must be printed by a source) |
+| `FX_MISMATCH` | a claimed FX rate differs from the real ECB rate for its date by more than 2%, the claimed move does not follow from its own rates, or the rate cannot be checked |
+| `CURRENCY_COUNTRY_MISMATCH` | the currency is not the supplier country's (Taiwan: TWD, USD as proxy; Korea: KRW; Germany: EUR; China: CNY; also Japan JPY, Malaysia MYR) |
+| `GBP_MISMATCH` | a GBP figure in the claim is more than 10% away from every calculator result for that part (or there is no calculator result to check it) |
+| `DUPLICATE_SOURCE` | sources with the same outlet, the same original outlet ("via X"), the same headline or a near-identical excerpt count as one and fewer than two independent sources remain |
+| `STALE_SOURCE` | a source is older than `EVIDENCE_MAX_AGE_DAYS` (config, default 30) |
+
 ## Data
 
 **Ganga AI Solutions is fictional and its data is synthetic**, prepared before the build window. Everything in `data/` (parts, suppliers, quarterly prices
@@ -221,7 +258,8 @@ and quantities) is made up; see `data/README_DATA.md`. The **evidence is real**:
 Al Jazeera, NPR, DW) and exchange rates from the free ECB-based Frankfurter API.
 
 `data/decision_assumptions.csv` (`option,premium_pct,note`) holds the premiums the Decision Maker uses for a hedge (1.5%), a price lock (2%) and a second
-supplier (3%). They are **illustrative assumptions, not market quotes**, and the CFO brief points to the file under every option comparison.
+supplier (3%), and the SCENARIO rows the calculator uses (`SCENARIO_SMALL/LIKELY/LARGE_MOVE_PCT` = 2 / 6 / 12, `FX_PASS_THROUGH_PCT` = 100). They are **illustrative
+assumptions, not market quotes**, and the CFO brief points to the file under every option comparison and calculation.
 
 
 ## Sample inputs and outputs
@@ -251,8 +289,8 @@ The Evaluator checks the **claims**; the **Red Team** checks the **decision** bu
 - **Red Team** (`core/red_team.py`) returns structured JSON objections of five kinds: forecast wrong (opposite scenario), cost of acting vs not
   acting, concentration (supplier / country), weakest evidence, cheaper alternative. Each has a severity and must cite evidence ids (S1.., the
   work id, an option name) or numbers present in the evidence. Objections without a reference are dropped; if none survive, the model is re-asked once.
-- **Challenge loop:** Red Team objects -> Decision Maker **REVISES** (new option or share, GBP recalculated in Python) or **DEFENDS** (needs evidence
-  references) every high and medium objection -> Red Team re-judges -> one more round at most. **Maximum 2 rounds.** A high objection still standing
+- **Challenge loop:** Red Team objects -> Decision Maker **REVISES** (new option or share, GBP recalculated in Python; **a revision without a written reason tied to evidence
+  (an S-id) or a calculation (a number from the CALC line) is rejected**) or **DEFENDS** (needs evidence references) every high and medium objection -> Red Team re-judges -> one more round at most. **Maximum 2 rounds.** A high objection still standing
   afterwards marks the decision **CONTESTED - needs CFO judgement** instead of a confident recommendation.
 - Objections, responses, outcomes and every decision version are written to the World State and logged to the trace
   (`objection`, `response`, `revised`, `review`, `round`, `outcome`). The brief shows, per decision, "Challenged by Red Team" with the top objections,
@@ -303,7 +341,29 @@ wrong supplier country (2/2), cause not supported by the cited sources (2/2), an
 - **F04, wrong currency pair:** a South Korean part explained with GBP/JPY data. The numbers matched the yen data, so neither the deterministic check nor the model check noticed the currency was Japan's, not Korea's.
 - **F15 and F16, GBP impact that does not match Ganga's purchase data:** the claim text stated a GBP exposure 10x too large (P001) and 10x too small (P002) against Zetaris spend. The Evaluator does not compare GBP figures written inside a claim with Zetaris; Vidhur computes the GBP impact itself from Zetaris after a claim passes, so such a figure never reaches the brief, but the Evaluator did not flag it.
 
-These are gaps in this version, reported as they came out. The test cases were not changed after seeing results.
+These are gaps in this version, reported as they came out. The test cases were not changed after seeing results. (F03, F04, F15 and F16 are addressed by the new deterministic checks: see 1b.)
+
+### 1b. Deterministic re-run of the planted claims (no AI) - old vs new
+
+`python scripts/eval_planted_deterministic.py` re-runs the same 25 planted claims (`data/eval/planted_claims.csv`, **not edited**) through the Evaluator's deterministic checks
+only: no Nightshift, no model call (Ganga's rows come from `data/purchases.csv`, ECB rates are live). The old figures are the AI-assisted run above. Full table: `output_examples/eval_planted_deterministic.md`.
+
+| Failure type | Planted | Old: caught | Old: missed | Old: not evaluated | New (no AI): caught | New: missed |
+|---|---|---|---|---|---|---|
+| fabricated number | 1 | 0 | 1 | 0 | 1 | 0 |
+| FX mismatch | 2 | 2 | 0 | 0 | 2 | 0 |
+| wrong currency | 1 | 0 | 1 | 0 | 1 | 0 |
+| GBP mismatch | 2 | 0 | 2 | 0 | 2 | 0 |
+| duplicate source | 2 | 2 | 0 | 0 | 2 | 0 |
+| stale source | 2 | 2 | 0 | 0 | 2 | 0 |
+| other (untrusted publisher, single source, wrong country, cause not supported, wrong date) | 10 | 9 | 0 | 1 | 7 | 3 |
+| **All false claims** | **20** | **15** | **4** | **1** | **17** | **3** |
+
+Controls: 0/5 wrongly rejected, as before. The 3 still missed (F17 cause not supported, F19 and F20 wrong dates) are about meaning, so they need the model check; running without AI is
+not a substitute for it. The old run had F18 caught by the model; the new run catches it deterministically because "25 percent" is in no cited excerpt.
+**6 NEW planted claims**, one per new check, are in `data/eval/planted_claims_new.csv` (marked NEW, with their own articles in `data/eval/planted_sources_new.csv`): all 6 were caught by their
+intended check (N01 fabricated number, N02 FX rate, N03 wrong currency, N04 GBP figure, N05 duplicate source, N06 stale source). The only harness change: the old code `NOT_INDEPENDENT` was
+renamed `DUPLICATE_SOURCE`. Same limits as above: builder-written cases, one run, synthetic articles.
 
 ### 2. Backtest against baselines - NOT completed
 
@@ -328,7 +388,7 @@ on every retry (4 attempts, 60 s apart), and the job then hit its time limit. De
 ### Limits
 
 - Nightshift 1.2.1 returned 502 (`provider_error`: `empty_response`, `provider_deadline`) on a large share of calls; every failure is logged with the routed model (receipt ids are not exposed by the runtime).
-- Planted-claim test: 25 claims written by the builder, one run. It shows what the Evaluator does and does not catch, not a general accuracy figure.
+- Planted-claim tests (1 and 1b): 25 claims (plus 6 new) written by the builder, one run each. It shows what the Evaluator does and does not catch, not a general accuracy figure.
 - Backtest: 5 cases planned, 2 attempted, 0 completed for the model-based approaches. The news set is small (2-7 real headlines per case, CNBC and Fortune only), the model may remember these historical events from training, and the outcome is a currency-driven proxy for landed cost (no freight, duties or part-price changes).
 - Company data is synthetic for privacy; FX and news are live (live in the product; historical in the backtest).
 
@@ -354,7 +414,9 @@ on every retry (4 attempts, 60 s apart), and the job then hit its time limit. De
 | `scripts/eval_backtest.py` | 5-case backtest of Vidhur vs a naive baseline and a model-only call -> `output_examples/eval_backtest.md` |
 | `core/asof.py` | Point-in-time guards for the backtest: news, FX window and Zetaris quarters after `as_of` raise `AsOfViolation` |
 | `data/eval/` | Prepared evaluation data (planted claims, synthetic planted articles, backtest cases, real dated backtest headlines); see `data/eval/README_EVAL.md` |
-| `core/impact.py`, `core/brief.py` | GBP maths and confidence; the CFO brief |
+| `core/calculator.py` | **All GBP figures**: baseline, scenario range, calculation record, OBSERVED / FORECAST / SCENARIO labels |
+| `core/impact.py`, `core/brief.py` | Impact record and confidence; the CFO brief |
+| `scripts/eval_planted_deterministic.py` | Planted claims through the deterministic checks only (no AI) -> `output_examples/eval_planted_deterministic.md` |
 | `scripts/load_ganga_to_zetaris.py` | Registers Ganga's CSVs as Zetaris tables |
 | `docs/meterless_engine.md` | The World Model spec we followed and the test results |
 

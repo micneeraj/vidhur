@@ -4,13 +4,16 @@ import openai
 import requests
 
 from agents.evaluator import audit_claim
-from core.ganga_data import quarterly_spend
-from core.impact import compute_impact, confidence_level
+from core.calculator import CalcService
+from core.impact import confidence_level
 from core.zetaris_client import ZetarisError
 
 
-def run_work_item(delegation, target, analysts, evaluator, world, zt, trace):
-    """Runs inside a worker thread. Everything it learns is written to the world state; nothing is returned."""
+def run_work_item(delegation, target, analysts, evaluator, world, zt, trace, calc=None):
+    """Runs inside a worker thread. Everything it learns is written to the world state; nothing is returned.
+
+    calc: the core.calculator.CalcService that produces every GBP figure (one is built from Zetaris if none is given)."""
+    calc = calc or CalcService(zt, target.quarter)
     work_id = delegation["work_id"]
     with trace.target(work_id):
         trace.event("workflow", "start", input_summary=f"{delegation['analyst']} on {target.part_id} {target.country}",
@@ -27,13 +30,14 @@ def run_work_item(delegation, target, analysts, evaluator, world, zt, trace):
             result = audit_claim(world.latest_claim_key(work_id), target, work_id, analyst, evaluator, world, trace)
             if result.status == "PASS":
                 claim = world.get_claim(result.claim_key)
-                spend, quarter = quarterly_spend(zt, claim.part_id, quarter=target.quarter)
-                impact = compute_impact(spend, claim.pct_low, claim.pct_high, claim.direction)
+                impact = calc.for_claim(claim)  # GBP is calculated here in Python from Zetaris rows + a dated FX rate
+                spend, quarter = impact.baseline_quarterly_spend_gbp, calc.quarter
                 confidence = confidence_level(result.verdict.independent_sources, result.retries, result.verdict.strength)
                 world.write_impact(work_id, result.claim_key, impact, confidence, quarter)
                 trace.event("impact", "gbp", input_summary=f"{claim.part_id} {quarter} spend £{spend:,.2f}",
-                            output_summary=f"worst {impact.worst_gbp:+,.0f} / likely {impact.likely_gbp:+,.0f} / best {impact.best_gbp:+,.0f}; "
-                                           f"confidence {confidence}", decision="PASS")
+                            output_summary=f"scenario range worst {impact.worst_gbp:+,.0f} / likely {impact.likely_gbp:+,.0f} / best {impact.best_gbp:+,.0f} "
+                                           f"({impact.pct_label} {impact.pct_low:g}-{impact.pct_high:g}%; FX {impact.calc['fx']['units_per_gbp']} on "
+                                           f"{impact.calc['fx']['date']}); confidence {confidence}", decision="PASS")
         except (openai.OpenAIError, ZetarisError, requests.RequestException) as exc:
             # A model outage on one work item must not lose the others; it is reported, never hidden.
             message = f"{type(exc).__name__}: {str(exc)[:200]}"

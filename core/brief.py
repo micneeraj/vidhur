@@ -2,6 +2,7 @@
 
 from agents.decision_maker import DEMO_AGGRESSIVE_INSTRUCTION, MAX_ROUNDS, handling
 from agents.evaluator import source_profile
+from core import calculator
 from core import decisions as dec
 from agents.geopolitics_analyst import DEMO_UNTRUSTED_INSTRUCTION, DEMO_WEAK_CLAIM_INSTRUCTION
 from core import failures
@@ -46,6 +47,48 @@ def _cost_cells(c):
     return f"{dec.gbp(c['worst'])} | {dec.gbp(c['likely'])} | {dec.gbp(c['best'])} | {dec.gbp(c['forecast_wrong'])}"
 
 
+PCT_BASIS_TEXT = {calculator.FORECAST: "a cited source states it", calculator.OBSERVED: "computed from ECB rates",
+                  calculator.SCENARIO: "our assumption, no source states a percentage"}
+LEGEND = ("Every number carries a label: **OBSERVED** = read from data (Zetaris purchase rows, ECB rates); **FORECAST** = stated by a cited "
+          "source; **SCENARIO** = our assumption (`data/decision_assumptions.csv`). Worst / likely / best is a **scenario range, not a probability**. "
+          "All GBP figures are calculated in Python (`core/calculator.py`), never by the AI.")
+
+
+def _why_it_matters(passed):
+    """One line: what a wrong hedge would cost, in GBP, from the calculator (SCENARIO: hedge 50% of each verified part's spend)."""
+    if not passed:
+        return "No claim passed the Evaluator in this run, so there is no hedge to size; no GBP figure is put in front of the CFO."
+    cost = sum(calculator.wrong_hedge_cost_gbp(i["impact"], 50) for i in passed)
+    return (f"**Why this matters:** if the CFO hedged 50% of next quarter's spend on the {len(passed)} verified part(s) and the forecast turned out "
+            f"wrong, the hedge would cost about **£{cost:,.0f}** (SCENARIO: premium paid plus the likely move given away; calculated in Python "
+            f"from the calculation records below).")
+
+
+def _calc_section(item):
+    """'How this number was calculated' for one driver: inputs, FX rate + date, formula, assumptions, and a label on every figure."""
+    c, imp = item["attempts"][-1]["claim"], item["impact"]
+    calc = imp.get("calc") or {}
+    if not calc:
+        return []
+    fx, m, res = calc["fx"], calc["move_pct"], calc["result_gbp"]
+    out = ["- **How this number was calculated** (`core/calculator.py`):",
+           f"  - Driver: {c.driver or c.claim} ({c.direction.replace('_', ' ')})"]
+    for r in calc["inputs"]:
+        out.append(f"  - Input row (OBSERVED, Zetaris): {r['part_id']} {r['part_name']}, supplier country {r['supplier_country']}, "
+                   f"{r['quarter']}, quantity {r['quantity']:,.0f} x unit price {r['unit_price']:,.2f} {r['currency']}")
+    out += [f"  - FX rate (OBSERVED): 1 GBP = {fx['units_per_gbp']} {fx['currency']} on {fx['date']} - {fx['source']}",
+            f"  - Baseline (OBSERVED): £{calc['baseline_gbp']:,.0f} per quarter (Zetaris records £{calc['observed_total_gbp_in_zetaris']:,.0f} at the "
+            "historical rate stored on the rows)",
+            f"  - Move ({m['label']}): {m['small']:g}% / {m['likely']:g}% / {m['large']:g}% (small / likely / large) - "
+            f"{PCT_BASIS_TEXT.get(m['label'], m['basis'])}",
+            (f"  - Pass-through (SCENARIO): {calc['pass_through']['pct']:g}% of the move reaches Ganga's cost" if m["label"] == calculator.OBSERVED
+             else "  - Pass-through: none assumed (the move applies to the unit cost as stated)"),
+            f"  - Formula: {calc['formula']}",
+            f"  - Result (SCENARIO range, not a probability): worst {gbp(res['worst'])}, likely {gbp(res['likely'])}, best {gbp(res['best'])}",
+            "  - Assumptions used: " + "; ".join(f"{k} = {v:g}" for k, v in calc["assumptions"].items()) + " (`data/decision_assumptions.csv`)"]
+    return out
+
+
 def _decisions_section(report, passed):
     """Recommended decision per verified claim, the option comparison, and what the Red Team changed. Figures are Python-computed."""
     decs = report.get("decisions") or {}
@@ -54,7 +97,7 @@ def _decisions_section(report, passed):
     out = ["", "## Recommended decisions (next quarter)", "",
            f"Options are compared as the change in quarterly cost vs baseline (+ extra cost, - saving). Assumed premiums on the protected "
            f"spend: hedge {dec.PREMIUM_PCT['HEDGE']}%, price lock {dec.PREMIUM_PCT['LOCK_PRICE']}%, second supplier "
-           f"{dec.PREMIUM_PCT['DUAL_SOURCE']}% (illustrative assumptions, not market quotes). \"If forecast wrong\" is the mirror of the "
+           f"{dec.PREMIUM_PCT['DUAL_SOURCE']}% (SCENARIO: illustrative assumptions, not market quotes). \"If forecast wrong\" is the mirror of the "
            "likely case. The model picks and explains an option; every GBP figure is computed in Python.", ""]
     for i in passed:
         wid = i["delegation"]["work_id"]
@@ -114,7 +157,7 @@ def _decisions_section(report, passed):
 
 
 def console_summary(report):
-    lines = ["CFO BRIEF - Ganga AI Solutions (SYNTHETIC DATA) - change in quarterly cost, worst / likely / best"]
+    lines = ["CFO BRIEF - Ganga AI Solutions (SYNTHETIC DATA) - change in quarterly cost, scenario range worst / likely / best (calculated in Python)"]
     for item in report["items"]:
         d = item["delegation"]
         if d.get("action") != "run":
@@ -124,8 +167,8 @@ def console_summary(report):
         if _outcome(item) == "PASS" and item["impact"]:
             i = item["impact"]
             lines.append(f"[PASS, {i['confidence']} confidence] {tag}: {final.part_name} ({final.supplier_country}) "
-                         f"{final.direction.replace('_', ' ')} {final.pct_low:g}-{final.pct_high:g}% -> "
-                         f"{gbp(i['worst_gbp'])} / {gbp(i['likely_gbp'])} / {gbp(i['best_gbp'])}")
+                         f"{final.direction.replace('_', ' ')} {final.pct_low:g}-{final.pct_high:g}% ({i.get('pct_label') or final.pct_label}) -> "
+                         f"scenario range {gbp(i['worst_gbp'])} / {gbp(i['likely_gbp'])} / {gbp(i['best_gbp'])}")
             lines.append(f"    {final.claim}")
         elif _outcome(item) == "UNVERIFIED":
             lines.append(f"[UNVERIFIED] {tag}: {d['part_id']} not quantified. {d.get('note') or ''}".rstrip())
@@ -150,6 +193,7 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
     plan, review, run = report["plan"], report["review"], report["run"]
     out = [
         "# Vidhur CFO Brief - Ganga AI Solutions", "",
+        _why_it_matters(passed), "",
         *(["> **PARTIAL RESULTS.** AI runtime busy or offline: some agents could not run. See \"Agents that could not run\" below.", ""]
           if failures.collect(report) else []),
         "> **SYNTHETIC DATA.** Ganga AI Solutions is a fictional company. Its purchase history is made up for the "
@@ -158,7 +202,8 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         f"- Shared memory (Meterless World Model, {report['event_count']} events): `{report['path'].replace(chr(92), '/').split('/vidhur/')[-1]}`",
         f"- Trace log (every step, model, tokens, latency): `{str(trace_path).replace(chr(92), '/').split('/vidhur/')[-1]}`",
         f"- Model calls: {stats['llm_ok']} succeeded, {stats['llm_fail']} failed attempts (retried automatically)",
-        "- Baseline: Ganga's spend in the latest quarter, read from Zetaris with SQL.",
+        "- Baseline: Ganga's purchase rows in the latest quarter, read from Zetaris with SQL and converted to GBP at a dated ECB rate.",
+        f"- {LEGEND}",
     ]
     if demo_weak_claim:
         out += [f"- **Demo flag `--demo-weak-claim` was on.** The Geopolitics Analyst's first attempt was given this extra instruction: "
@@ -187,13 +232,13 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
                     f"{'re-delegated ' + review.get('analyst', '') + ' for ' + review.get('part_id', '') + ' - ' if review.get('redelegate') else 'no re-delegation - '}"
                     f"{review.get('reason', '')}"]
 
-    out += ["", "## Verified impact (change in quarterly cost vs latest-quarter spend; + is extra cost, - is a saving)", ""]
+    out += ["", "## Verified impact (scenario range of the change in quarterly cost; + is extra cost, - is a saving)", ""]
     if passed:
-        out += ["| Work | Part | Supplier country | Direction | Est. change | Worst | Likely | Best | Confidence |", "|---|---|---|---|---|---|---|---|---|"]
+        out += ["| Work | Part | Supplier country | Direction | Move (basis) | Worst (SCENARIO) | Likely (SCENARIO) | Best (SCENARIO) | Confidence |", "|---|---|---|---|---|---|---|---|---|"]
         for i in passed:
             c, imp = i["attempts"][-1]["claim"], i["impact"]
             out.append(f"| {i['delegation']['work_id']} ({c.analyst}) | {c.part_name} | {c.supplier_country} | {c.direction.replace('_', ' ')} | "
-                       f"{c.pct_low:g}-{c.pct_high:g}% | {gbp(imp['worst_gbp'])} | {gbp(imp['likely_gbp'])} | {gbp(imp['best_gbp'])} | {imp['confidence']} |")
+                       f"{c.pct_low:g}-{c.pct_high:g}% ({imp.get('pct_label') or c.pct_label}) | {gbp(imp['worst_gbp'])} | {gbp(imp['likely_gbp'])} | {gbp(imp['best_gbp'])} | {imp['confidence']} |")
         total = [sum(i["impact"][k] for i in passed) for k in ("worst_gbp", "likely_gbp", "best_gbp")]
         out += ["", f"**Sum of verified claims: worst {gbp(total[0])} / likely {gbp(total[1])} / best {gbp(total[2])} per quarter** "
                     "(claims on the same part from different analysts may overlap)."]
@@ -212,14 +257,16 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
             continue
         c = i["attempts"][-1]["claim"]
         out += [c.claim, "", f"- Estimate: {c.direction.replace('_', ' ')} {c.pct_low:g}-{c.pct_high:g}% "
-                f"({'computed in Python from ECB rates' if c.analyst == 'currency' else 'analyst estimate, not a source figure'})"]
+                f"({c.pct_label or 'unlabelled'}: {PCT_BASIS_TEXT.get(c.pct_label, 'no label')})"]
         if c.computed:
             out.append(f"- FX data: {c.computed['currency']} {c.computed['move_30d_pct']:+.2f}% over 30 days, {c.computed['move_90d_pct']:+.2f}% over 90 days "
                        f"({c.computed['start_date']} to {c.computed['end_date']}); pass-through assumed {c.computed['pass_through']}")
         if i["impact"]:
             imp = i["impact"]
-            out.append(f"- GBP: baseline {imp['quarter']} spend £{imp['baseline_quarterly_spend_gbp']:,.0f}; worst {gbp(imp['worst_gbp'])}, likely "
-                       f"{gbp(imp['likely_gbp'])}, best {gbp(imp['best_gbp'])}; confidence **{imp['confidence']}** (computed in Python from Zetaris data)")
+            out.append(f"- GBP: baseline {imp['quarter']} spend £{imp['baseline_quarterly_spend_gbp']:,.0f} (OBSERVED); scenario range worst "
+                       f"{gbp(imp['worst_gbp'])}, likely {gbp(imp['likely_gbp'])}, best {gbp(imp['best_gbp'])} (SCENARIO); confidence "
+                       f"**{imp['confidence']}** (calculated in Python from Zetaris data)")
+            out += _calc_section(i)
         out.append(f"- Reasoning: {c.reasoning}")
         out += [f"- Evidence strength: **{_evidence_strength(world, c)}** (publisher tiers from `data/source_trust.csv`)"]
         out += ["- Sources cited in the final attempt (publisher, tier, date):"] + [f"  - {s}" for s in _sources(world, c)]

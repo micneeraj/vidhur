@@ -21,6 +21,11 @@ PUBLISHER = "Frankfurter (ECB reference rates)"
 COUNTRY_CURRENCY = {
     "Taiwan": "TWD", "South Korea": "KRW", "Japan": "JPY", "China": "CNY", "Germany": "EUR", "Malaysia": "MYR",
 }
+# Currencies a claim about a supplier country may legitimately cite. Taiwan's dollar is not in the ECB set, so USD is
+# accepted there as the usual proxy (Taiwanese chip makers invoice in US dollars).
+COUNTRY_CURRENCIES = {
+    "Taiwan": {"TWD", "USD"}, "South Korea": {"KRW"}, "Japan": {"JPY"}, "China": {"CNY"}, "Germany": {"EUR"}, "Malaysia": {"MYR"},
+}
 CURRENCY_NAME = {"TWD": "Taiwan dollar", "KRW": "South Korean won", "JPY": "Japanese yen", "CNY": "Chinese yuan",
                  "EUR": "euro", "MYR": "Malaysian ringgit", "USD": "US dollar"}
 
@@ -66,6 +71,34 @@ def _rate_on_or_before(rates, target):
     if not days:
         raise FXUnavailable("no rate on or before " + target)
     return days[-1], days[-1]
+
+
+def rate_on(currency, on_date=None):
+    """(units of `currency` per 1 GBP, the ECB publication date actually used) on or before `on_date` (default: latest)."""
+    key = ("rate", currency, str(on_date))
+    with _cache_lock:
+        if key in _cache:
+            return _cache[key]
+    if on_date is None:
+        url = f"{API}/latest?base=GBP&symbols={currency}"
+    else:
+        # ask for a short window so a weekend or holiday resolves to the last published day
+        start = datetime.fromisoformat(str(on_date)).date() - timedelta(days=7)
+        url = f"{API}/{start}..{on_date}?base=GBP&symbols={currency}"
+    r = requests.get(url, timeout=TIMEOUT)
+    r.raise_for_status()
+    body = r.json()
+    if on_date is None:
+        result = (float(body["rates"][currency]), body["date"])
+    else:
+        rates = {d: v[currency] for d, v in body.get("rates", {}).items() if currency in v}
+        if not rates:
+            raise FXUnavailable(f"no {currency} rate published on or before {on_date}")
+        day = max(rates)
+        result = (float(rates[day]), day)
+    with _cache_lock:
+        _cache[key] = result
+    return result
 
 
 def pct_change_in_gbp_cost(start_rate, end_rate):

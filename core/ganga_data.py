@@ -55,3 +55,18 @@ def quarterly_spend(zt, part_id, quarter=None):
     if value is None:
         raise LookupError(f"No spend for {part_id} in {quarter}")
     return float(value), quarter
+
+
+def purchase_rows(zt, part_id, quarter):
+    """The purchase rows of one part in one quarter, as the calculator's inputs (quantity, unit price, currency, supplier country)."""
+    from core.calculator import PurchaseRow
+    safe_part, safe_quarter = part_id.replace("'", ""), quarter.replace("'", "")
+    rows = zt.query(
+        "SELECT p.part_id AS part_id, p.part_name AS part_name, s.country AS country, u.quarter AS quarter, u.quantity AS quantity, "
+        "u.unit_price_usd AS unit_price, u.usd_gbp_rate AS rate, u.total_gbp AS total_gbp "
+        "FROM ganga.purchases u JOIN ganga.parts p ON u.part_id = p.part_id JOIN ganga.suppliers s ON p.supplier_id = s.supplier_id "
+        f"WHERE u.part_id = '{safe_part}' AND u.quarter = '{safe_quarter}'")
+    if not rows:
+        raise LookupError(f"No purchases for {part_id} in {quarter}")
+    return [PurchaseRow(r["part_id"], r["part_name"], r["country"], float(r["quantity"]), float(r["unit_price"]), "USD", r["quarter"],
+                        float(r["total_gbp"]), float(r["rate"])) for r in rows]

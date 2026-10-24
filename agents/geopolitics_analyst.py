@@ -1,6 +1,7 @@
 """Geopolitics Analyst: turns real news into one structured, evidence-backed cost claim per target."""
 
 from agents.analyst_base import AnalystBase, number
+from core import calculator
 from core.claims import Claim
 from core.news import fetch_news, rank_by_trust, score_articles
 
@@ -28,16 +29,36 @@ SYSTEM_PROMPT = (
     "Reply with a single JSON object and nothing else."
 )
 
-CLAIM_FORMAT = """Reply with exactly this JSON (keep claim to 1-2 sentences and reasoning to 1-2 sentences):
-{"claims": [{"claim": "...", "part_id": "<part id above>", "supplier_country": "<country above>",
-  "direction": "cost_up" or "cost_down", "pct_low": <number>, "pct_high": <number>,
-  "source_ids": ["A1", "A2"], "reasoning": "..."}]}
-Rules: pct_low and pct_high are your own estimate of the % change in this part's unit cost over the next two
-quarters (positive numbers, pct_low <= pct_high). Cite at least two articles from different publishers whenever
-the articles allow it. The driver must be a geopolitical or trade-policy development (export controls, sanctions,
-tariffs, tensions, trade deals, state subsidies); market demand, energy or commodity prices and currency moves
-belong to other analysts - never base a claim on them. If the articles show no such development affecting this
-part from this country, reply {"claims": []}."""
+CLAIM_FORMAT = """Reply with exactly this JSON (keep driver to a few words, claim to 1-2 sentences and reasoning to 1-2 sentences):
+{"claims": [{"driver": "...", "claim": "...", "part_id": "<part id above>", "supplier_country": "<country above>",
+  "direction": "cost_up" or "cost_down", "source_ids": ["A1", "A2"],
+  "stated_pct": null or {"low": <number>, "high": <number>, "source_id": "A1"}, "reasoning": "..."}]}
+Rules: you do NOT calculate any money. Never write a GBP amount. Never estimate a percentage yourself: set stated_pct only if a
+cited article itself prints a percentage change for this kind of cost (copy its numbers exactly and give its id), otherwise
+null - Python then applies the scenario assumptions. Do not put any % or figure in claim or reasoning unless an article prints it.
+Cite at least two articles from different publishers whenever the articles allow it. The driver must be a geopolitical or
+trade-policy development (export controls, sanctions, tariffs, tensions, trade deals, state subsidies); market demand, energy
+or commodity prices and currency moves belong to other analysts - never base a claim on them. If the articles show no such
+development affecting this part from this country, reply {"claims": []}."""
+
+
+def excerpt_of(article):
+    """The evidence excerpt: the article's own headline and summary, taken from the fetched data (never from the model)."""
+    return (article.title + (" - " + article.summary[:300] if article.summary else "")).strip()
+
+
+def evidence_for(articles):
+    return [{"url": a.url, "publisher": a.publisher, "date": a.published[:10], "excerpt": excerpt_of(a)} for a in articles]
+
+
+def pct_from(raw, by_id, assumptions):
+    """(label, pct_low, pct_high): a percentage only if the analyst names a cited article that states it, else the scenario assumption."""
+    stated = raw.get("stated_pct")
+    if isinstance(stated, dict) and str(stated.get("source_id", "")) in by_id:
+        low, high = number(stated.get("low")), number(stated.get("high", stated.get("low")))
+        if low == low and high == high and 0 <= low <= high:  # NaN-safe
+            return calculator.FORECAST, low, high
+    return calculator.SCENARIO, assumptions["SCENARIO_SMALL_MOVE_PCT"], assumptions["SCENARIO_LARGE_MOVE_PCT"]
 
 
 class GeopoliticsAnalyst(AnalystBase):
@@ -127,17 +148,20 @@ class GeopoliticsAnalyst(AnalystBase):
         by_id = {f"A{i}": a for i, a in enumerate(shown, 1)}
         # An id the model made up is kept as-is so the Evaluator catches it (it is not in the fetched set).
         urls = [by_id[s].url if s in by_id else str(s) for s in raw.get("source_ids", [])]
+        label, pct_low, pct_high = pct_from(raw, by_id, calculator.load_assumptions())
         claim = Claim(
             claim_id=work_id, claim=str(raw.get("claim", "")).strip(),
             part_id=str(raw.get("part_id") or target.part_id), part_name=target.part_name,
             supplier_country=str(raw.get("supplier_country") or target.country), direction=str(raw.get("direction", "")),
-            pct_low=number(raw.get("pct_low")), pct_high=number(raw.get("pct_high")), source_urls=urls,
+            pct_low=pct_low, pct_high=pct_high, source_urls=urls,
             reasoning=str(raw.get("reasoning", "")).strip(), attempt=attempt, analyst=self.name,
+            driver=str(raw.get("driver", "")).strip(), pct_label=label,
+            evidence=evidence_for([by_id[x] for x in raw.get("source_ids", []) if x in by_id]),
         )
         self.world.write_claim(claim, work_id, self.name)
         self.trace.event(
             self.name, "claim:draft" if previous is None else "claim:revised", input_summary=f"{target.part_id} / {target.country}",
-            output_summary=f"{claim.direction} {claim.pct_low}-{claim.pct_high}%: {claim.claim}", model=result.model,
+            output_summary=f"{claim.direction} {claim.pct_low}-{claim.pct_high}% ({claim.pct_label}): {claim.claim}", model=result.model,
             sources=claim.source_urls, retry_count=attempt - 1, demo_weak_claim=bool(self.demo_weak_claim and previous is None),
             demo_untrusted_source=bool(self.demo_untrusted_source and previous is None),
         )

@@ -8,6 +8,8 @@ in full (an upper-bound assumption, stated in every claim).
 
 from agents.analyst_base import AnalystBase
 from core import fx
+from agents.geopolitics_analyst import evidence_for
+from core import calculator
 from core.claims import Claim
 from core.news import fetch_news, rank_by_trust
 
@@ -24,7 +26,8 @@ SYSTEM_PROMPT = (
 )
 
 FORMAT = """Reply with exactly this JSON (claim: 1-2 sentences using the numbers above; reasoning: 1-2 sentences):
-{"claim": "...", "reasoning": "...", "source_ids": ["A1", "A2"]}
+{"driver": "...", "claim": "...", "reasoning": "...", "source_ids": ["A1", "A2"]}
+Never write a GBP amount: money is calculated for you. Do not add figures other than the ones given above.
 Pick the articles (by id) that discuss this currency, the pound, or what is moving them. If none do, use []."""
 
 
@@ -122,11 +125,14 @@ class CurrencyAnalyst(AnalystBase):
             return None
         by_id = {f"A{i}": a for i, a in enumerate(shown, 1)}
         news_urls = [by_id[s].url if s in by_id else str(s) for s in data.get("source_ids", [])]
+        move_article = fx.fx_source_article(move)
         claim = Claim(
             claim_id=work_id, claim=str(data["claim"]).strip(), part_id=target.part_id, part_name=target.part_name,
             supplier_country=target.country, direction=direction, pct_low=pct_low, pct_high=pct_high,
             source_urls=[move.url] + news_urls,  # the FX data source is always cited, with its date
             reasoning=str(data.get("reasoning", "")).strip(), attempt=attempt, analyst=self.name,
+            currency=currency, driver=str(data.get("driver", "")).strip() or f"GBP/{currency} exchange-rate move", pct_label=calculator.OBSERVED,
+            evidence=evidence_for([move_article] + [by_id[s] for s in data.get("source_ids", []) if s in by_id]),
             computed={"currency": currency, "move_30d_pct": m30, "move_90d_pct": m90, "start_date": move.start_date,
                       "end_date": move.end_date, "start_rate": move.start_rate, "end_rate": move.end_rate,
                       "pass_through": "100% (upper bound)"},

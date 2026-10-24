@@ -12,13 +12,18 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from difflib import SequenceMatcher
 
-from core import config, llm
+from core import config, fx, llm
 from core.claims import AuditResult, Verdict
 from core.source_trust import publisher_key, trust_of
 
 MAX_RETRIES = 2
 SYNDICATION_TITLE_SIMILARITY = 0.88  # headlines this alike are treated as one story, not two sources
 FX_TOLERANCE = 0.011  # percentage points; the analyst's range must equal the Python-computed moves
+FX_RATE_TOLERANCE = 0.02  # a claimed FX rate may differ from the real rate for its date by at most 2%
+FX_MOVE_TOLERANCE = 0.05  # percentage points; a claimed move must match the move recomputed from its own start and end rates
+GBP_TOLERANCE = 0.10  # a GBP figure in a claim may differ from the calculator's result by at most 10%
+EXCERPT_SIMILARITY = 0.9  # excerpts this alike are one report, not two sources
+MIN_EXCERPT_CHARS = 40
 
 EVALUATOR_SYSTEM_PROMPT = (
     "You are the Evaluator (auditor) for a procurement cost-risk system. You judge whether the cited sources "
@@ -57,8 +62,34 @@ def _norm_title(title):
     return " ".join(re.findall(r"[a-z0-9]+", (title or "").lower()))
 
 
+_ORIGIN_RE = re.compile(
+    r"(?:\bvia\b|originally (?:published|reported) (?:by|in)|\bsource:|\bwith (?:reporting|files) from|\bsyndicated from|"
+    r"\breprinted from|\bcourtesy of)\s+([A-Z][\w&\-]*(?:\.\w+)*(?: [A-Z][\w&\-]*(?:\.\w+)*){0,3})")
+
+
+def original_outlet(article):
+    """The outlet a story originally came from: a 'via X' / 'originally reported by X' credit in the text, else its own publisher."""
+    m = _ORIGIN_RE.search(f"{article.title} {article.summary or ''}")
+    return _norm_publisher(m.group(1)) if m else _norm_publisher(article.publisher)
+
+
+def duplicate_reason(a, b):
+    """Why two articles count as ONE source (same outlet, same original outlet, same headline, near-same excerpt), or None."""
+    if (_norm_publisher(a.publisher) == _norm_publisher(b.publisher)
+            or publisher_key(a.url, a.publisher) == publisher_key(b.url, b.publisher)):
+        return "same outlet"
+    if original_outlet(a) in (original_outlet(b), _norm_publisher(b.publisher)) or original_outlet(b) == _norm_publisher(a.publisher):
+        return "same original outlet"
+    if SequenceMatcher(None, _norm_title(a.title), _norm_title(b.title)).ratio() >= SYNDICATION_TITLE_SIMILARITY:
+        return "same headline"
+    sa, sb = _norm_title(a.summary or ""), _norm_title(b.summary or "")
+    if len(sa) >= MIN_EXCERPT_CHARS and len(sb) >= MIN_EXCERPT_CHARS and SequenceMatcher(None, sa, sb).ratio() >= EXCERPT_SIMILARITY:
+        return "near-identical excerpt"
+    return None
+
+
 def independent_groups(articles):
-    """Group articles that are the same publisher or the same syndicated story.
+    """Group articles that are the same outlet, the same original outlet or the same syndicated story.
 
     Returns a list of groups; the number of groups is the number of independent sources.
     """
@@ -72,13 +103,7 @@ def independent_groups(articles):
 
     for i in range(len(articles)):
         for j in range(i + 1, len(articles)):
-            same_publisher = (_norm_publisher(articles[i].publisher) == _norm_publisher(articles[j].publisher)
-                              or publisher_key(articles[i].url, articles[i].publisher) == publisher_key(articles[j].url, articles[j].publisher))
-            similar_title = (
-                SequenceMatcher(None, _norm_title(articles[i].title), _norm_title(articles[j].title)).ratio()
-                >= SYNDICATION_TITLE_SIMILARITY
-            )
-            if same_publisher or similar_title:
+            if duplicate_reason(articles[i], articles[j]):
                 parent[find(i)] = find(j)
 
     groups = {}
@@ -102,6 +127,138 @@ def _currency_consistency(claim):
     if abs(claim.pct_low - low) > FX_TOLERANCE or abs(claim.pct_high - high) > FX_TOLERANCE:
         out.append(Finding("FX_MISMATCH", f"The range must be the computed FX moves {low}-{high}%, not {claim.pct_low}-{claim.pct_high}%."))
     return out
+
+
+# ---- figures in a claim: % and money amounts --------------------------------------------------------------
+_NUM = r"\d[\d,]*(?:\.\d+)?"
+_SCENARIO_TAG = r"(\s*\(SCENARIO\))?"
+PCT_RE = re.compile(rf"(?<![\w.])({_NUM})\s?(?:%|percent\b|per cent\b)" + _SCENARIO_TAG, re.I)
+MONEY_RE = re.compile(rf"(£|\bGBP\b|\bUSD\b|US\$|\$|€|\bEUR\b)\s?({_NUM})\s?(bn|billion|mn|million|m|k|thousand)?(?![a-z])" + _SCENARIO_TAG, re.I)
+MULTIPLIER = {"k": 1e3, "thousand": 1e3, "m": 1e6, "mn": 1e6, "million": 1e6, "bn": 1e9, "billion": 1e9}
+
+
+def _to_float(token):
+    return float(token.replace(",", "").rstrip("."))
+
+
+def claim_figures(text):
+    """Figures stated in a claim: {"percents": [(value, scenario_tagged)], "money": [(currency, value, scenario_tagged)]}.
+
+    A figure followed by "(SCENARIO)" is declared to be our own assumption and is not checked against sources.
+    """
+    text = text or ""
+    percents = [(_to_float(m.group(1)), bool(m.group(2))) for m in PCT_RE.finditer(text)]
+    money = []
+    for m in MONEY_RE.finditer(text):
+        cur = m.group(1).upper().replace("£", "GBP").replace("US$", "USD").replace("$", "USD").replace("€", "EUR")
+        value = _to_float(m.group(2)) * MULTIPLIER.get((m.group(3) or "").lower(), 1)
+        money.append((cur, value, bool(m.group(4))))
+    return {"percents": percents, "money": money}
+
+
+def numbers_in(text):
+    return [_to_float(t) for t in re.findall(_NUM, text or "")]
+
+
+def _appears(value, numbers):
+    """True if `value` is among the numbers of a source text (a rounded quote such as 3.5 for 3.52 counts)."""
+    text = f"{value:.10g}"
+    decimals = len(text.split(".")[1]) if "." in text else 0
+    return any(abs(n - value) < 1e-9 or round(n, decimals) == value for n in numbers)
+
+
+def _excerpt_numbers(known, claim):
+    text = " ".join(f"{a.title} {a.summary or ''}" for a in known) + " " + " ".join(str(e.get("excerpt", "")) for e in claim.evidence or [])
+    return numbers_in(text)
+
+
+def number_findings(claim, known):
+    """NUMBER_NOT_IN_SOURCE: every % or figure in the claim must appear in a cited excerpt, or be tagged (SCENARIO).
+
+    GBP amounts are not checked here: GBP_MISMATCH compares them with the calculator. A structured percentage range labelled
+    FORECAST ('a source states it') must also appear in the excerpts.
+    """
+    nums = _excerpt_numbers(known, claim)
+    fig = claim_figures(claim.claim)
+    missing = [f"{v:g}%" for v, tagged in fig["percents"] if not tagged and not _appears(v, nums)]
+    missing += [f"{cur} {v:,.0f}" for cur, v, tagged in fig["money"] if cur != "GBP" and not tagged and not _appears(v, nums)]
+    if (claim.pct_label or "").upper() == "FORECAST":
+        missing += [f"{v:g}% (stated range)" for v in (claim.pct_low, claim.pct_high) if not _appears(v, nums)]
+    if not missing:
+        return []
+    return [Finding("NUMBER_NOT_IN_SOURCE", f"The claim states {', '.join(dict.fromkeys(missing))}, which does not appear in any cited "
+                    "excerpt. Quote only figures that a cited source prints, or tag your own assumption (SCENARIO).")]
+
+
+def currency_country_findings(claim):
+    """CURRENCY_COUNTRY_MISMATCH: the currency a claim is about must be the supplier country's (Taiwan: TWD, with USD as proxy)."""
+    cur = (claim.currency or (claim.computed or {}).get("currency") or "").upper()
+    allowed = fx.COUNTRY_CURRENCIES.get(claim.supplier_country)
+    if cur and allowed and cur not in allowed:
+        return [Finding("CURRENCY_COUNTRY_MISMATCH", f"{cur} is not the currency of {claim.supplier_country} "
+                        f"({'/'.join(sorted(allowed))}); the claim must use the supplier country's currency.")]
+    return []
+
+
+def fx_rate_findings(claim, fx_rate_fn):
+    """FX_MISMATCH (rates): the claimed start and end rates must match the real ECB rates for their dates within 2%, and the claimed
+    90-day move must follow from those two rates. Fails closed: a rate that cannot be checked is not accepted."""
+    c = claim.computed or {}
+    cur = (c.get("currency") or claim.currency or "").upper()
+    if not cur or "end_rate" not in c:
+        return []
+    out = []
+    for which in ("start", "end"):
+        claimed, day = c.get(f"{which}_rate"), c.get(f"{which}_date")
+        if claimed is None or not day:
+            continue
+        try:
+            real, real_day = fx_rate_fn(cur, day)
+        except Exception as exc:
+            out.append(Finding("FX_MISMATCH", f"The {which} rate for {cur} on {day} could not be checked against ECB data "
+                               f"({type(exc).__name__}); not accepted unchecked."))
+            continue
+        if not real or abs(float(claimed) / real - 1) > FX_RATE_TOLERANCE:
+            out.append(Finding("FX_MISMATCH", f"Claimed GBP/{cur} rate {claimed} on {day} differs from the real ECB rate {real} "
+                               f"({real_day}) by more than {FX_RATE_TOLERANCE:.0%}."))
+    try:
+        move = fx.pct_change_in_gbp_cost(float(c["start_rate"]), float(c["end_rate"]))
+        if abs(move - float(c["move_90d_pct"])) > FX_MOVE_TOLERANCE:
+            out.append(Finding("FX_MISMATCH", f"The claimed 90-day move {float(c['move_90d_pct']):+.2f}% does not follow from its own "
+                               f"rates (they give {move:+.2f}%)."))
+    except (KeyError, TypeError, ValueError, ZeroDivisionError):
+        pass
+    return out
+
+
+def gbp_findings(claim, calc):
+    """GBP_MISMATCH: any GBP figure in the claim must be within 10% of a calculator.py result for this part
+    (baseline spend, or the worst / likely / best change). With no calculator result the figure cannot be verified."""
+    figures = [v for cur, v, _ in claim_figures(claim.claim)["money"] if cur == "GBP"]
+    if not figures:
+        return []
+    if not calc:
+        return [Finding("GBP_MISMATCH", "The claim states a GBP figure but no calculator result is available to check it; "
+                        "remove GBP figures from the claim (the calculator produces them).")]
+    reference = {"baseline": calc["baseline_gbp"], **{k: abs(v) for k, v in calc["result_gbp"].items() if k in ("worst", "likely", "best")}}
+    out = []
+    for v in figures:
+        if not any(r and abs(v - r) / r <= GBP_TOLERANCE for r in reference.values()):
+            listing = ", ".join(f"{k} £{r:,.0f}" for k, r in reference.items())
+            out.append(Finding("GBP_MISMATCH", f"The claim states GBP {v:,.0f}; the calculator gives {listing} "
+                               f"(tolerance {GBP_TOLERANCE:.0%}). GBP figures come from the calculator, not from the analyst."))
+    return out
+
+
+def duplicate_findings(known):
+    """DUPLICATE_SOURCE: cited sources that are the same outlet, same original outlet, or carry near-identical text count as one;
+    fewer than two independent sources remain."""
+    if len(known) < 2 or len(independent_groups(known)) >= 2:
+        return []
+    reasons = sorted({r for i, a in enumerate(known) for b in known[i + 1:] if (r := duplicate_reason(a, b))})
+    names = sorted({a.publisher for a in known})
+    return [Finding("DUPLICATE_SOURCE", f"The cited sources count as one ({', '.join(reasons) or 'duplicates'}; publishers: "
+                    f"{', '.join(names)}). Cite sources from different outlets reporting separately.")]
 
 
 def source_profile(articles):
@@ -134,11 +291,13 @@ def trust_findings(known, now, max_age_days):
     return out
 
 
-def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None):
+def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None, calc=None, fx_rate_fn=None):
     """Return a list of Findings (empty list = all deterministic checks passed).
 
     pool:    {url: Article} - everything actually fetched this run
     catalog: {part_id: {"part_name", "country"}} - Ganga's parts, read from Zetaris
+    calc:    the calculator.py calculation record for this claim's part (to check GBP figures), or None
+    fx_rate_fn: (currency, date) -> (units per GBP, date); real ECB data by default
     """
     now = now or datetime.now(timezone.utc)
     max_age_days = max_age_days or config.evidence_max_age_days()
@@ -176,12 +335,7 @@ def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None):
                 f"Source '{article.title[:70]}' ({article.publisher}) is from {article.published[:10]}, "
                 f"older than {max_age_days} days; replace it with a fresher one."))
 
-    if len(known) >= 2 and len(independent_groups(known)) < 2:
-        names = sorted({a.publisher for a in known})
-        findings.append(Finding(
-            "NOT_INDEPENDENT",
-            f"The cited sources are not independent (publishers: {', '.join(names)}; same publisher or the same "
-            "story syndicated). Cite sources from different publishers reporting separately."))
+    findings.extend(duplicate_findings(known))
 
     # 3b. trust layer: only fresh sources count; one of them must be Tier 1 or 2; copies of one report count once
     findings.extend(trust_findings(known, now, max_age_days))
@@ -189,6 +343,12 @@ def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None):
     # 4. analyst-specific consistency with computed data
     if claim.analyst == "currency":
         findings.extend(_currency_consistency(claim))
+
+    # 5. numbers: every figure is traceable to a source, the data or the calculator
+    findings.extend(number_findings(claim, known))
+    findings.extend(currency_country_findings(claim))
+    findings.extend(fx_rate_findings(claim, fx_rate_fn or fx.rate_on))
+    findings.extend(gbp_findings(claim, calc))
     return findings
 
 
@@ -198,7 +358,7 @@ def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None):
 class Evaluator:
     name = "evaluator"
 
-    def __init__(self, catalog, pool, world, trace, model=None, now=None, max_age_days=None):
+    def __init__(self, catalog, pool, world, trace, model=None, now=None, max_age_days=None, calc_fn=None, fx_rate_fn=None):
         self.catalog = catalog
         self.pool = pool  # shared with the analysts: url -> Article
         self.world = world  # core.shared_state.RunWorld: claims are read from it, verdicts written to it
@@ -207,10 +367,13 @@ class Evaluator:
         self.expected_model = config.evaluator_expected() if model is None else model
         self.now = now
         self.max_age_days = max_age_days
+        self.calc_fn = calc_fn  # claim -> Impact from calculator.py; its record is what GBP figures in a claim are checked against
+        self.fx_rate_fn = fx_rate_fn
 
     def evaluate(self, claim_key, retry_count=0):
         claim = self.world.get_claim(claim_key)  # read from the shared world state, not from a local variable
-        findings = deterministic_checks(claim, self.pool, self.catalog, self.now, self.max_age_days)
+        calc = self.calc_fn(claim).calc if self.calc_fn else None
+        findings = deterministic_checks(claim, self.pool, self.catalog, self.now, self.max_age_days, calc=calc, fx_rate_fn=self.fx_rate_fn)
         cited = [self.pool[u] for u in dict.fromkeys(claim.source_urls) if u in self.pool]
         independent = len(independent_groups(cited)) if cited else 0
 

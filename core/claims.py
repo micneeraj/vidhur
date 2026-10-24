@@ -18,6 +18,10 @@ class Claim:
     attempt: int = 1
     analyst: str = "geopolitics"
     computed: dict = field(default_factory=dict)  # numbers computed in Python (e.g. FX moves), checked by the Evaluator
+    currency: str = ""  # the currency the claim's driver is about (currency analyst); checked against the supplier country
+    driver: str = ""  # the development behind the claim, in a few words
+    evidence: list = field(default_factory=list)  # [{url, publisher, date, excerpt}] - filled in Python from the fetched article
+    pct_label: str = ""  # how pct_low / pct_high are labelled: FORECAST (a source states it), OBSERVED (computed from data), SCENARIO (our assumption)
 
     def to_dict(self):
         return asdict(self)

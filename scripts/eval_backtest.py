@@ -294,7 +294,9 @@ def main():
             world = RunWorld(f"bt-{case['case_id']}-{trace.run_id}")
             pool, stopped = {}, []
             analysts = {"geopolitics": GeopoliticsAnalyst(trace, world, pool), "currency": CurrencyAnalyst(trace, world, pool)}
-            evaluator = Evaluator(catalog, pool, world, trace, now=asof.as_of_datetime(as_of))
+            from core.calculator import CalcService  # GBP from the calculator, with the FX rate as at the case's as-of date
+            calc = CalcService(zt, targets[0].quarter, as_of=as_of)
+            evaluator = Evaluator(catalog, pool, world, trace, now=asof.as_of_datetime(as_of), calc_fn=calc.for_claim)
             planner = Planner(trace, world)
             world.start_run({"run_id": trace.run_id, "backtest_case": case["case_id"], "as_of": case["as_of"]})
 
@@ -307,7 +309,7 @@ def main():
 
             def process(d):
                 try:
-                    run_work_item(d, by_part[d["part_id"]], analysts, evaluator, world, zt, trace)
+                    run_work_item(d, by_part[d["part_id"]], analysts, evaluator, world, zt, trace, calc=calc)
                 except service_errors as exc:
                     world.write_error(d["work_id"], f"{type(exc).__name__}: {str(exc)[:200]}")
 
