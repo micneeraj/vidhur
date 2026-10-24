@@ -205,7 +205,7 @@ One company run limited to the two biggest-spend drivers: the Taiwan GPU chip (g
 - **Fixed plan, no Planner call.** The two drivers are picked by a documented rule (`core/demo.py`), so the Planner model is not called in demo mode.
 - **Both demo instructions on.** The Geopolitics Analyst's first attempt cites one source (the Evaluator sends it back), and the first decision is told to be
   aggressive (the Red Team challenges it and writes its reason). Real model calls, real checks; the flags are printed and recorded in the brief.
-- **Bounded AI calls.** 60 s timeout per call, 3 attempts, a 285 s time budget for the whole run (no call starts after it), and the model's long private
+- **Bounded AI calls.** 180 s timeout per call in demo mode, 3 attempts, a 25-minute time budget for the whole run (no call starts after it), and the model's long private
   reasoning switched off through Nightshift (`chat_template_kwargs.enable_thinking=false`). Demo mode only: normal runs and the evaluations are unchanged.
 - **If a call still fails, the driver says so.** It is labelled **Could not verify** in the brief, the console and the evidence page, with the reason and
   "no GBP figure - this is NOT zero impact", and the run continues.

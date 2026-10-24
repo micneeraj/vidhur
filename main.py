@@ -6,7 +6,7 @@ Meterless World Model (logs/world_state_<run_id>.json); the brief is built from 
 
 Usage:
     python main.py
-    python main.py --demo               # fast demo: 2 drivers, cached dated evidence, planted weak claim + Red Team challenge, < 5 min
+    python main.py --demo               # fast demo: 2 drivers, cached dated evidence, planted weak claim + Red Team challenge, up to 25 min budget
     python main.py --demo-red-team      # the first decision is told to be aggressive so the Red Team visibly challenges it
     python main.py --demo-weak-claim    # the Geopolitics Analyst's first attempt is told to cite only ONE source,
                                         # so you can watch the Evaluator catch it and send it back

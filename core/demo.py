@@ -12,8 +12,8 @@ from agents.currency_analyst import CurrencyAnalyst
 from agents.geopolitics_analyst import GeopoliticsAnalyst
 from core import fx
 
-TIME_BUDGET_SECONDS = 285  # no model call starts after this; unfinished drivers are labelled "Could not verify"
-CALL_TIMEOUT_SECONDS = 60
+TIME_BUDGET_SECONDS = 1500  # 25 min: no model call starts after this; unfinished drivers are labelled "Could not verify"
+CALL_TIMEOUT_SECONDS = 180
 ARTICLES_SHOWN = 5  # fewer articles per prompt: shorter prompts answer faster on the shared runtime
 CALL_MAX_ATTEMPTS = 3
 RETRY_WAIT_SECONDS = 2
