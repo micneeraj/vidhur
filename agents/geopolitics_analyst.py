@@ -134,7 +134,7 @@ class GeopoliticsAnalyst(AnalystBase):
                   f"{target.supplier_name}. Ganga spent GBP {target.quarterly_spend_gbp:,.0f} on it in {target.quarter}.\n\n"
                   f"Articles (most relevant first):\n{self._numbered(shown)}\n\n")
         if previous is None:
-            task = "Write the cost claim for this part and country.\n" + CLAIM_FORMAT
+            task = "Write the cost claim for this part and country.\n" + self.CLAIM_FORMAT
             if self.demo_weak_claim:
                 task += "\n" + DEMO_WEAK_CLAIM_INSTRUCTION
             if self.demo_untrusted_source:
@@ -142,7 +142,7 @@ class GeopoliticsAnalyst(AnalystBase):
         else:
             task = (f"Your previous claim was sent back by the Evaluator (the auditor).\nPrevious claim: {previous.claim}\n"
                     f"Evaluator feedback: {' | '.join(feedback)}\nRevise the claim so it fixes every point of feedback. "
-                    "Use only the articles above.\n" + CLAIM_FORMAT)
+                    "Use only the articles above.\n" + self.CLAIM_FORMAT)
 
         data, result = self._ask_json(self.SYSTEM_PROMPT, header + task, "claim" if previous is None else "revise", attempt - 1)
         raw = ((data or {}).get("claims") or [None])[0]

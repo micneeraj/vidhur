@@ -194,3 +194,86 @@ def test_a_percentage_printed_by_a_cited_article_is_allowed(analyst, monkeypatch
 def test_dashboard_cards_fit_three_across_on_wide_screens():
     min_px = int(re.search(r"\.cards\{[^}]*minmax\(min\(100%,(\d+)px\),1fr\)", dashboard.CSS).group(1))
     assert 3 * min_px + 2 * 20 <= 1280
+
+
+# ---- regression: D3 traces of 2026-10-24 (run_20261024_205745 / run_20261024_203148) ----------------------------
+# The fixture holds the verbatim 400-character prefixes the trace kept, completed to valid JSON (see its _note).
+import json as _json
+
+from agents import analyst_base
+from agents.supplier_commodity import claims_from_reply
+from core import llm
+
+TRACE = _json.loads((ROOT / "tests" / "data" / "d3_trace_replies.json").read_text(encoding="utf-8"))
+
+
+def model_says(analyst, monkeypatch, text, seen=None):
+    """Mock only the network call: the reply text goes through the real _ask_json and the analyst's own parser."""
+    def chat(messages, **kw):
+        if seen is not None:
+            seen["user"] = messages[-1]["content"]
+        return type("R", (), {"text": text, "model": "m"})()
+    monkeypatch.setattr(analyst_base.llm, "chat", chat)
+
+
+def test_the_trace_prefixes_are_the_real_logged_replies():
+    assert TRACE["run_205745_a11_a12_trace_prefix"] == TRACE["run_203148_attempt1_trace_prefix"]
+    assert TRACE["run_205745_a11_a12_reply"].startswith(TRACE["run_205745_a11_a12_trace_prefix"][:-3])
+
+
+def test_d3_prompt_is_the_memory_format_not_the_geopolitics_one(analyst, monkeypatch):
+    seen = {}
+    model_says(analyst, monkeypatch, '{"claims": []}', seen)
+    analyst.draft(KOREA, "D3")
+    assert "HBM/DRAM contract or spot prices" in seen["user"] and "never cite an id that is not in the list" in seen["user"]
+    assert "geopolitical or\ntrade-policy development" not in seen["user"]  # that rule made D3 answer 'state subsidy'
+
+
+def test_d1_still_gets_the_geopolitics_format(tmp_path, monkeypatch):
+    trace, world, seen = Trace(log_dir=tmp_path, quiet=True), RunWorld("g", path=tmp_path / "w.json"), {}
+    monkeypatch.setattr(geopolitics_analyst, "fetch_news", lambda q, **kw: (ARTICLES, {"from_cache": True, "fetched_at": "x", "errors": []}))
+    geo = GeopoliticsAnalyst(trace, world, {}, model="m")
+    model_says(geo, monkeypatch, '{"claims": []}', seen)
+    geo.draft(TARGETS[0], "D1")
+    assert "geopolitical or\ntrade-policy development" in seen["user"] and "HBM/DRAM contract" not in seen["user"]
+
+
+def test_real_reply_followed_by_an_echoed_empty_claims_object_is_not_discarded(analyst, monkeypatch):
+    model_says(analyst, monkeypatch, TRACE["run_205745_a11_a12_reply"] + '\nIf nothing fits I would reply {"claims": []}.')
+    claim = analyst.draft(KOREA, "D3")
+    assert claim is not None and claim.driver == "South Korea state subsidy"
+
+
+def test_real_reply_with_a_broken_outer_wrapper_keeps_the_claim(analyst, monkeypatch):
+    model_says(analyst, monkeypatch, TRACE["run_203148_revise_a3_a4_reply"][:-1])  # outer closing brace lost
+    claim = analyst.draft(KOREA, "D3")
+    assert claim is not None and claim.direction == "cost_down"
+
+
+def test_bare_claim_object_without_the_claims_wrapper_is_accepted():
+    inner = _json.loads(TRACE["run_203148_revise_a3_a4_reply"])["claims"][0]
+    assert claims_from_reply("Answer: " + _json.dumps(inner)) == {"claims": [inner]}
+
+
+def test_d3_parser_still_raises_on_text_without_a_claim():
+    with pytest.raises(ValueError):
+        claims_from_reply("I could not find anything.")
+
+
+def test_d1_parser_is_unchanged_it_still_takes_the_last_json_object():
+    text = TRACE["run_205745_a11_a12_reply"] + ' then {"claims": []}'
+    assert GeopoliticsAnalyst._parse_reply(text) == {"claims": []} == llm.extract_json(text)
+
+
+def test_invented_ids_from_the_trace_are_still_rejected_by_the_evaluator(analyst, monkeypatch):
+    model_says(analyst, monkeypatch, TRACE["run_205745_a11_a12_reply"])
+    claim = analyst.draft(KOREA, "D3")  # three articles shown (A1-A3), the model cited A11 and A12
+    assert claim.source_urls == ["A11", "A12"]
+    codes = {f.code for f in deterministic_checks(claim, {a.url: a for a in ARTICLES}, CATALOG, now=NOW, max_age_days=30)}
+    assert "UNKNOWN_URL" in codes
+
+
+def test_shown_article_ids_resolve_to_the_urls_the_evaluator_checks(analyst, monkeypatch):
+    model_says(analyst, monkeypatch, TRACE["run_203148_revise_a3_a4_reply"].replace('"A3", "A4"', '"A1", "A3"'))
+    claim = analyst.draft(KOREA, "D3")
+    assert set(claim.source_urls) <= {a.url for a in ARTICLES}  # same A<n> numbering for the prompt, the claim and the pool

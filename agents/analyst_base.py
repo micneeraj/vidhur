@@ -35,9 +35,14 @@ class AnalystBase:
             trace=self.trace, retry_count=retry_count, max_tokens=MAX_TOKENS,
         )
         try:
-            return llm.extract_json(result.text), result
+            return self._parse_reply(result.text), result
         except ValueError:
             return None, result
+
+    @staticmethod
+    def _parse_reply(text):
+        """Parse the model reply into a dict. Analysts with a stricter reply shape override this."""
+        return llm.extract_json(text)
 
     def feedback_for(self, work_id):
         """The Evaluator's reasons for the latest claim of this work item, read from the world state."""
