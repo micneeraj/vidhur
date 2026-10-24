@@ -6,6 +6,7 @@ Meterless World Model (logs/world_state_<run_id>.json); the brief is built from 
 
 Usage:
     python main.py
+    python main.py --demo --drivers D3  # only the listed demo drivers (D1, D2, D3 or D1,D3); the others are reported as not run
     python main.py --demo               # fast demo: 3 drivers, cached dated evidence, planted weak claim + Red Team challenge, up to 25 min budget
     python main.py --demo-red-team      # the first decision is told to be aggressive so the Red Team visibly challenges it
     python main.py --demo-weak-claim    # the Geopolitics Analyst's first attempt is told to cite only ONE source,
@@ -51,7 +52,7 @@ PAGE_DIR = config.ROOT / "output"  # output/evidence_trail.html, rewritten by ev
 INPUT_DIR = config.ROOT / "input_examples"
 
 
-def parse_args():
+def parse_args(argv=None):
     p = argparse.ArgumentParser(description="Vidhur Day 2: Planner + analysts + auditing Evaluator over a shared World Model.")
     p.add_argument("--demo", action="store_true",
                    help="FAST DEMO: three drivers only (the biggest-spend part, one currency driver, the Korean memory part), a dated cached evidence set from "
@@ -68,11 +69,22 @@ def parse_args():
                    help="DEMO: the first proposed decision for the lowest-confidence verified claim is instructed to be aggressive "
                         "(hedge 100%%), so the Red Team visibly objects and the Decision Maker revises or the decision ends CONTESTED. "
                         "Real model calls and a real challenge loop.")
+    p.add_argument("--drivers", metavar="D1,D3",
+                   help="With --demo: run only these demo drivers (D1, D2, D3 or a comma list). The others are not started and the brief and "
+                        "dashboard say they were not run. Default: all demo drivers.")
     p.add_argument("--dashboard", action="store_true", help="Only rebuild output_examples/dashboard.html from saved run files (no run, no model call).")
     p.add_argument("--workers", type=int, default=3, help="Analysts running in parallel (default 3).")
     p.add_argument("--refresh-news", action="store_true", help="Ignore the news cache and fetch live.")
     p.add_argument("--skip-healthcheck", action="store_true", help="Do not run the start-up checks (same as scripts/healthcheck.py).")
-    return p.parse_args()
+    args = p.parse_args(argv)
+    if args.drivers is not None:
+        if not args.demo:
+            p.error("--drivers needs --demo")
+        try:
+            args.drivers = demo_mode.parse_drivers(args.drivers)
+        except ValueError as exc:
+            p.error(str(exc))
+    return args
 
 
 def preflight():
@@ -97,6 +109,8 @@ def main():
     if args.demo:
         args.demo_weak_claim = args.demo_red_team = True
         args.workers = demo_mode.WORKERS
+        if args.drivers and "D1" not in args.drivers:  # both flags only change the Geopolitics Analyst (D1)
+            args.demo_weak_claim = args.demo_untrusted_source = False
     if not args.skip_healthcheck and not preflight():
         sys.exit(EXIT_STOPPED_EARLY)
     started = time.monotonic()
@@ -113,7 +127,7 @@ def main():
     world = RunWorld(trace.run_id)
     print(f"Vidhur Day 2 | run {trace.run_id} | trace: {trace.path} | world state: {world.path}")
     if args.demo:
-        print(f"DEMO MODE --demo: 3 drivers, news cached on {evidence_date} (ECB FX live), timeouts {demo_mode.CALL_TIMEOUT_SECONDS} s, "
+        print(f"DEMO MODE --demo: {'3 drivers' if not args.drivers else 'only ' + ','.join(args.drivers) + ' (--drivers)'}, news cached on {evidence_date} (ECB FX live), timeouts {demo_mode.CALL_TIMEOUT_SECONDS} s, "
               f"{demo_mode.CALL_MAX_ATTEMPTS} attempts per call, time budget {demo_mode.TIME_BUDGET_SECONDS} s.")
     if args.demo_red_team:
         print("DEMO MODE --demo-red-team: the first decision for the lowest-confidence verified claim is instructed to be aggressive.")
@@ -135,7 +149,7 @@ def main():
     except ZetarisError as exc:
         sys.exit(f"Zetaris problem: {exc}")
     by_part = {t.part_id: t for t in targets}
-    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "demo_red_team": args.demo_red_team, "demo": args.demo, "evidence_cached_on": evidence_date, "started": datetime.now().isoformat(timespec="seconds"),
+    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "demo_red_team": args.demo_red_team, "demo": args.demo, **({"drivers": args.drivers} if args.drivers else {}), "evidence_cached_on": evidence_date, "started": datetime.now().isoformat(timespec="seconds"),
                      "quarter": targets[0].quarter})
 
     # The run's input, saved next to its brief (no secrets: lane ids and flags only)
@@ -144,7 +158,8 @@ def main():
     input_path.write_text(json.dumps({
         "command": "python main.py" + "".join(f" {f}" for f in sys.argv[1:]), "run_id": trace.run_id,
         "flags": {"demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source,
-                  "demo_red_team": args.demo_red_team, "demo": args.demo, "workers": args.workers, "refresh_news": args.refresh_news},
+                  "demo_red_team": args.demo_red_team, "demo": args.demo, "workers": args.workers, "refresh_news": args.refresh_news,
+                  **({"drivers": args.drivers} if args.drivers else {})},
         "config": {"analyst_lane": config.analyst_model(), "evaluator_planner_lane": config.evaluator_model(),
                    "evidence_max_age_days": config.evidence_max_age_days()},
         "ganga_spend_from_zetaris": [t.__dict__ for t in targets], "trace_file": f"logs/{trace.path.name}",
@@ -152,12 +167,13 @@ def main():
 
     # 2. The team
     pool = {}  # url -> Article: everything fetched this run
-    analysts = {
+    all_analysts = {
         "geopolitics": GeopoliticsAnalyst(trace, world, pool, demo_weak_claim=args.demo_weak_claim, refresh_news=args.refresh_news,
                                           demo_untrusted_source=args.demo_untrusted_source),
         "currency": CurrencyAnalyst(trace, world, pool, refresh_news=args.refresh_news),
         "supplier_commodity": SupplierCommodityAnalyst(trace, world, pool, refresh_news=args.refresh_news),  # no weak-claim / untrusted-source demo flags
     }
+    analysts = all_analysts
     calc = CalcService(zt, targets[0].quarter)  # every GBP figure comes from here (core/calculator.py), never from a model
     # The cached demo evidence is dated: judge its freshness as of the day it was saved, so the demo keeps working later.
     asof = datetime.fromisoformat(evidence_date).replace(tzinfo=timezone.utc) + timedelta(days=1) if evidence_date else None
@@ -178,12 +194,16 @@ def main():
 
     # 3. Planner decides which analyst works on which part, and why
     if args.demo:
-        plan = demo_mode.demo_plan(targets)
+        plan = demo_mode.demo_plan(targets, drivers=args.drivers)
+        if args.drivers and not plan["delegations"]:
+            sys.exit(f"--drivers {','.join(args.drivers)}: none of these drivers exists for this data (a demo plan may have no D2 or D3).")
         world.record_plan(plan, [{"part_id": t.part_id, "country": t.country, "spend": t.quarterly_spend_gbp} for t in targets])
         trace.event("main", "demo-plan", output_summary="; ".join(f"{d['work_id']} {d['analyst']}->{d['part_id']}" for d in plan["delegations"]), decision="RUN")
     else:
         plan = guarded("Planner", "planning", lambda: planner.plan(targets))
     delegations = plan["delegations"] if plan else []
+    if args.drivers:  # drivers left out by --drivers are never started
+        analysts = {k: v for k, v in all_analysts.items() if k in {d["analyst"] for d in delegations}}
 
     # 4. Analysts work in parallel; each work item runs draft -> Evaluator loop -> impact
     def process(delegation):

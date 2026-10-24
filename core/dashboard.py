@@ -410,6 +410,10 @@ def _run_section(run):
     drivers = _drivers(report)
     rid = run["id"]
     parts = [f'<div class="run" id="{rid}">', _answer(report, drivers), _proof_chips(run, report, drivers)]
+    nr = unverified.not_run(report)
+    if nr:
+        parts.append('<div class="chips">' + "".join(f'<span class="chip w">{escape(d["work_id"])} - {escape(d["analyst"].replace("_", " "))}: '
+                                                     f'{escape(unverified.NOT_RUN)}</span>' for d in nr) + "</div>")
     if drivers:
         parts.append('<div class="cards">' + "".join(_card(run, report, i, ok, f"{rid}-chain-{i['delegation']['work_id']}") for i, ok in drivers) + "</div>")
         parts.extend(_chain(run, report, i, ok, f"{rid}-chain-{i['delegation']['work_id']}") for i, ok in drivers)

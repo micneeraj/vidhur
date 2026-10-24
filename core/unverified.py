@@ -6,6 +6,14 @@ NO_FIGURE = "no GBP figure - this is NOT zero impact"
 NO_SIGNAL_MARKERS = ("materiality threshold", "mixed direction")
 
 
+NOT_RUN = "not run in this run (--drivers)"  # a driver left out on purpose: neither zero impact nor "Could not verify"
+
+
+def not_run(report):
+    """Delegations that --drivers left out of this run."""
+    return [item["delegation"] for item in report["items"] if item["delegation"].get("action") == "not_run"]
+
+
 def _reason(d):
     status = d.get("status")
     if status == "NOT_ASSESSED":

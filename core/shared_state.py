@@ -65,6 +65,9 @@ class RunWorld:
         for d in plan["delegations"]:
             key = self._upsert("delegation", d["work_id"], {**d, "action": "run", "status": "planned"}, "planner")
             self._link(plan_key, "delegates", key, "planner", multi=True)
+        for d in plan.get("not_run", []):  # left out by --drivers: recorded so every view can say so, never run
+            key = self._upsert("delegation", d["work_id"], {**d, "action": "not_run", "status": "NOT_RUN"}, "planner")
+            self._link(plan_key, "delegates", key, "planner", multi=True)
         for i, s in enumerate(plan.get("skipped", []), 1):
             key = self._upsert("delegation", f"S{i}", {**s, "work_id": f"S{i}", "action": "skip", "status": "skipped"}, "planner")
             self._link(plan_key, "skips", key, "planner", multi=True)

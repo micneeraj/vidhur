@@ -36,7 +36,20 @@ def pick_memory_target(targets, taken=()):
     return next((t for t in targets if "memory" in t.category.lower() and t.part_id not in taken), None)
 
 
-def demo_plan(targets, supported_currencies=None):
+DRIVER_IDS = ("D1", "D2", "D3")
+
+
+def parse_drivers(text):
+    """'D1,D3' -> ['D1', 'D3'] (deduplicated, in D1..D3 order). Raises ValueError on an empty or unknown id."""
+    ids = [p.strip().upper() for p in str(text).split(",")]
+    bad = [p for p in ids if p not in DRIVER_IDS]
+    if bad or not all(ids):
+        raise ValueError(f"unknown driver(s) {', '.join(repr(b) for b in bad) or '(empty)'}: use D1, D2, D3 or a comma list such as D1,D3")
+    return [d for d in DRIVER_IDS if d in ids]
+
+
+def demo_plan(targets, supported_currencies=None, drivers=None):
+    """Fixed demo plan. With `drivers` (e.g. ['D3']) only those are delegated; the rest go to plan['not_run'] (same parts as a full demo run)."""
     geo, cur = pick_targets(targets, supported_currencies)
     mem = pick_memory_target(targets, {geo.part_id, cur.part_id if cur else None})
     total = sum(t.quarterly_spend_gbp for t in targets)
@@ -54,8 +67,15 @@ def demo_plan(targets, supported_currencies=None):
     chosen = {d["part_id"] for d in delegations}
     skipped = [{"analyst": "any", "part_id": t.part_id, "reason": "Outside the three-driver demo scope (run without --demo for the full plan)."}
                for t in targets if t.part_id not in chosen]
-    return {"summary": f"DEMO MODE: the Planner model was not called. {len(delegations)} drivers chosen by a fixed rule so the run finishes in minutes.",
+    plan = {"summary": f"DEMO MODE: the Planner model was not called. {len(delegations)} drivers chosen by a fixed rule so the run finishes in minutes.",
             "delegations": delegations, "skipped": skipped, "fallback": False, "demo": True}
+    if drivers:
+        run = [d for d in delegations if d["work_id"] in drivers]
+        plan["not_run"] = [d for d in delegations if d["work_id"] not in drivers]
+        plan["delegations"] = run
+        plan["summary"] = (f"DEMO MODE --drivers {','.join(d['work_id'] for d in run)}: the Planner model was not called. "
+                           f"{len(run)} of {len(delegations)} fixed-rule drivers run; the rest are not started.")
+    return plan
 
 
 def evidence_queries(targets, supported_currencies=None):

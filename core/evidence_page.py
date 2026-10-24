@@ -184,10 +184,15 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
          f"<div class='sub'>Ganga AI Solutions (synthetic data) - run {escape(str(run.get('run_id', '')))} - {run.get('elapsed_seconds', '?')} s - "
          f"{stats.get('llm_ok', '?')} model calls ok, {stats.get('llm_fail', '?')} failed attempts (retried) - trace <code>{escape(trace_file)}</code></div>"]
     if evidence_date:
-        h.append(f"<div class='banner'>News is cached and dated for reproducibility (cached {escape(evidence_date)}); ECB FX rates are fetched live. Demo mode: three drivers, "
-                 "one planted weak claim, one forced-aggressive first decision.</div>")
+        h.append(f"<div class='banner'>News is cached and dated for reproducibility (cached {escape(evidence_date)}); ECB FX rates are fetched live. Demo mode: " + (
+                     "three drivers, one planted weak claim, one forced-aggressive first decision." if not run.get("drivers")
+                     else "only " + ", ".join(run["drivers"]) + " (--drivers).") + "</div>")
     elif flags.get("weak") or flags.get("red_team"):
         h.append("<div class='banner'>Demo flag on: " + escape(", ".join(k for k in ("weak", "red_team") if flags.get(k))) + ". Model calls and checks are real.</div>")
+    nr = unverified.not_run(report)
+    if nr:
+        h.append("<div class='banner'>" + escape("; ".join(f"{d['work_id']} {d['analyst'].replace('_', ' ')}: {unverified.NOT_RUN}" for d in nr))
+                 + ". They were not started: neither zero impact nor " + escape(unverified.LABEL) + ".</div>")
     if cnv:
         h.append(f"<div class='banner'>Partial result: {len(cnv)} driver(s) are labelled {escape(unverified.LABEL)} - {escape(unverified.NO_FIGURE)}.</div>")
 

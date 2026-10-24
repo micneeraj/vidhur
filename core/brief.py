@@ -182,6 +182,9 @@ def console_summary(report):
     lines = ["CFO BRIEF - Ganga AI Solutions (SYNTHETIC DATA) - change in quarterly cost, scenario range worst / likely / best (calculated in Python)"]
     for item in report["items"]:
         d = item["delegation"]
+        if d.get("action") == "not_run":
+            lines.append(f"[NOT RUN] {d['work_id']} {d['analyst']}: {unverified.NOT_RUN}")
+            continue
         if d.get("action") != "run":
             continue
         final = item["attempts"][-1]["claim"] if item["attempts"] else None
@@ -240,8 +243,10 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
                 f"*\"{DEMO_WEAK_CLAIM_INSTRUCTION}\"* The model calls and Evaluator checks are real."]
 
     if demo_evidence_date:
-        out += [f"- **Demo mode `--demo`:** three drivers only, news cached on {demo_evidence_date} (ECB FX live), one planted weak claim and one forced-aggressive "
-                "first decision so the Evaluator send-back and the Red Team challenge are always shown. The Planner model is not called (fixed plan)."]
+        out += [f"- **Demo mode `--demo`:** {'three drivers only' if not run.get('drivers') else 'only ' + ', '.join(run['drivers']) + ' (--drivers)'}, news cached on {demo_evidence_date} (ECB FX live), " + (
+                "one planted weak claim and one forced-aggressive first decision so the Evaluator send-back and the Red Team challenge are always shown."
+                if not run.get("drivers") else "the planted demo instructions apply only where the selected drivers allow (see the demo flag lines).")
+                + " The Planner model is not called (fixed plan)."]
 
     if demo_untrusted_source:
         out += [f"- **Demo flag `--demo-untrusted-source` was on.** The Geopolitics Analyst's first attempt was shown the least-trusted articles "
@@ -259,6 +264,8 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         d = i["delegation"]
         if d.get("action") == "run":
             out.append(f"| {d['work_id']}{' (re-delegation)' if d.get('redelegation') else ''} | {d['analyst']} | {d['part_id']} | {d.get('reason', '')} |")
+    for d in unverified.not_run(report):
+        out.append(f"| {d['work_id']} | {d['analyst']} | {d['part_id']} | **{unverified.NOT_RUN}** |")
     for d in skipped:
         out.append(f"| skipped | {d.get('analyst', '')} | {d.get('part_id', '')} | {d.get('reason', '')} |")
     if review:
@@ -290,6 +297,11 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         out += [f"| {u['work_id']} | {u['analyst']} | {u['part_id']} {u['part_name']} | **{unverified.LABEL}** ({u['status']}) | {u['reason'].replace('|', '/')} |" for u in cnv]
         out += ["", f"- Confidence: {next_steps.CONFIDENCE_MEANING}", f"- {next_steps.UNVERIFIED_NEXT_STEP}"]
 
+    nr = unverified.not_run(report)
+    if nr:
+        out += ["", "## Not run in this run", "",
+                f"These drivers were left out on purpose with `--drivers`: {', '.join(d['work_id'] for d in nr)} - **{unverified.NOT_RUN}**. "
+                "They were not started, so they are neither zero impact nor \"Could not verify\"; the totals above do not cover them."]
     out += _decisions_section(report, passed, world)
     out += failures.brief_section(report)
 
