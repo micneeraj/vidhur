@@ -29,6 +29,12 @@ The honest number for "minutes": a live `--demo` run (two drivers) took **341 s 
 2. **The Red Team changes the decision, with written reasons.** The first proposal is a 100% hedge of the part's spend. The Red Team raises objections tied to evidence ids and numbers; the Decision Maker revises it to a 20% second-supplier shift, and a revision without a written reason is rejected. Same folder, and `demo_run_20261024_v2/`.
 3. **Honest COULD NOT VERIFY.** In a live run the Taiwan claim was sent back for `TOO_FEW_SOURCES`, the analyst found no better evidence, and Vidhur labelled it **COULD NOT VERIFY** (no GBP figure, and explicitly not zero impact) instead of inventing a number. The other driver (EUR) was verified, challenged twice by the Red Team, and ended at no action. See [`output_examples/live_run_20261024_could_not_verify/`](output_examples/live_run_20261024_could_not_verify/README.md).
 
+## CFO dashboard
+
+`output_examples/dashboard.html` is one self-contained page (inline CSS and a little JavaScript, no CDN, no server) that answers the CFO's question for a saved run: the verified GBP change, what to do per driver, proof chips, and a click-to-expand "why chain" per driver (claim, sources, Evaluator checks, send-back, GBP calculation, first proposal, Red Team objections and written responses, final decision, what would change it). **To open it, double-click the file**; the buttons at the top switch between the two saved runs (the v3 run and the live "could not verify" run).
+
+It is built only from saved run files (`world_state_<id>.json` and the JSONL trace in each run folder): every number on the page is read from those files, an element whose value is not in them is left out, and a driver that could not be verified shows no GBP figure. No model is called. Rebuild it with `python main.py --dashboard` (or `python scripts/build_dashboard.py`); every normal `python main.py` run also rebuilds it and adds that run as "Latest run" (only the most recent one is added). Code: `core/dashboard.py`; tests: `tests/test_dashboard.py`.
+
 ## How it works
 
 Vidhur is an **auditor's agent for cost risk**. For a fictional UK AI-server maker, **Ganga AI Solutions**, it looks at what the company buys, asks

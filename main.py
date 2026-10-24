@@ -33,6 +33,7 @@ from core import config, demo as demo_mode, llm, news
 from core import failures
 from core.calculator import CalcService
 from core.brief import build_brief, console_summary
+from core import dashboard
 from core.evidence_page import build_evidence_page
 from core.ganga_data import part_country_catalog, top_targets
 from core.preflight import RUNTIME_BUSY_EARLY, RUNTIME_BUSY_MESSAGE, ZETARIS_START_HINT, run_checks
@@ -66,6 +67,7 @@ def parse_args():
                    help="DEMO: the first proposed decision for the lowest-confidence verified claim is instructed to be aggressive "
                         "(hedge 100%%), so the Red Team visibly objects and the Decision Maker revises or the decision ends CONTESTED. "
                         "Real model calls and a real challenge loop.")
+    p.add_argument("--dashboard", action="store_true", help="Only rebuild output_examples/dashboard.html from saved run files (no run, no model call).")
     p.add_argument("--workers", type=int, default=3, help="Analysts running in parallel (default 3).")
     p.add_argument("--refresh-news", action="store_true", help="Ignore the news cache and fetch live.")
     p.add_argument("--skip-healthcheck", action="store_true", help="Do not run the start-up checks (same as scripts/healthcheck.py).")
@@ -88,6 +90,9 @@ def preflight():
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     args = parse_args()
+    if args.dashboard:
+        print(f"Dashboard saved: {dashboard.write_dashboard()}")
+        return
     if args.demo:
         args.demo_weak_claim = args.demo_red_team = True
         args.workers = demo_mode.WORKERS
@@ -219,12 +224,19 @@ def main():
     page_path.write_text(build_evidence_page(report, world, {"weak": args.demo_weak_claim, "red_team": args.demo_red_team}, trace.stats,
                                              evidence_date, f"logs/{trace.path.name}"), encoding="utf-8")
 
+    try:  # the dashboard is built from saved files only; it must never break a run
+        latest = dashboard.latest_run(world, trace.path)
+        dash_path = dashboard.write_dashboard(dashboard.default_runs() + ([latest] if latest else []))
+    except Exception as e:  # noqa: BLE001
+        dash_path = f"not built ({type(e).__name__}: {e})"
+
     print("\n" + "=" * 78)
     print(console_summary(report))
     print("=" * 78)
     print(f"Run time: {elapsed} s | model calls: {trace.stats['llm_ok']} ok, {trace.stats['llm_fail']} failed attempts")
     print(f"Brief saved:     {out_path}")
     print(f"Evidence trail:  {page_path}")
+    print(f"Dashboard:       {dash_path}")
     print(f"Trace file:      {trace.path}")
     print(f"World state:     {world.path} ({report['event_count']} events)")
     if partial:

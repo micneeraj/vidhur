@@ -90,20 +90,27 @@ def _attempts_html(item, world):
     return "".join(out)
 
 
-def _calc_html(item):
+def calc_rows(item):
+    """[(label, html)] of the GBP calculation record (inputs, FX rate, baseline, move, formula, result, assumptions); [] if there is none."""
     calc = (item["impact"] or {}).get("calc") or {}
     if not calc:
-        return ""
+        return []
     fx, m, res = calc["fx"], calc["move_pct"], calc["result_gbp"]
     inputs = "<br>".join(f'{escape(r["part_id"])} {escape(r["part_name"])}, {escape(r["quarter"])}: {r["quantity"]:,.0f} x {r["unit_price"]:,.2f} {escape(r["currency"])}'
                          for r in calc["inputs"])
-    rows = [("Input rows (OBSERVED, Zetaris)", inputs),
+    return [("Input rows (OBSERVED, Zetaris)", inputs),
             ("FX rate (OBSERVED)", f'1 GBP = {fx["units_per_gbp"]} {escape(fx["currency"])} on {escape(fx["date"])} ({escape(fx["source"])})'),
             ("Baseline (OBSERVED)", f'£{calc["baseline_gbp"]:,.0f} per quarter'),
             (f'Move ({escape(m["label"])})', f'{m["small"]:g}% / {m["likely"]:g}% / {m["large"]:g}% (small / likely / large)'),
             ("Formula", escape(calc["formula"])),
             ("Result (SCENARIO range)", f'worst {g(res["worst"])}, likely {g(res["likely"])}, best {g(res["best"])}'),
             ("Assumptions", escape("; ".join(f"{k} = {v:g}" for k, v in calc["assumptions"].items())))]
+
+
+def _calc_html(item):
+    rows = calc_rows(item)
+    if not rows:
+        return ""
     return ('<div class="step"><b class="t">GBP calculation record (Python, core/calculator.py - never the AI)</b><table>'
             + "".join(f"<tr><th style='width:210px'>{k}</th><td>{v}</td></tr>" for k, v in rows) + "</table></div>")
 
