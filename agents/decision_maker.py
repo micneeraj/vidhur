@@ -293,9 +293,11 @@ def run_decisions(report, world, targets, trace, demo_red_team=False, workers=2)
             except (openai.OpenAIError, requests.RequestException) as exc:
                 message = f"{type(exc).__name__}: {str(exc)[:200]}"
                 # A model outage must not pass for a challenged decision: a proposal that was never challenged is labelled as such.
-                has_proposal = bool(world.decision_report().get(work_id, {}).get("versions"))
-                status = "NOT_CHALLENGED" if has_proposal else "NOT_DECIDED"
-                world.write_decision_outcome(work_id, {"status": status, "error": message, "rounds": 0})
+                saved = world.decision_report().get(work_id, {})
+                raised = len(saved.get("objections", []))
+                # Objections already raised stay counted: the challenge started but could not finish, which is not "never challenged".
+                status = ("CHALLENGE_UNRESOLVED" if raised else "NOT_CHALLENGED") if saved.get("versions") else "NOT_DECIDED"
+                world.write_decision_outcome(work_id, {"status": status, "error": message, "rounds": 0, "objection_count": raised})
                 trace.event(dm.name, "error", input_summary=work_id, output_summary=message, decision=status)
 
     with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:

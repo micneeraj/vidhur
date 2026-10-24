@@ -21,6 +21,7 @@ from core.source_trust import trust_of
 OUT_FILE = ROOT / "output_examples" / "dashboard.html"
 RUNS = [  # (button label, folder relative to output_examples)
     ("v3 run", "demo_run_20261024_v3"),
+    ("3-driver run", "live_run_20261024_3drivers"),
     ("Live run - could not verify", "live_run_20261024_could_not_verify"),
 ]
 QUESTION = "Why will our quarterly cost change, by how much in GBP, and what should we do?"
@@ -270,7 +271,8 @@ def _card(run, report, item, ok, chain_id):
         dv, fin = _final(report, item)
         if fin:
             st = (dv.get("outcome") or {}).get("status")
-            extra = ' <span class="pill bad">contested</span>' if st == "CONTESTED" else ' <span class="pill warn">unreviewed</span>' if st == "NOT_CHALLENGED" else ""
+            extra = (' <span class="pill warn">challenge unresolved</span>' if dec.is_unresolved(dv) else
+                     ' <span class="pill bad">contested</span>' if st == "CONTESTED" else ' <span class="pill warn">unreviewed</span>' if st == "NOT_CHALLENGED" else "")
             h.append(f'<div class="rec">{escape(dec.describe(fin["kind"], fin["share_pct"]))}{extra}</div>')
         how, n = _rt_summary(report, item)
         if how == "changed":
@@ -344,16 +346,21 @@ def _chain(run, report, item, ok, chain_id, is_open=False):
                          f'<td>{escape(ans)}</td><td>{escape(str(o.get("status") or o.get("handling") or ""))}</td></tr>')
             add("Red Team objections and the Decision Maker's written reasons",
                 '<div class="tblwrap"><table><tr><th>Severity</th><th>Objection</th><th>Response</th><th>Status</th></tr>' + rows + "</table></div>")
+            if dec.is_unresolved(dv):
+                add("Challenge unresolved", f"<p>{escape(dec.unresolved_label(dv))}</p>", "stop")
         elif (dv.get("outcome") or {}).get("status") == "NOT_CHALLENGED":
             add("Red Team", "<p>The Red Team did not run; this proposal is unreviewed.</p>", "stop")
         else:
             add("Red Team", "<p>Reviewed; no high or medium objection raised.</p>")
         out = dv.get("outcome") or {}
+        unresolved = dec.is_unresolved(dv)
         status = {"CONTESTED": _pill("Contested - needs CFO judgement", "bad"), "RECOMMENDED": _pill("Recommended", "ok")}.get(
-            out.get("status"), _pill(out.get("status", "?"), "warn"))
+            out.get("status"), _pill("Challenge unresolved" if unresolved else out.get("status", "?"), "warn"))
+        counts = (f"{len(dv['objections'])} objection(s) raised; the Decision Maker's response did not finish, so the challenge is unresolved"
+                  if unresolved else f"{out.get('objection_count', 0)} objection(s), {out.get('rounds', 0)} round(s)")
         chg = f" (first proposal was {escape(dec.describe(first['kind'], first['share_pct']))})" if out.get("changed") else " (unchanged by the challenge)"
         add("Final decision", f"<p>{status} <b>{escape(dec.describe(fin['kind'], fin['share_pct']))}</b>{chg}</p><p>{escape(fin['rationale'])}</p>"
-            f"<p class='sm'>{out.get('objection_count', 0)} objection(s), {out.get('rounds', 0)} round(s)</p>")
+            f"<p class='sm'>{counts}</p>")
         gd = next_steps.for_decision(item, world)
         rows = [("Confidence (" + escape(item["impact"]["confidence"]) + ")", gd["confidence_meaning"]), ("Raise confidence", gd["raise"]), ("Re-run trigger", gd["rerun"])]
         add("What would change this decision", "<table>" + "".join(f"<tr><th style='width:160px'>{k}</th><td>{escape(v)}</td></tr>" for k, v in rows) + "</table>")

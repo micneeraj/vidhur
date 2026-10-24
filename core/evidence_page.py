@@ -124,7 +124,9 @@ def _decision_html(item, decs):
         return f'<div class="step"><b class="t">Decision</b>{pill(unverified.LABEL, "warn")} {escape(outcome.get("error", "no decision produced"))}</div>'
     first, final = d["versions"][0], d["versions"][-1]
     out = [f'<div class="step"><b class="t">First proposal (Decision Maker)</b>{escape(dec.describe(first["kind"], first["share_pct"]))} - {escape(first["rationale"])}</div>']
-    if outcome.get("status") in ("NOT_CHALLENGED", "UNCHALLENGED"):
+    if dec.is_unresolved(d):
+        out.append(f'<div class="step"><b class="t">Red Team</b>{pill("challenge unresolved", "warn")} {escape(dec.unresolved_label(d))}</div>')
+    elif outcome.get("status") in ("NOT_CHALLENGED", "UNCHALLENGED"):
         out.append(f'<div class="step"><b class="t">Red Team</b>{pill(unverified.LABEL, "warn")} The Red Team did not run; this proposal is unreviewed.</div>')
     objs = sorted(d["objections"], key=lambda o: ({"high": 0, "medium": 1, "low": 2}[o["severity"]], int(o["id"][1:])))
     if objs:
@@ -140,10 +142,12 @@ def _decision_html(item, decs):
     elif outcome.get("status") == "RECOMMENDED":
         out.append('<div class="step"><b class="t">Red Team</b>Reviewed; no high or medium objection raised.</div>')
     verdict = {"CONTESTED": pill("Contested - needs CFO judgement", "bad"), "RECOMMENDED": pill("Recommended", "ok")}.get(
-        outcome.get("status"), pill(outcome.get("status", "?"), "warn"))
+        outcome.get("status"), pill("Challenge unresolved" if dec.is_unresolved(d) else outcome.get("status", "?"), "warn"))
+    counts = (f"{len(d['objections'])} objection(s) raised, challenge unresolved" if dec.is_unresolved(d)
+              else f"{outcome.get('objection_count', 0)} objection(s), {outcome.get('rounds', 0)} round(s)")
     changed = f' (first proposal was {escape(dec.describe(first["kind"], first["share_pct"]))})' if outcome.get("changed") else ""
     out.append(f'<div class="step"><b class="t">Final revision</b>{verdict} <b>{escape(dec.describe(final["kind"], final["share_pct"]))}</b>{changed}'
-               f'<br>{escape(final["rationale"])}<div class="sub">{outcome.get("objection_count", 0)} objection(s), {outcome.get("rounds", 0)} round(s)</div></div>')
+               f'<br>{escape(final["rationale"])}<div class="sub">{counts}</div></div>')
     return "".join(out)
 
 
@@ -191,7 +195,8 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
             dv = decs.get(d["work_id"], {})
             fin = dv["versions"][-1] if dv.get("versions") else None
             rec = escape(dec.describe(fin["kind"], fin["share_pct"])) if fin else "-"
-            rec += {"CONTESTED": " " + pill("contested", "bad"), "NOT_CHALLENGED": " " + pill("unreviewed", "warn")}.get((dv.get("outcome") or {}).get("status"), "")
+            rec += (" " + pill("challenge unresolved", "warn") if dec.is_unresolved(dv) else
+                    {"CONTESTED": " " + pill("contested", "bad"), "NOT_CHALLENGED": " " + pill("unreviewed", "warn")}.get((dv.get("outcome") or {}).get("status"), ""))
             h.append(f"<tr><td>{d['work_id']} {name}</td><td>{part}</td><td>{status_pill('PASS')}</td><td class='num'>{g(m['worst_gbp'])}</td>"
                      f"<td class='num'>{g(m['likely_gbp'])}</td><td class='num'>{g(m['best_gbp'])}</td><td>{escape(m['confidence'])}</td><td>{rec}</td></tr>")
         else:

@@ -120,12 +120,16 @@ def _decisions_section(report, passed, world=None):
         impact, spend = i["impact"], i["impact"]["baseline_quarterly_spend_gbp"]
         contested = outcome.get("status") == "CONTESTED"
         claim = i["attempts"][-1]["claim"]
-        not_challenged = outcome.get("status") in ("NOT_CHALLENGED", "UNCHALLENGED")
-        head = "CONTESTED - needs CFO judgement" if contested else ("Proposed, UNREVIEWED" if not_challenged else "Recommended")
+        unresolved = dec.is_unresolved(d)
+        not_challenged = outcome.get("status") in ("NOT_CHALLENGED", "UNCHALLENGED") and not unresolved
+        head = ("CONTESTED - needs CFO judgement" if contested else "Proposed, challenge UNRESOLVED" if unresolved
+                else "Proposed, UNREVIEWED" if not_challenged else "Recommended")
         out += [f"### {wid}. {claim.part_name} ({claim.supplier_country}) - {head}", ""]
         if contested:
             out += [f"**No confident recommendation.** The Red Team's high-severity objection was still unresolved after {outcome.get('rounds', 0)} "
                     f"round(s). Last proposal: **{_option_label(final['kind'], final['share_pct'])}**.", ""]
+        elif unresolved:
+            out += [f"**{dec.unresolved_label(d)}** Proposal: {_option_label(final['kind'], final['share_pct'])} - {final['rationale']}", ""]
         elif not_challenged:
             out += [f"**{RED_TEAM_DID_NOT_RUN}** Proposal: {_option_label(final['kind'], final['share_pct'])} - {final['rationale']}", ""]
         else:
@@ -191,6 +195,10 @@ def console_summary(report):
         if not d["versions"]:
             continue
         o, final = d["outcome"] or {}, d["versions"][-1]
+        if dec.is_unresolved(d):
+            lines.append(f"[DECISION CHALLENGE_UNRESOLVED] {wid}: {_option_label(final['kind'], final['share_pct'])} "
+                         f"({len(d['objections'])} objection(s) raised; the Decision Maker's response did not finish)")
+            continue
         lines.append(f"[DECISION {o.get('status', '?')}] {wid}: {_option_label(final['kind'], final['share_pct'])} "
                      f"({o.get('objection_count', 0)} objection(s), {o.get('rounds', 0)} round(s)"
                      f"{', revised' if o.get('changed') else ''})")

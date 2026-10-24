@@ -14,15 +14,18 @@ from core.evidence_page import g
 BASE = Path(__file__).resolve().parents[1] / "output_examples"
 V3 = BASE / "demo_run_20261024_v3"
 LIVE = BASE / "live_run_20261024_could_not_verify"
+THREE = BASE / "live_run_20261024_3drivers"
+FOLDERS = {"b25b249f": V3, "d9decb7d": THREE, "5b82b132": LIVE}
 
-pytestmark = pytest.mark.skipif(not (V3 / "world_state_b25b249f.json").exists() or not (LIVE / "world_state_5b82b132.json").exists(),
+pytestmark = pytest.mark.skipif(not (V3 / "world_state_b25b249f.json").exists() or not (LIVE / "world_state_5b82b132.json").exists()
+                                or not (THREE / "world_state_d9decb7d.json").exists(),
                                 reason="saved sample runs not present")
 
 
 @pytest.fixture(scope="module")
 def runs():
     r = dashboard.default_runs(BASE)
-    assert [x["run_id"] for x in r] == ["b25b249f", "5b82b132"]
+    assert [x["run_id"] for x in r] == ["b25b249f", "d9decb7d", "5b82b132"]  # switcher order
     return r
 
 
@@ -66,7 +69,7 @@ def test_every_verified_gbp_value_equals_the_run_files(runs, page):
 
 def test_every_pound_figure_comes_from_the_saved_files(runs, page):
     for r in runs:
-        world_file = next((V3 if r["run_id"] == "b25b249f" else LIVE).glob("world_state_*.json"))
+        world_file = next(FOLDERS[r["run_id"]].glob("world_state_*.json"))
         text = world_file.read_text(encoding="utf-8")
         allowed = {int(x.replace(",", "")) for x in re.findall(r"£([\d,]+)", text)}
         allowed |= {round(float(x)) for x in re.findall(r'"(?:worst_gbp|likely_gbp|best_gbp|baseline_gbp|baseline_quarterly_spend_gbp|worst|likely|best)": (-?[\d.]+)', text)}
@@ -136,7 +139,7 @@ def test_no_secrets_in_the_page(page):
 
 def test_write_dashboard_is_self_contained(tmp_path, runs):
     out = dashboard.write_dashboard(runs, tmp_path / "dashboard.html")
-    assert out.exists() and out.read_text(encoding="utf-8").count('<div class="run"') == 2
+    assert out.exists() and out.read_text(encoding="utf-8").count('<div class="run"') == 3
 
 
 # ---- empty runs are never shown, and tests never register a run -------------------------------------------
@@ -156,7 +159,7 @@ def test_empty_run_with_no_drivers_or_model_calls_is_not_real(runs):
 
 def test_empty_run_is_left_out_of_the_page(runs, tmp_path):
     page = dashboard.build_dashboard_html(runs + [_fake_run(0)])
-    assert "Latest run (fake)" not in page and page.count('<div class="run"') == 2
+    assert "Latest run (fake)" not in page and page.count('<div class="run"') == 3
     out = dashboard.write_dashboard(runs + [_fake_run(0)], tmp_path / "d.html")
     assert "Latest run (fake)" not in out.read_text(encoding="utf-8")
 
@@ -164,6 +167,8 @@ def test_empty_run_is_left_out_of_the_page(runs, tmp_path):
 def test_default_view_is_the_v3_run(page, runs):
     assert re.search(r'<button type="button" data-run="run-b25b249f" data-default="1">v3 run</button>', page)
     assert page.count("data-default") == 2  # the attribute on the v3 button, and the JS lookup
+    assert re.findall(r'data-run="run-\w+"[^>]*>([^<]+)</button>', page) == ["v3 run", "3-driver run", "Live run - could not verify"]
+    assert "Latest run" not in page
 
 
 def test_latest_run_needs_a_finished_real_run(tmp_path):
@@ -176,3 +181,18 @@ def test_latest_run_needs_a_finished_real_run(tmp_path):
 
 def test_tests_cannot_write_the_real_dashboard():
     assert dashboard.OUT_FILE != BASE / "dashboard.html" and "dashboard_test_output" in dashboard.OUT_FILE.name
+
+
+# ---- regression: run d9decb7d, D1 Red Team raised 3 objections, the Decision Maker's response timed out ----------
+def test_three_driver_run_shows_the_real_objection_count_and_an_unresolved_label(runs, page):
+    run = next(r for r in runs if r["run_id"] == "d9decb7d")
+    assert run["report"]["decisions"]["D1"]["outcome"]["status"] == "NOT_CHALLENGED"  # how the saved (pre-fix) run recorded it
+    sec = _section(page, run)
+    card = re.search(r'<div class="card"[^>]*data-chain="[^"]*-D1">(.*?)</div><div class="hint">', sec, re.S).group(1)
+    assert "challenge unresolved" in card and "unreviewed" not in card
+    chain = re.search(r'<section class="chain[^"]*" id="[^"]*-chain-D1">(.*?)</section>', sec, re.S).group(1)
+    text = unescape(chain)
+    assert "Red Team raised 3 objections (2 high, 1 medium)" in text and "response timed out, so the challenge is unresolved" in text
+    assert "3 objection(s) raised" in text and "0 objection(s)" not in text and "0 round(s)" not in text
+    d3 = re.search(r'<section class="chain[^"]*" id="[^"]*-chain-D3">(.*?)</section>', sec, re.S).group(1)
+    assert "The Red Team did not run" in d3 and "unresolved" not in d3  # no objections raised: a true "could not run"

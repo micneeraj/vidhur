@@ -211,3 +211,52 @@ def test_llm_trace_keeps_long_replies_but_other_steps_stay_short(tmp_path):
     rows = [json.loads(line) for line in trace.path.read_text(encoding="utf-8").splitlines()]
     assert rows[0]["output_summary"] == reply and len(rows[1]["output_summary"]) == 400
     assert len(rows[2]["output_summary"]) == LLM_REPLY_LIMIT == 8000
+
+
+# ---- objections raised but the challenge could not finish (run d9decb7d, D1) --------------------------------
+def _d1_unresolved(status="CHALLENGE_UNRESOLVED"):
+    objections = [{"id": "O1", "severity": "high"}, {"id": "O2", "severity": "high"}, {"id": "O3", "severity": "medium"}]
+    return {"versions": [{}], "objections": objections, "outcome": {"status": status, "error": "APITimeoutError: Request timed out.", "rounds": 0}}
+
+
+def test_unresolved_challenge_is_told_apart_from_a_red_team_that_could_not_run():
+    for status in ("CHALLENGE_UNRESOLVED", "NOT_CHALLENGED"):  # NOT_CHALLENGED + objections is how older saved runs recorded it
+        d = _d1_unresolved(status)
+        assert decisions.is_unresolved(d)
+        assert decisions.unresolved_label(d).startswith("Red Team raised 3 objections (2 high, 1 medium); the Decision Maker's response timed out, so the challenge is unresolved.")
+    assert not decisions.is_unresolved({"versions": [{}], "objections": [], "outcome": {"status": "NOT_CHALLENGED", "error": "502"}})
+    assert not decisions.is_unresolved({"versions": [{}], "objections": [{}], "outcome": {"status": "RECOMMENDED"}})
+
+
+def test_failure_report_names_the_decision_maker_when_objections_were_raised():
+    report = {"run": {}, "items": [], "decisions": {"D1": _d1_unresolved(), "D3": {"versions": [{}], "objections": [], "outcome": {"status": "NOT_CHALLENGED", "error": "budget"}}}}
+    found = failures.collect(report)
+    assert [(f["agent"], f["where"]) for f in found] == [("Decision Maker", "D1"), ("Red Team", "D3")]
+    assert "3 Red Team objection(s)" in found[0]["reason"]
+
+
+def test_brief_shows_the_unresolved_challenge_not_a_red_team_that_did_not_run():
+    report, passed = _decision_report({"status": "NOT_CHALLENGED", "error": "APITimeoutError: Request timed out.", "rounds": 0})
+    report["decisions"]["D1"]["objections"] = [{"id": f"O{i}", "severity": s, "type": "weak_evidence", "evidence_refs": ["S1"], "text": "t", "response": {}, "status": "open"}
+                                               for i, s in enumerate(("high", "high", "medium"), 1)]
+    text = "\n".join(brief._decisions_section(report, passed))
+    assert "Proposed, challenge UNRESOLVED" in text and "Red Team raised 3 objections (2 high, 1 medium)" in text
+    assert "the Red Team review did not run" not in text and "Proposed, UNREVIEWED" not in text
+
+
+def test_run_decisions_records_objections_already_raised_when_the_response_call_fails(tmp_path, monkeypatch):
+    import openai
+    from agents import decision_maker
+    from core.shared_state import RunWorld
+    world = RunWorld("t", path=tmp_path / "w.json")
+    world.write_decision("D1", {"version": 1, "kind": "NO_ACTION", "share_pct": 0, "rationale": "r", "cost": {}})
+    for i, sev in enumerate(("high", "high", "medium"), 1):
+        world.write_objection("D1", {"id": f"O{i}", "severity": sev, "type": "weak_evidence", "evidence_refs": ["S1"], "text": "t", "response": {}}, 1)
+
+    def boom(*a, **k):
+        raise openai.APITimeoutError(request=None)
+    monkeypatch.setattr(decision_maker, "build_evidence", boom)
+    item = {"delegation": {"work_id": "D1", "action": "run", "status": "PASS"}, "impact": {"baseline_quarterly_spend_gbp": 1.0, "confidence": "Low"}}
+    decision_maker.run_decisions({"items": [item]}, world, [], types.SimpleNamespace(event=lambda *a, **k: None, target=lambda label: __import__("contextlib").nullcontext()))
+    outcome = world.decision_report()["D1"]["outcome"]
+    assert (outcome["status"], outcome["objection_count"]) == ("CHALLENGE_UNRESOLVED", 3)

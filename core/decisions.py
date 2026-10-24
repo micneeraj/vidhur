@@ -109,6 +109,29 @@ def describe(kind, share_pct):
     return LABELS[kind] if kind in ("NO_ACTION", "LOCK_PRICE") else f"{LABELS[kind]}: {share_pct}%"
 
 
+CHALLENGE_UNRESOLVED = "CHALLENGE_UNRESOLVED"
+
+
+def is_unresolved(d):
+    """True when the Red Team raised objections but the challenge could not finish (a model call failed before the Decision Maker answered).
+
+    Older saved runs wrote NOT_CHALLENGED for this case, so that status counts too whenever objections exist; with no objections
+    NOT_CHALLENGED still means the Red Team review itself could not run.
+    """
+    status = (d.get("outcome") or {}).get("status")
+    return bool(d.get("objections")) and status in (CHALLENGE_UNRESOLVED, "NOT_CHALLENGED")
+
+
+def unresolved_label(d):
+    objs = d["objections"]
+    n = len(objs)
+    sev = ", ".join(f"{sum(1 for o in objs if o['severity'] == s)} {s}" for s in ("high", "medium", "low") if any(o["severity"] == s for o in objs))
+    error = str((d.get("outcome") or {}).get("error") or "")
+    stopped = "response timed out" if "timed out" in error.lower() else "response did not finish"
+    return (f"Red Team raised {n} objection{'s' if n != 1 else ''} ({sev}); the Decision Maker's {stopped}, so the challenge is unresolved. "
+            "Treat this proposal as unreviewed.")
+
+
 def options_table_text(rows):
     """Plain-text table used inside model prompts."""
     return "\n".join(
