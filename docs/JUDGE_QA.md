@@ -31,3 +31,44 @@ to put a number on an unsupported claim, shows the calculation and the sources b
 recommendation. It does not replace the spreadsheet: the arithmetic is the same kind a spreadsheet does, done in Python. What it adds is the
 evidence check and the challenge. Limits: synthetic company data, two analysts of six, premiums are assumptions, and the backtest against
 baselines is future work, so we make no accuracy claim.
+
+**Why use this instead of an analyst?**
+Before: an analyst checks the news, FX and supplier exposure by hand, builds a spreadsheet and spends hours defending the assumptions. After: Vidhur
+produces a ranked cost-impact brief with citations, a calculation record for every figure, the Red Team's objections and a recommended action,
+in minutes (a live `--demo` run took 341-990 s, about 6-16 minutes). The point is traceability, not replacing the analyst: every GBP figure can be re-derived
+from the input rows, FX rate and date, formula and assumptions shown in the brief, every claim shows the sources and tiers behind it, and every
+recommendation shows what was objected to and why it stood or changed. A person still decides.
+
+**Why does a live run take 7-12 minutes?**
+Speed is traded for verification: analysts run in parallel, claims are cross-checked against Zetaris with SQL, the deterministic checks run before any model
+opinion, and the Decision Maker and Red Team loop through up to 2 challenge rounds. Observed demo-run times were 341 to 990 s (about 6-16 minutes; 422, 738 and 905 s for the runs kept as samples), so "7-12 minutes" is a common figure, not
+a guarantee; a full run is 15-20 minutes on a healthy runtime. Demo mode uses cached, dated news evidence so the run is reproducible (FX stays live). We do not
+claim zero hallucination. On our planted-claims set the deterministic checks caught 17 of 20 false claims, and **3 of 20 still slipped through**: one
+"cause not supported" claim (F17) and two "wrong date" claims (F19, F20). Those are about meaning, so they depend on the model check. The set is small,
+builder-written and run once; it is not a benchmark.
+
+**TWD: why a USD proxy?**
+The ECB does not publish a Taiwan dollar rate, so there is no TWD series to compute a move from. Zetaris prices the Taiwan GPU in USD, the Currency Analyst
+reports "no data" for TWD and is skipped for that part, and the backtest uses USD as a proxy. In production this would use a treasury or FX provider with
+direct TWD rates. That is not built.
+
+**What if Nightshift returns 502 mid-run?**
+Calls are retried a bounded number of times (`LLM_MAX_ATTEMPTS`) with timeouts, and the run continues with the steps that can still run. Whatever fails is
+labelled instead of being passed off as done: a driver whose agent failed is "Could not verify" (no GBP figure, not zero impact), and a decision whose Red Team
+call failed says "Red Team review could not run - treat this recommendation as unreviewed". The brief opens with a partial-results banner and lists the agents
+that could not run and why, the run exits with code 2, and the JSONL trace (`logs/run_*.jsonl`) shows where each failure happened. Earlier runs on the busy
+runtime ended partial this way and are marked as such.
+
+**Low versus High confidence: what do I trust?**
+Confidence reflects evidence quality and source agreement, not the size of the impact. Low = investigate before committing money; High = fine for routine
+action or monitoring. It is computed in Python from the Evaluator result: the number of independent sources, whether the claim passed only after a send-back,
+and whether the model judged the support weak. Each decision also says what would raise its confidence (for example a second independent Tier 1 source) and
+when to re-run (a currency move beyond `RERUN_FX_MOVE_PCT` from the rate used, or new Tier 1/2 news). A large GBP figure with Low confidence is a prompt to
+investigate, not a number to act on.
+
+**Is this just two scripts?**
+No, but it is two analysts today. In a normal run the Planner (a model call, validated in Python) chooses which analyst works on which part from Ganga's spend
+in Zetaris and gives a reason for each; in `--demo` the two drivers are fixed by a documented rule. Two feedback loops sit on top: the Evaluator send-back loop
+(the analyst must fix a claim or give up) and the Decision Maker and Red Team challenge loop (objections must cite evidence; a revision needs a written reason).
+All agents share one event-sourced World State. Adding an analyst is a small registration (write the class, register it in `agents/planner.py` and `main.py`);
+it is not zero code, and four more analysts are not built.

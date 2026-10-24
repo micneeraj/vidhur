@@ -8,6 +8,7 @@ Then per driver: claim -> sources -> deterministic checks -> Evaluator verdicts 
 from html import escape
 
 from core import decisions as dec
+from core import next_steps
 from core import unverified
 from core.source_trust import trust_of
 
@@ -139,6 +140,17 @@ def _decision_html(item, decs):
     return "".join(out)
 
 
+def _guidance_html(item, world, verified):
+    """'What would change this decision' (core/next_steps.py, plain Python, no model)."""
+    if verified:
+        g = next_steps.for_decision(item, world)
+        rows = [("Confidence (" + escape(item["impact"]["confidence"]) + ")", g["confidence_meaning"]), ("Raise confidence", g["raise"]), ("Re-run trigger", g["rerun"])]
+    else:
+        rows = [("Confidence", next_steps.CONFIDENCE_MEANING), ("Next step", next_steps.UNVERIFIED_NEXT_STEP)]
+    return ('<div class="step"><b class="t">What would change this decision</b><table>'
+            + "".join(f"<tr><th style='width:150px'>{k}</th><td>{escape(v)}</td></tr>" for k, v in rows) + "</table></div>")
+
+
 def build_evidence_page(report, world, flags=None, stats=None, evidence_date=None, trace_file=""):
     flags = flags or {}
     stats = stats or {}
@@ -194,13 +206,18 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
                  f"<div class='sub'>Plan: {escape(d.get('reason', ''))}</div>")
         why = escape(d.get("note") or d.get("error") or "no claim was produced")
         if not i["attempts"]:
-            h.append(f"<div class='step'><b class='t'>{escape(unverified.LABEL)}</b>{why} - {escape(unverified.NO_FIGURE)}.</div></div>")
+            h.append(f"<div class='step'><b class='t'>{escape(unverified.LABEL)}</b>{why} - {escape(unverified.NO_FIGURE)}.</div>"
+                     + (_guidance_html(i, world, False) if d["work_id"] in cnv_ids else "") + "</div>")
             continue
         h.append(_attempts_html(i, world))
         if d.get("status") != "PASS":
             h.append(f"<div class='step'><b class='t'>{escape(unverified.LABEL)}</b>{why} - {escape(unverified.NO_FIGURE)}.</div>")
         h.append(_calc_html(i))
         h.append(_decision_html(i, decs))
+        if d.get("status") == "PASS" and i["impact"]:
+            h.append(_guidance_html(i, world, True))
+        elif d["work_id"] in cnv_ids:
+            h.append(_guidance_html(i, world, False))
         h.append("</div>")
     h.append("</main></body></html>")
     return "".join(h)

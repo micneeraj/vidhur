@@ -7,3 +7,4 @@ SCENARIO_LARGE_MOVE_PCT,12.0,SCENARIO. Illustrative assumption - not a market qu
 SCENARIO_LIKELY_MOVE_PCT,6.0,SCENARIO. Illustrative assumption - not a market quote or a forecast. Size of the unit-cost move in the likely case of the scenario range when no source states a percentage.
 SCENARIO_SMALL_MOVE_PCT,2.0,SCENARIO. Illustrative assumption - not a market quote or a forecast. Size of the unit-cost move at the small end of the scenario range when no source states a percentage.
 FX_PASS_THROUGH_PCT,100.0,SCENARIO. Illustrative assumption - not a market quote. Share of a supplier-currency move that reaches Ganga unit cost; 100 is the upper bound.
+RERUN_FX_MOVE_PCT,2.0,TRIGGER. Illustrative assumption - not a market quote or a forecast. If the GBP rate of a currency driver moves more than this percent from the rate the run used; a person should re-run Vidhur. About the size of the small end of the scenario range; Vidhur does not watch rates itself.

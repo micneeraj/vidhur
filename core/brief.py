@@ -5,7 +5,7 @@ from agents.evaluator import source_profile
 from core import calculator
 from core import decisions as dec
 from agents.geopolitics_analyst import DEMO_UNTRUSTED_INSTRUCTION, DEMO_WEAK_CLAIM_INSTRUCTION
-from core import failures, unverified
+from core import failures, next_steps, unverified
 from core.news import Article
 from core.source_trust import trust_of
 
@@ -89,7 +89,14 @@ def _calc_section(item):
     return out
 
 
-def _decisions_section(report, passed):
+def _guidance_lines(item, world):
+    """'What would change this decision' for one verified item (core/next_steps.py, plain Python)."""
+    g = next_steps.for_decision(item, world)
+    return ["", "**What would change this decision**", "", f"- Confidence ({item['impact']['confidence']}): {g['confidence_meaning']}",
+            f"- {g['raise']}", f"- {g['rerun']}"]
+
+
+def _decisions_section(report, passed, world=None):
     """Recommended decision per verified claim, the option comparison, and what the Red Team changed. Figures are Python-computed."""
     decs = report.get("decisions") or {}
     if not decs:
@@ -152,6 +159,8 @@ def _decisions_section(report, passed):
                     f"| After ({_option_label(final['kind'], final['share_pct'])}) | {_cost_cells(final['cost'])} |"]
         else:
             out += ["", f"**What changed:** nothing - the first proposal stood ({outcome.get('rounds', 0)} challenge round(s), max {MAX_ROUNDS})."]
+        if world is not None:
+            out += _guidance_lines(i, world)
         out.append("")
     return out
 
@@ -257,8 +266,9 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
                 f"These drivers were looked at but could not be confirmed. They have {unverified.NO_FIGURE}; do not read the totals above as covering them.", "",
                 "| Work | Analyst | Part | Status | Why |", "|---|---|---|---|---|"]
         out += [f"| {u['work_id']} | {u['analyst']} | {u['part_id']} {u['part_name']} | **{unverified.LABEL}** ({u['status']}) | {u['reason'].replace('|', '/')} |" for u in cnv]
+        out += ["", f"- Confidence: {next_steps.CONFIDENCE_MEANING}", f"- {next_steps.UNVERIFIED_NEXT_STEP}"]
 
-    out += _decisions_section(report, passed)
+    out += _decisions_section(report, passed, world)
     out += failures.brief_section(report)
 
     out += ["", "## Evidence trail", ""]
