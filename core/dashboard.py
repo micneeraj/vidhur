@@ -98,7 +98,7 @@ JS = """
     c.addEventListener('click',function(e){if(e.target.closest('a'))return;openChain(c);var t=d.getElementById(c.dataset.chain);if(t&&t.scrollIntoView)t.scrollIntoView({block:'nearest'})});
     c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();c.click()}});});
   var first=location.hash.slice(1),ids=[].map.call(runs,function(r){return r.id});
-  showRun(ids.indexOf(first)>=0?first:ids[0]);
+  var def=d.querySelector('.switch button[data-default]');showRun(ids.indexOf(first)>=0?first:(def?def.dataset.run:ids[0]));
   runs.forEach(function(r){var c=r.querySelector('.card');if(c)openChain(c)});
 })();
 """
@@ -143,6 +143,12 @@ def load_run(folder, label=None, run_id=None, world_path=None, trace_path=None, 
         trail_href = f"{folder.name}/evidence_trail.html" if (folder / "evidence_trail.html").exists() else None
     return {"id": f"run-{rid}", "label": label or rid, "run_id": rid, "world": world, "report": world.report(), "models": models,
             "trail": trail_href}
+
+
+def is_real(run):
+    """A run is shown only if it has at least one driver and at least one model call recorded in its own files (never an empty or fake run)."""
+    r = run["report"]
+    return bool(_drivers(r)) and (r["run"].get("llm_ok") or 0) > 0
 
 
 def default_runs(base=None):
@@ -380,8 +386,9 @@ def _run_section(run):
 
 
 def build_dashboard_html(runs):
+    runs = [r for r in runs if is_real(r)]
     subtitle = "Ganga AI Solutions (synthetic company data; news and FX are live)"
-    buttons = "".join(f'<button type="button" data-run="{r["id"]}">{escape(r["label"])}</button>' for r in runs)
+    buttons = "".join(f'<button type="button" data-run="{r["id"]}"{' data-default="1"' if r is runs[0] else ""}>{escape(r["label"])}</button>' for r in runs)
     return ("<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
             f"<title>Vidhur CFO Dashboard</title><style>{CSS}</style></head><body class='nojs'><div class='wrap'>"
             f"<header><div><div class='brand'>Vidhur</div><div class='sub'>{escape(subtitle)}</div></div><div class='switch'>{buttons}</div></header>"
@@ -393,7 +400,7 @@ def build_dashboard_html(runs):
 
 
 def write_dashboard(runs=None, out=None):
-    runs = runs if runs is not None else default_runs()
+    runs = [r for r in (runs if runs is not None else default_runs()) if is_real(r)]
     out = Path(out) if out else OUT_FILE
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(build_dashboard_html(runs), encoding="utf-8")
@@ -402,5 +409,8 @@ def write_dashboard(runs=None, out=None):
 
 def latest_run(world, trace_path, report=None):
     """The run that has just finished (main.py): reads the same files from logs/, links output/evidence_trail.html."""
-    return load_run(Path(world.path).parent, "Latest run (" + datetime.now().strftime("%d %b %H:%M") + ")", run_id=world.run_id,
-                    world_path=world.path, trace_path=trace_path, trail_href="../output/evidence_trail.html")
+    if not Path(str(world.path)).exists() or (report or {}).get("run", {}).get("status") != "finished":
+        return None  # only a real, completed pipeline run is added (partial or fake runs are not)
+    run = load_run(Path(world.path).parent, "Latest run (" + datetime.now().strftime("%d %b %H:%M") + ")", run_id=world.run_id,
+                   world_path=world.path, trace_path=trace_path, trail_href="../output/evidence_trail.html")
+    return run if run and is_real(run) else None

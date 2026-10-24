@@ -225,7 +225,7 @@ def main():
                                              evidence_date, f"logs/{trace.path.name}"), encoding="utf-8")
 
     try:  # the dashboard is built from saved files only; it must never break a run
-        latest = dashboard.latest_run(world, trace.path)
+        latest = dashboard.latest_run(world, trace.path, report)
         dash_path = dashboard.write_dashboard(dashboard.default_runs() + ([latest] if latest else []))
     except Exception as e:  # noqa: BLE001
         dash_path = f"not built ({type(e).__name__}: {e})"

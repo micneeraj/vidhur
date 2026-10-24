@@ -137,3 +137,42 @@ def test_no_secrets_in_the_page(page):
 def test_write_dashboard_is_self_contained(tmp_path, runs):
     out = dashboard.write_dashboard(runs, tmp_path / "dashboard.html")
     assert out.exists() and out.read_text(encoding="utf-8").count('<div class="run"') == 2
+
+
+# ---- empty runs are never shown, and tests never register a run -------------------------------------------
+def _fake_run(llm_ok, with_driver=True):
+    class Fake:
+        pass
+    items = []
+    report = {"run": {"status": "finished", "llm_ok": llm_ok, "elapsed_seconds": 0}, "items": items, "decisions": {}}
+    return {"id": "run-fake", "label": "Latest run (fake)", "run_id": "fake", "world": Fake(), "report": report, "models": [], "trail": None}
+
+
+def test_empty_run_with_no_drivers_or_model_calls_is_not_real(runs):
+    assert dashboard.is_real(runs[0]) and dashboard.is_real(runs[1])
+    assert not dashboard.is_real(_fake_run(0))
+    assert not dashboard.is_real(_fake_run(5))  # model calls but no driver
+
+
+def test_empty_run_is_left_out_of_the_page(runs, tmp_path):
+    page = dashboard.build_dashboard_html(runs + [_fake_run(0)])
+    assert "Latest run (fake)" not in page and page.count('<div class="run"') == 2
+    out = dashboard.write_dashboard(runs + [_fake_run(0)], tmp_path / "d.html")
+    assert "Latest run (fake)" not in out.read_text(encoding="utf-8")
+
+
+def test_default_view_is_the_v3_run(page, runs):
+    assert re.search(r'<button type="button" data-run="run-b25b249f" data-default="1">v3 run</button>', page)
+    assert page.count("data-default") == 2  # the attribute on the v3 button, and the JS lookup
+
+
+def test_latest_run_needs_a_finished_real_run(tmp_path):
+    class W:
+        run_id, path = "x", tmp_path / "missing.json"
+    assert dashboard.latest_run(W(), tmp_path / "t.jsonl", {"run": {"status": "finished"}}) is None  # no saved world file
+    (tmp_path / "missing.json").write_text("{}", encoding="utf-8")
+    assert dashboard.latest_run(W(), tmp_path / "t.jsonl", {"run": {"status": "partial"}}) is None  # partial run is not added
+
+
+def test_tests_cannot_write_the_real_dashboard():
+    assert dashboard.OUT_FILE != BASE / "dashboard.html" and "dashboard_test_output" in dashboard.OUT_FILE.name
