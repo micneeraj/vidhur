@@ -98,6 +98,8 @@ def det_codes(case_id):
 def test_deterministic_plants_are_caught_with_the_expected_code(case_id):
     row, codes = det_codes(case_id)
     expected = {"DUPLICATE_SOURCE" if c == "NOT_INDEPENDENT" else c for c in row["expected_codes"].split(";")}  # NOT_INDEPENDENT was renamed
+    if case_id == "F02":  # a flipped direction is now caught by its own check instead of FX_MISMATCH
+        expected.add("DIRECTION_MISMATCH")
     assert expected & codes, (case_id, codes)
 
 

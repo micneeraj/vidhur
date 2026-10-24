@@ -272,6 +272,7 @@ The Evaluator's deterministic checks (no AI, run before the model check) enforce
 |---|---|
 | `NUMBER_NOT_IN_SOURCE` | a % or figure in the claim is not in a cited excerpt and is not tagged `(SCENARIO)` (a range labelled FORECAST must be printed by a source) |
 | `FX_MISMATCH` | a claimed FX rate differs from the real ECB rate for its date by more than 2%, the claimed move does not follow from its own rates, or the rate cannot be checked |
+| `DIRECTION_MISMATCH` | the claim's direction differs from the one Python derives from the ECB data: 1 GBP buys fewer units of the currency means the part costs more in pounds (`cost_up`), more units means `cost_down` |
 | `CURRENCY_COUNTRY_MISMATCH` | the currency is neither the supplier country's (Taiwan: TWD, USD as proxy; Korea: KRW; Germany: EUR; China: CNY; also Japan JPY, Malaysia MYR) nor the currency Zetaris prices the part in |
 | `FX_PAIR_MISMATCH` | the FX pair of a currency claim differs from the currency of the Zetaris purchase row the GBP calculation used (for example a GBP/EUR claim on a part priced in USD) |
 | `GBP_MISMATCH` | a GBP figure in the claim is more than 10% away from every calculator result for that part (or there is no calculator result to check it) |

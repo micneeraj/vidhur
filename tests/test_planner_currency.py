@@ -76,7 +76,7 @@ def test_currency_claim_matching_the_computed_moves_passes_the_deterministic_che
 
 
 def test_currency_claim_that_disagrees_with_the_computed_numbers_is_sent_back():
-    assert "FX_MISMATCH" in codes(fx_claim(direction="cost_down"))
+    assert "DIRECTION_MISMATCH" in codes(fx_claim(direction="cost_down"))
     assert "FX_MISMATCH" in codes(fx_claim(low=5, high=20))
     assert "FX_NO_DATA" in codes(fx_claim(computed={}))
 
@@ -88,3 +88,22 @@ def test_rank_articles_prefers_relevance_then_recency():
             art("Football results", 0)]
     top = rank_articles(arts, [(["taiwan"], 3), (["chip", "export"], 2)], k=2, now=NOW)
     assert [a.title for a in top] == ["Taiwan chip export controls tighten again", "Taiwan chip export controls tighten"]
+
+
+def test_fx_direction_follows_what_one_pound_buys():
+    # 1 GBP buys fewer EUR (1.20 -> 1.15): EUR dearer in pounds, cost_up; buys more (1.15 -> 1.20): cost_down
+    assert fx.fx_direction(fx.pct_change_in_gbp_cost(1.20, 1.15)) == "cost_up"
+    assert fx.fx_direction(fx.pct_change_in_gbp_cost(1.15, 1.20)) == "cost_down"
+
+
+def test_fx_driver_label_is_plain_words_and_matches_the_direction():
+    down = fx.fx_driver_label("EUR", -2.58, -1.94)
+    assert down.startswith("Pound strengthened vs euro") and "2.58% cheaper" in down and "fell" not in down
+    up = fx.fx_driver_label("EUR", 2.58, 1.94)
+    assert up.startswith("Pound weakened vs euro") and "2.58% dearer" in up
+
+
+def test_direction_mismatch_message_names_what_the_pound_buys():
+    claim = fx_claim(direction="cost_down")
+    found = [f for f in deterministic_checks(claim, FX_POOL, CATALOG, now=NOW) if f.code == "DIRECTION_MISMATCH"]
+    assert found and "fewer" in found[0].message and "cost_up" in found[0].message

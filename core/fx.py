@@ -106,6 +106,24 @@ def pct_change_in_gbp_cost(start_rate, end_rate):
     return (start_rate / end_rate - 1) * 100
 
 
+def fx_direction(move_pct):
+    """Cost direction for a part priced in the currency, from the move in its GBP cost (see pct_change_in_gbp_cost).
+
+    1 GBP buys fewer units of the currency (move > 0): the part costs more in pounds, cost_up. It buys more: cost_down.
+    """
+    return "cost_up" if move_pct > 0 else "cost_down"
+
+
+def fx_driver_label(currency, move_30d_pct, move_90d_pct):
+    """Plain-words driver for a currency claim, from the computed moves (never written by the model)."""
+    name = CURRENCY_NAME.get(currency, currency).replace(" dollar", "").replace("South Korean ", "").replace("Japanese ", "")
+    if move_90d_pct > 0:
+        return (f"Pound weakened vs {name}: {currency} now {abs(move_30d_pct):.2f}% dearer in pounds over 30 days "
+                f"({abs(move_90d_pct):.2f}% over 90)")
+    return (f"Pound strengthened vs {name}: {currency} now {abs(move_30d_pct):.2f}% cheaper in pounds over 30 days "
+            f"({abs(move_90d_pct):.2f}% over 90)")
+
+
 def fetch_fx_move(currency, end=None):
     """30- and 90-day move of `currency` against GBP, computed from ECB daily reference rates."""
     if currency not in supported_currencies():

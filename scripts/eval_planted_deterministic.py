@@ -41,7 +41,7 @@ TYPE_OF_CASE = {"F03": "fabricated number", "N01": "fabricated number",
                 "F15": "GBP mismatch", "F16": "GBP mismatch", "N04": "GBP mismatch",
                 "F11": "duplicate source", "F12": "duplicate source", "N05": "duplicate source",
                 "F05": "stale source", "F06": "stale source", "N06": "stale source"}
-INTENDED_CODES = {"fabricated number": {"NUMBER_NOT_IN_SOURCE", "FX_MISMATCH"}, "FX mismatch": {"FX_MISMATCH"},
+INTENDED_CODES = {"fabricated number": {"NUMBER_NOT_IN_SOURCE", "FX_MISMATCH"}, "FX mismatch": {"FX_MISMATCH", "DIRECTION_MISMATCH"},
                   "wrong currency": {"CURRENCY_COUNTRY_MISMATCH"}, "GBP mismatch": {"GBP_MISMATCH"},
                   "duplicate source": {"DUPLICATE_SOURCE"}, "stale source": {"STALE_SOURCE"}, "other": set()}
 RENAMED = {"NOT_INDEPENDENT": "DUPLICATE_SOURCE"}  # the old code for copied reports; the CSV is left as it was

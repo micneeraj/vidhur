@@ -120,10 +120,12 @@ def _currency_consistency(claim):
     except (KeyError, TypeError, ValueError):
         return [Finding("FX_NO_DATA", "A currency claim must carry the computed FX moves; none were attached.")]
     low, high = sorted((round(abs(m30), 2), round(abs(m90), 2)))
-    expected_dir = "cost_up" if m90 > 0 else "cost_down"
+    expected_dir = fx.fx_direction(m90)
     out = []
     if claim.direction != expected_dir:
-        out.append(Finding("FX_MISMATCH", f"The FX data (90d {m90:+.2f}%) implies {expected_dir}, not {claim.direction}."))
+        buys = "fewer" if expected_dir == "cost_up" else "more"
+        out.append(Finding("DIRECTION_MISMATCH", f"1 GBP buys {buys} {claim.currency or 'foreign currency'} over the window (90d {m90:+.2f}% in the "
+                           f"currency's GBP cost), so the part's cost goes {expected_dir}, not {claim.direction}."))
     if abs(claim.pct_low - low) > FX_TOLERANCE or abs(claim.pct_high - high) > FX_TOLERANCE:
         out.append(Finding("FX_MISMATCH", f"The range must be the computed FX moves {low}-{high}%, not {claim.pct_low}-{claim.pct_high}%."))
     return out
@@ -373,7 +375,7 @@ CHECK_GROUPS = [
     ("Sources are fresh", {"STALE_SOURCE", "STALE_SOURCES"}),
     ("Sources are independent and one is Tier 1 or 2", {"DUPLICATE_SOURCE", "NO_TRUSTED_SOURCE", "SOURCES_NOT_INDEPENDENT"}),
     ("Every number traces to a source, the data or the calculator", {"NUMBER_NOT_IN_SOURCE", "GBP_MISMATCH"}),
-    ("Currency and FX figures match ECB data", {"CURRENCY_COUNTRY_MISMATCH", "FX_MISMATCH", "FX_NO_DATA"}),
+    ("Currency and FX figures match ECB data", {"CURRENCY_COUNTRY_MISMATCH", "FX_MISMATCH", "FX_NO_DATA", "DIRECTION_MISMATCH"}),
 ]
 
 

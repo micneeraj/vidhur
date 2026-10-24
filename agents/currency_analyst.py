@@ -19,6 +19,7 @@ MAX_ARTICLES_SHOWN = 6
 SYSTEM_PROMPT = (
     "You are the Currency Analyst for Ganga AI Solutions, a UK maker of GPU AI servers that pays suppliers abroad. "
     "You are given exchange-rate numbers that were ALREADY computed from ECB data - do not recalculate or change them. "
+    "A negative % is the foreign currency getting CHEAPER in pounds (the pound strengthened); never call it the GBP/foreign rate falling. "
     "Your job is only to explain, in plain words, what the move means for the cost of one part, and to pick which of "
     "the numbered news articles discuss the currency or its drivers. Use ONLY the articles given. "
     "Do NOT state which currency Ganga is invoiced in (you do not know it); say the effect applies IF the supplier's currency move passes through. "
@@ -26,7 +27,7 @@ SYSTEM_PROMPT = (
 )
 
 FORMAT = """Reply with exactly this JSON (claim: 1-2 sentences using the numbers above; reasoning: 1-2 sentences):
-{"driver": "...", "claim": "...", "reasoning": "...", "source_ids": ["A1", "A2"]}
+{"claim": "...", "reasoning": "...", "source_ids": ["A1", "A2"]}
 Never write a GBP amount: money is calculated for you. Do not add figures other than the ones given above.
 Pick the articles (by id) that discuss this currency, the pound, or what is moving them. If none do, use []."""
 
@@ -101,7 +102,7 @@ class CurrencyAnalyst(AnalystBase):
 
     def _ask(self, target, work_id, currency, move, shown, attempt, previous, feedback):
         m30, m90 = move.move_30d_pct, move.move_90d_pct
-        direction = "cost_up" if m90 > 0 else "cost_down"
+        direction = fx.fx_direction(m90)
         pct_low, pct_high = sorted((round(abs(m30), 2), round(abs(m90), 2)))
         numbers = (f"Computed from ECB reference rates (Frankfurter API): the cost of 1 {currency} in pounds changed "
                    f"{m30:+.2f}% over 30 days (to {move.end_date}) and {m90:+.2f}% over 90 days (from {move.date_90d}). "
@@ -109,7 +110,7 @@ class CurrencyAnalyst(AnalystBase):
                    f"Part: {target.part_id} {target.part_name}, bought from {target.country} (priced in {currency} in Ganga's Zetaris data); "
                    f"Ganga spent GBP {target.quarterly_spend_gbp:,.0f} on it in {target.quarter}. "
                    f"Assume the move passes through to Ganga's cost in full (an upper bound). Direction: "
-                   f"{'cost UP' if direction == 'cost_up' else 'cost DOWN'}; estimated range {pct_low}-{pct_high}%.\n\n")
+                   f"{'cost UP (the pound weakened)' if direction == 'cost_up' else 'cost DOWN (the pound strengthened, so 1 GBP buys more ' + currency + ')'}; estimated range {pct_low}-{pct_high}%.\n\n")
         listing = "\n".join(f"A{i} | {a.published[:10]} | {a.publisher} | {a.title}" for i, a in enumerate(shown, 1)) or "(no articles found)"
         task = numbers + f"News articles:\n{listing}\n\n"
         if previous is None:
@@ -131,7 +132,7 @@ class CurrencyAnalyst(AnalystBase):
             supplier_country=target.country, direction=direction, pct_low=pct_low, pct_high=pct_high,
             source_urls=[move.url] + news_urls,  # the FX data source is always cited, with its date
             reasoning=str(data.get("reasoning", "")).strip(), attempt=attempt, analyst=self.name,
-            currency=currency, driver=str(data.get("driver", "")).strip() or f"GBP/{currency} exchange-rate move", pct_label=calculator.OBSERVED,
+            currency=currency, driver=fx.fx_driver_label(currency, m30, m90), pct_label=calculator.OBSERVED,
             evidence=evidence_for([move_article] + [by_id[s] for s in data.get("source_ids", []) if s in by_id]),
             computed={"currency": currency, "move_30d_pct": m30, "move_90d_pct": m90, "start_date": move.start_date,
                       "end_date": move.end_date, "start_rate": move.start_rate, "end_rate": move.end_rate,
