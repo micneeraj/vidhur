@@ -1,6 +1,8 @@
-# Live 3-driver run d9decb7d (24 Oct 2026, 21:26 IST): all three drivers verified, two challenges unfinished
+# Live 3-driver run d9decb7d (24 Oct 2026, 21:26 IST)
 
-A real run in demo mode (`--demo`: three drivers, evidence cached on 2026-10-24, FX rates live, with `--demo-weak-claim` and `--demo-red-team` on). Run status: **partial**. 1502 s, 15 model calls ok, 9 failed attempts (4 `InternalServerError` 502, 5 `APITimeoutError`). The Nightshift runtime was overloaded, so some calls were retried and some gave up.
+3-driver live run under an overloaded runtime: all three claims verified; two Red Team steps did not complete (pending review).
+
+A real run in demo mode (`--demo`: three drivers, news cached on 2026-10-24, ECB FX rates fetched live, with `--demo-weak-claim` and `--demo-red-team` on). Run status: **partial**. 1502 s, 15 model calls ok, 9 failed attempts (4 `InternalServerError` 502, 5 `APITimeoutError`). The Nightshift runtime was overloaded, so some calls were retried and some gave up.
 
 ## What was verified
 
@@ -10,16 +12,24 @@ A real run in demo mode (`--demo`: three drivers, evidence cached on 2026-10-24,
 | D2 EUR-priced German cooling (currency) | The pound strengthened against the euro | **Verified**, no send-back | High | -£8,967 / -£10,446 / -£11,926 |
 | D3 South Korea HBM memory (supplier & commodity) | HBM taking about 30% of DRAM capacity may tighten supply and lift prices | **Verified**, no send-back | Medium | +£39,512 / +£19,756 / +£6,585 |
 
+## Decision status (cleared vs pending review)
+
+| Driver | Status | Action |
+|---|---|---|
+| D1 | **DECISION PENDING REVIEW** | Provisional recommendation: No action, monitor. Why provisional: Red Team review did not complete within the runtime budget; not cleared for CFO action. |
+| D2 | **DECISION CLEARED** | No action, monitor (Red Team loop completed, both objections defended). |
+| D3 | **DECISION PENDING REVIEW** | Provisional recommendation: Lock the price with the supplier (100% of volume). Why provisional: Red Team review did not complete within the runtime budget; not cleared for CFO action. |
+
 ## What did not finish
 
 - **D1 first proposal:** the demo flag asked for an aggressive hedge, but the model's reply was unusable, so the Decision Maker used its documented fallback, **"no action, monitor"** (trace step `propose:fallback`).
 - **D1 Red Team:** Red Team raised 3 objections (2 high: cheaper alternative, concentration; 1 medium: weak evidence); the Decision Maker's response timed out, so the challenge is unresolved.
-- **D3 Red Team:** D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run (the challenge call timed out, then `RunBudgetExceeded`), so no objections were raised and D3's lock-the-price proposal is **unreviewed**. The Red Team logic is implemented and tested; a completed D3 Red Team run is next work.
+- **D3 Red Team:** D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run (the challenge call timed out, then `RunBudgetExceeded`), so no objections were raised and D3's lock-the-price proposal is **provisional, pending review** (not cleared). The Red Team logic is implemented and tested; a completed D3 Red Team run is next work.
 - **D2 Red Team:** worked. 2 objections (1 medium: cheaper alternative; 1 low: weak evidence); the Decision Maker defended both; final decision no action, monitor.
 
 ## Planner and scenario band
 
-- D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. Three drivers cover about 84% of spend.
+- D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. The three drivers are the three largest identified exposures, about 84% of Q3 spend.
 - D1 and D3 used the default scenario band. 2-12% is Ganga's default SCENARIO band for a verified directional cost driver with no directly comparable, quantified forecast for this part and quarter. It is not a probability and is not part-specific.
 - Memory exposure is driven by industry capacity allocation and HBM supply tightness, separate from the Taiwan export-control and FX drivers.
 

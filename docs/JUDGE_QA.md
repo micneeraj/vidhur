@@ -8,7 +8,7 @@ at least one from a Tier 1 or 2 publisher (`core/source_trust.py`), and none old
 two outlets that quietly share one unseen origin.
 
 **How is the GBP number proven correct?**
-The model never writes a GBP figure. `core/calculator.py` computes it from Ganga's Zetaris purchase rows, an ECB FX rate with its date, and the
+The AI never directly generates a GBP amount. It supplies evidence, direction and a labelled percentage range; Python alone converts verified inputs and company spend into GBP using recorded formulas and FX rates. `core/calculator.py` computes it from Ganga's Zetaris purchase rows, an ECB FX rate with its date, and the
 explicit assumptions in `data/decision_assumptions.csv`. Every figure in the brief has a calculation record and a label: OBSERVED (read from data),
 FORECAST (a percentage a cited source prints) or SCENARIO (our assumption). The Evaluator re-checks any number in a claim against the cited
 excerpt, the real FX rate and the calculator (`NUMBER_NOT_IN_SOURCE`, `FX_MISMATCH`, `GBP_MISMATCH`). Worst / likely / best is a scenario range,
@@ -41,9 +41,9 @@ recommendation shows what was objected to and why it stood or changed. A person 
 **Why does a live run take 7-12 minutes?**
 Speed is traded for verification: analysts run in parallel, claims are cross-checked against Zetaris with SQL, the deterministic checks run before any model
 opinion, and the Decision Maker and Red Team loop through up to 2 challenge rounds. Observed demo-run times were 341 to 990 s (about 6-16 minutes; 422, 738 and 905 s for the runs kept as samples), so "7-12 minutes" is a common figure, not
-a guarantee; a full run is 15-20 minutes on a healthy runtime. Demo mode uses cached, dated news evidence so the run is reproducible (FX stays live). We do not
+a guarantee; a full run is 15-20 minutes on a healthy runtime. Demo mode uses cached, dated news evidence so the run is reproducible (ECB FX rates are fetched live). We do not
 claim zero hallucination. On our planted-claims set the deterministic checks caught 17 of 20 false claims, and **3 of 20 still slipped through**: one
-"cause not supported" claim (F17) and two "wrong date" claims (F19, F20). Those are about meaning, so they depend on the model check. The set is small,
+"cause not supported" claim (F17) and two "wrong date" claims (F19, F20). Those are about meaning, so they depend on the AI support check: in the recorded AI-assisted run (20261023_220200) it caught 2/3 (F17, F20) and F19 could not be evaluated (502 after retries); it was not evaluated as a separate metric in this 25-case set. The set is small,
 builder-written and run once; it is not a benchmark.
 
 **TWD: why a USD proxy?**
@@ -54,7 +54,7 @@ direct TWD rates. That is not built.
 **What if Nightshift returns 502 mid-run?**
 Calls are retried a bounded number of times (`LLM_MAX_ATTEMPTS`) with timeouts, and the run continues with the steps that can still run. Whatever fails is
 labelled instead of being passed off as done: a driver whose agent failed is "Could not verify" (no GBP figure, not zero impact), and a decision whose Red Team
-call failed says "Red Team review could not run - treat this recommendation as unreviewed". The brief opens with a partial-results banner and lists the agents
+call failed is marked DECISION PENDING REVIEW and shown as a provisional recommendation, not as cleared (when a component times out, Vidhur records an audit warning and marks the step pending review rather than crashing or showing it as cleared) The brief opens with a partial-results banner and lists the agents
 that could not run and why, the run exits with code 2, and the JSONL trace (`logs/run_*.jsonl`) shows where each failure happened. Earlier runs on the busy
 runtime ended partial this way and are marked as such.
 
@@ -83,4 +83,22 @@ No: no hedge or price lock when the verified expected direction is cost DOWN. A 
 Not quantified. No price-lock premium is documented, so Vidhur shows "Cost of action: Not quantified - requires a supplier quote for the price-lock premium and volume commitment." and the risk the lock protects (the worst case times the locked share, calculated in Python), the trade-off (savings may be forgone if prices soften) and what would change the recommendation. Hedge and second-supplier premiums are documented SCENARIO assumptions.
 
 **Why was D3 chosen, and how far did it get?**
-D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. Three drivers cover about 84% of spend. D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run. The Red Team logic is implemented and tested; a completed D3 Red Team run is next work. In the brief and dashboard: "Memory exposure is driven by industry capacity allocation and HBM supply tightness, separate from the Taiwan export-control and FX drivers."
+D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. The three drivers are the three largest identified exposures, about 84% of Q3 spend. D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run, so D3 is DECISION PENDING REVIEW. The Red Team logic is implemented and tested; a completed D3 Red Team run is next work. In the brief and dashboard: "Memory exposure is driven by industry capacity allocation and HBM supply tightness, separate from the Taiwan export-control and FX drivers."
+
+**What does the 3-driver live run show?**
+3-driver live run under an overloaded runtime: all three claims verified; two Red Team steps did not complete (pending review). D2 is DECISION CLEARED; D1 and D3 are DECISION PENDING REVIEW, each shown as a "Provisional recommendation" with the reason it is provisional (`output_examples/live_run_20261024_3drivers/`).
+
+**Does every recommendation get challenged?**
+Every cleared recommendation has been challenged; incomplete challenges are marked pending review. The label is derived in code from the saved Red Team outcome (`decisions.review_state`), not written by hand.
+
+**Can the Evaluator rules be bypassed by changing a prompt?**
+No. The deterministic checks are Python code (`deterministic_checks` in `agents/evaluator.py`) that run before any AI support check; if a rule fails, the claim is sent back and the AI check is skipped (the trace says "deterministic checks failed; model check skipped", and the dashboard and evidence trail show "model check skipped because a deterministic check failed"). Prompts cannot switch these checks off: analyst prompts only shape the claim that is then checked, and the AI support check can reject a claim that passed the rules but can never rescue one that failed them. An unparseable AI reply is never a pass.
+
+**Why is D3's recommendation a 100% lock if its Red Team did not finish?**
+It is provisional, not cleared; the dashboard marks it pending review. Vidhur does not treat an unchallenged action as final. The brief and dashboard show "Provisional recommendation: Lock the price with the supplier (100% of volume). Why provisional: Red Team review did not complete within the runtime budget; not cleared for CFO action." The lock has no quantified cost, only the risk it protects, until a supplier quote exists.
+
+**What happens with 30 drivers?**
+The Planner prioritises by materiality and delegates only material drivers; others are skipped with a reason. What the code actually does: the Planner model is shown every part's spend (largest first) and the headline scan, is told to put effort where spend is large or headlines show real risk, may make at most `MAX_DELEGATIONS` (default 4) delegations, and must give a reason for each skip; the ranking is the model's judgement, not a Python sort; Python validates every delegation (known analyst, known part, no duplicates) and records each skip with its reason. This demo validates three drivers; it has not been run at 30.
+
+**How is this different from RAG plus a spreadsheet?**
+RAG retrieves evidence; Vidhur enforces an audit workflow: deterministic validation, send-back and retry, Python-only GBP calculation, adversarial challenge, and an explicit evidence trail.

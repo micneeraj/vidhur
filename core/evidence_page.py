@@ -34,7 +34,7 @@ details summary{cursor:pointer;color:var(--mute);font-size:13px}code{font-size:1
 """
 
 NOTE = ("Every number is labelled: OBSERVED = read from data (Zetaris purchase rows, ECB rates); FORECAST = stated by a cited source; "
-        "SCENARIO = our assumption (data/decision_assumptions.csv). All GBP figures are calculated in Python, never by the AI.")
+        "SCENARIO = our assumption (data/decision_assumptions.csv). The AI never directly generates a GBP amount; Python alone converts verified inputs into GBP using recorded formulas and FX rates.")
 
 
 def g(v):
@@ -113,7 +113,7 @@ def _calc_html(item):
     rows = calc_rows(item)
     if not rows:
         return ""
-    return ('<div class="step"><b class="t">GBP calculation record (Python, core/calculator.py - never the AI)</b><table>'
+    return ('<div class="step"><b class="t">GBP calculation record (Python, core/calculator.py)</b><table>'
             + "".join(f"<tr><th style='width:210px'>{k}</th><td>{v}</td></tr>" for k, v in rows) + "</table></div>")
 
 
@@ -126,6 +126,7 @@ def _decision_html(item, decs):
         return f'<div class="step"><b class="t">Decision</b>{pill(unverified.LABEL, "warn")} {escape(outcome.get("error", "no decision produced"))}</div>'
     first, final = d["versions"][0], d["versions"][-1]
     out = [f'<div class="step"><b class="t">First proposal (Decision Maker)</b>{escape(dec.describe(first["kind"], first["share_pct"]))} - {escape(first["rationale"])}</div>']
+    state = dec.review_state(d)
     if dec.is_unresolved(d):
         out.append(f'<div class="step"><b class="t">Red Team</b>{pill("challenge unresolved", "warn")} {escape(dec.unresolved_label(d))}</div>')
     elif outcome.get("status") in ("NOT_CHALLENGED", "UNCHALLENGED"):
@@ -143,12 +144,12 @@ def _decision_html(item, decs):
                    '<th>Decision Maker response</th><th>Status</th></tr>' + rows + "</table></div>")
     elif outcome.get("status") == "RECOMMENDED":
         out.append('<div class="step"><b class="t">Red Team</b>Reviewed; no high or medium objection raised.</div>')
-    verdict = {"CONTESTED": pill("Contested - needs CFO judgement", "bad"), "RECOMMENDED": pill("Recommended", "ok")}.get(
-        outcome.get("status"), pill("Challenge unresolved" if dec.is_unresolved(d) else outcome.get("status", "?"), "warn"))
+    verdict = pill(dec.STATUS_LABEL[state], {dec.CLEARED: "ok", dec.PENDING: "warn", dec.CONTESTED: "bad"}[state])
+    prov = f"<br><b>{escape(dec.provisional_line(final['kind'], final['share_pct']))}</b>" if state == dec.PENDING else ""
     counts = (f"{len(d['objections'])} objection(s) raised, challenge unresolved" if dec.is_unresolved(d)
               else f"{outcome.get('objection_count', 0)} objection(s), {outcome.get('rounds', 0)} round(s)")
     changed = f' (first proposal was {escape(dec.describe(first["kind"], first["share_pct"]))})' if outcome.get("changed") else ""
-    out.append(f'<div class="step"><b class="t">Final revision</b>{verdict} <b>{escape(dec.describe(final["kind"], final["share_pct"]))}</b>{changed}'
+    out.append(f'<div class="step"><b class="t">{"Provisional decision (not cleared)" if state == dec.PENDING else "Final revision"}</b>{verdict} <b>{escape(dec.describe(final["kind"], final["share_pct"]))}</b>{changed}{prov}'
                f'<br>{escape(final["rationale"])}<div class="sub">{counts}</div></div>')
     for v in (final, first) if first is not final else (final,):
         if v["kind"] in dec.UNQUOTED:
@@ -183,7 +184,7 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
          f"<div class='sub'>Ganga AI Solutions (synthetic data) - run {escape(str(run.get('run_id', '')))} - {run.get('elapsed_seconds', '?')} s - "
          f"{stats.get('llm_ok', '?')} model calls ok, {stats.get('llm_fail', '?')} failed attempts (retried) - trace <code>{escape(trace_file)}</code></div>"]
     if evidence_date:
-        h.append(f"<div class='banner'>Evidence cached on {escape(evidence_date)} (real news saved that day). FX rates are live. Demo mode: three drivers, "
+        h.append(f"<div class='banner'>News is cached and dated for reproducibility (cached {escape(evidence_date)}); ECB FX rates are fetched live. Demo mode: three drivers, "
                  "one planted weak claim, one forced-aggressive first decision.</div>")
     elif flags.get("weak") or flags.get("red_team"):
         h.append("<div class='banner'>Demo flag on: " + escape(", ".join(k for k in ("weak", "red_team") if flags.get(k))) + ". Model calls and checks are real.</div>")
@@ -201,9 +202,11 @@ def build_evidence_page(report, world, flags=None, stats=None, evidence_date=Non
             m = i["impact"]
             dv = decs.get(d["work_id"], {})
             fin = dv["versions"][-1] if dv.get("versions") else None
-            rec = escape(dec.describe(fin["kind"], fin["share_pct"])) if fin else "-"
-            rec += (" " + pill("challenge unresolved", "warn") if dec.is_unresolved(dv) else
-                    {"CONTESTED": " " + pill("contested", "bad"), "NOT_CHALLENGED": " " + pill("unreviewed", "warn")}.get((dv.get("outcome") or {}).get("status"), ""))
+            state = dec.review_state(dv)
+            rec = "-"
+            if fin:
+                act = escape(dec.describe(fin["kind"], fin["share_pct"]))
+                rec = (f"Provisional recommendation: {act}" if state == dec.PENDING else act) + " " + pill(dec.STATUS_LABEL[state], {dec.CLEARED: "ok", dec.PENDING: "warn", dec.CONTESTED: "bad"}[state])
             h.append(f"<tr><td>{d['work_id']} {name}</td><td>{part}</td><td>{status_pill('PASS')}</td><td class='num'>{g(m['worst_gbp'])}</td>"
                      f"<td class='num'>{g(m['likely_gbp'])}</td><td class='num'>{g(m['best_gbp'])}</td><td>{escape(m['confidence'])}</td><td>{rec}</td></tr>")
         else:

@@ -2,9 +2,9 @@
 
 **LLMs hallucinate numbers. Vidhur forces every agent claim through a deterministic audit checklist and an adversarial Red Team before a CFO sees a single pound sign.**
 
-Vidhur turns scattered market events and company spend into a CFO-ready, evidence-backed cost decision, with every number traceable and every recommendation challenged.
+Vidhur turns scattered market events and company spend into a CFO-ready (for cleared decisions; pending-review decisions are labelled as such), evidence-backed cost decision, with every number traceable. Every cleared recommendation has been challenged; incomplete challenges are marked pending review.
 
-**Built by a commercial auditor. Vidhur applies professional scepticism: no number without evidence, no action without challenge.**
+**Built by a commercial auditor. Vidhur applies professional scepticism: no number without evidence, no cleared action without challenge.**
 
 *Open Agent Hackathon 2026 (GenAI Works), Track 2 - "The Agent That Can Explain Why".*
 
@@ -12,7 +12,7 @@ Vidhur turns scattered market events and company spend into a CFO-ready, evidenc
 claim, or a recommendation, without evidence. The Evaluator will not let a claim reach the CFO unless independent, fresh, trusted sources support it and it matches
 Ganga's own data; the Red Team then attacks the resulting decision before the CFO sees it. The Evaluator checks every number in a claim against the cited
 excerpt, the real FX rate and the calculator; the Red Team rejects any revision that does not give a written reason tied to evidence or a calculation.
-How well that works is measured, not asserted: see **Evaluation** below.
+How well that works is measured, not asserted: see **Initial adversarial evaluation** below.
 
 ## Before and after
 
@@ -43,6 +43,8 @@ against trusted, independent, fresh sources (ranked by publisher) and against th
 Claims that cannot be verified get no number. The claims that survive become a **decision** (hedge, lock the price, add a second supplier, or do
 nothing) and a **Red Team** challenges that decision, like a sceptical CFO, **before it reaches the CFO brief**. Every GBP figure is computed in
 plain Python, every step is traced, and the brief says which evidence supports each number.
+
+Example of the Planner skipping a part, with its stated reason (saved run `0558c4cb`, `logs/world_state_0558c4cb.json`): *Skipped P008 GangaFrame 42U Chassis Rack (geopolitics): Lowest spend (GBP 75,795, 3%); no headline or FX data linking to cost risk; analyst effort better allocated to higher-impact parts.* Every skip is recorded with a reason; demo runs use a fixed plan instead and record "Outside the three-driver demo scope".
 
 ### Two feedback loops
 
@@ -150,9 +152,9 @@ What happens in a run (`python main.py`):
   so the evidence of which Nemotron model actually answered is in the trace files (`logs/run_*.jsonl`). `python scripts/check_lanes.py` re-tests the lanes.
 - **Built with Claude Code.** The organisers made Cursor optional, so this was built with Claude Code.
 
-### Numbers are calculated in Python, never by the AI
+### Numbers are calculated in Python
 
-The model never produces a GBP figure. The analysts output only a **driver**, a **direction** (cost up / down), **evidence** (url, publisher, date and an excerpt taken from
+The AI never directly generates a GBP amount. It supplies evidence, direction and a labelled percentage range; Python alone converts verified inputs and company spend into GBP using recorded formulas and FX rates. The analysts output only a **driver**, a **direction** (cost up / down), **evidence** (url, publisher, date and an excerpt taken from
 the fetched article, not from the model) and, **only if a cited source prints one**, a percentage. `core/calculator.py` then computes the GBP impact deterministically from
 Ganga's Zetaris purchase rows (part, supplier country, quantity, unit price, currency), a real ECB FX rate **with its date**, and the explicit assumptions in
 `data/decision_assumptions.csv`:
@@ -204,6 +206,7 @@ The Evaluator checks the **claims**; the **Red Team** checks the **decision** bu
 - **No hedge or price lock when the verified expected direction is cost DOWN (deterministic rule, before the AI proposal):** if the worst case of the scenario range is not a cost increase (every scenario is a saving),
   `decisions.rule_choice` fixes the decision to NO_ACTION / monitor, with no model call and no hedge, price lock or second supplier. It is not a blanket ban: protection is allowed against a cost rise. This holds in the aggressive demo too, and a
   Red Team revision cannot bring a hedge back. Unit-tested in `tests/test_calculator.py`.
+- **Cleared and pending decisions.** A decision whose Red Team loop completed is **DECISION CLEARED**. A decision whose Red Team did not complete (timed out, unresolved, unreviewed, budget hit) is **DECISION PENDING REVIEW** and its action is shown as "Provisional recommendation: <action>. Why provisional: Red Team review did not complete within the runtime budget; not cleared for CFO action." The state is derived in code from the saved outcome (`decisions.review_state`), not written by hand; cleared is teal and pending is amber on the dashboard. A decision whose loop completed with a high objection still standing is **DECISION CONTESTED** (needs CFO judgement), never cleared.
 - **Red Team** (`core/red_team.py`) returns structured JSON objections of five kinds: forecast wrong (opposite scenario), cost of acting vs not
   acting, concentration (supplier / country), weakest evidence, cheaper alternative. Each has a severity and must cite evidence ids (S1.., the
   work id, an option name) or numbers present in the evidence. Objections without a reference are dropped; if none survive, the model is re-asked once.
@@ -250,7 +253,7 @@ Every decision in the CFO brief and in the evidence trail page also has a **What
 | | What | Where |
 |---|---|---|
 | **Synthetic** | Ganga AI Solutions' purchases, suppliers and parts (a fictional UK AI-server maker) | `data/parts.csv`, `data/suppliers.csv`, `data/purchases.csv`, loaded into Zetaris |
-| **Live** | News (free RSS feeds) and ECB exchange rates (Frankfurter) | fetched at run time; `--demo` uses cached, dated news and live FX |
+| **News and FX** | News (free RSS feeds) and ECB exchange rates (Frankfurter) | News is cached and dated for reproducibility (`--demo` reads `data/demo_evidence/`; a normal run fetches it at run time and dates every article); ECB FX rates are fetched live |
 | **Our own config** | Source trust tiers; decision assumptions (premiums, scenario moves, pass-through, re-run threshold) | `data/source_trust.csv`, `data/decision_assumptions.csv` |
 | **Generalisable** | Any company can load its own purchase data into Zetaris using the same table schema and run the same pipeline | `scripts/load_ganga_to_zetaris.py` |
 
@@ -281,9 +284,9 @@ For Ganga, three exposures cover most of the spend. In the latest quarter in the
 | P002 GangaHBM-8H Memory Stack | South Korea | USD | £330,120 | 12.9% |
 | the other five parts | China, Malaysia, Japan | USD | £409,633 | 16.0% |
 
-So Taiwan chip supply (geopolitics), the EUR-priced German cooling parts (currency) and the South Korean HBM memory stack (supplier and commodity) together are about 84% of spend (52.7% + 18.4% + 12.9%, from the Zetaris data), and `--demo` runs exactly those three drivers, D1, D2 and D3. The Korean part is priced in USD in the data, not KRW, so its currency exposure is GBP/USD; the new analyst covers the risk the other two do not: memory contract prices and the concentration of supply in one supplier (Hanseong Memory Works, S002). In a normal run the Planner chooses which analyst works on which part, with a written reason, from the Zetaris spend.
+So Taiwan chip supply (geopolitics), the EUR-priced German cooling parts (currency) and the South Korean HBM memory stack (supplier and commodity) are the three largest identified exposures, about 84% of Q3 spend (52.7% + 18.4% + 12.9%, from the Zetaris data), and `--demo` runs exactly those three drivers, D1, D2 and D3. The Korean part is priced in USD in the data, not KRW, so its currency exposure is GBP/USD; the new analyst covers the risk the other two do not: memory contract prices and the concentration of supply in one supplier (Hanseong Memory Works, S002). In a normal run the Planner chooses which analyst works on which part, with a written reason, from the Zetaris spend.
 
-D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. Three drivers cover about 84% of spend.
+D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. The three drivers are the three largest identified exposures, about 84% of Q3 spend.
 
 D3 status: D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run. The Red Team logic is implemented and tested; a completed D3 Red Team run is next work.
 
@@ -298,7 +301,7 @@ Three analysts (geopolitics, currency, supplier & commodity) exist today. **Addi
 - **Numbers are computed in Python, never by the model.** FX moves, GBP impacts and decision costs come from Zetaris data and plain arithmetic; the model explains and picks.
 - **Unverified means no number.** A claim that fails the Evaluator after two send-backs is shown as unverified with no GBP figure.
 
-## Evaluation
+## Initial adversarial evaluation
 
 **What was tested.** A set of 25 planted claims written by the builder: 20 deliberately false or weak claims and 5 correct controls, run through the Evaluator. The planted failure types in the set (`data/eval/planted_claims.csv`) are: wrong FX number (3: range 3x the real move, opposite direction, invented moves), wrong currency pair (1), stale source (2), untrusted publisher only (2), single source (2), copied report (2), wrong supplier country (2), GBP impact that does not match Ganga's data (2), cause not supported by the cited sources (2) and wrong date (2). The 5 controls are well-supported claims. A further 6 claims (`planted_claims_new.csv`) were added, one per new deterministic check.
 
@@ -336,6 +339,8 @@ wrong supplier country (2/2), cause not supported by the cited sources (2/2), an
 - **F03, invented FX numbers:** a claim quoting a 9 % won move whose attached ECB figures it had falsified; the Evaluator trusts the moves attached to a currency claim and the model check judged it consistent. (The cited ECB article does show +9.94 % over 90 days, so the false number happened to sit close to the real one; this is a weak plant.)
 - **F04, wrong currency pair:** a South Korean part explained with GBP/JPY data. The numbers matched the yen data, so neither the deterministic check nor the model check noticed the currency was Japan's, not Korea's.
 - **F15 and F16, GBP impact that does not match Ganga's purchase data:** the claim text stated a GBP exposure 10x too large (P001) and 10x too small (P002) against Zetaris spend. The Evaluator does not compare GBP figures written inside a claim with Zetaris; Vidhur computes the GBP impact itself from Zetaris after a claim passes, so such a figure never reaches the brief, but the Evaluator did not flag it.
+
+**The AI support check on the meaning-based plants (F17, F19, F20):** the AI support check caught 2/3 in run 20261023_220200: F17 and F20 were caught as `NOT_SUPPORTED` by the model check (`llm_checked: true`); F19 could not be evaluated (502 after retries, `provider_deadline`). The AI support check is designed to catch these semantic failures; it was not evaluated as a separate metric in this 25-case set, and 2/3 is a single run on a small sample.
 
 These are gaps in this version, reported as they came out. The test cases were not changed after seeing results. (F03, F04, F15 and F16 are addressed by the new deterministic checks: see 1b.)
 
@@ -386,13 +391,14 @@ on every retry (4 attempts, 60 s apart), and the job then hit its time limit. De
 - Nightshift 1.2.1 returned 502 (`provider_error`: `empty_response`, `provider_deadline`) on a large share of calls; every failure is logged with the routed model (receipt ids are not exposed by the runtime).
 - Planted-claim tests (1 and 1b): 25 claims (plus 6 new) written by the builder, one run each. It shows what the Evaluator does and does not catch, not a general accuracy figure.
 - Backtest: 5 cases planned, 2 attempted, 0 completed for the model-based approaches. The news set is small (2-7 real headlines per case, CNBC and Fortune only), the model may remember these historical events from training, and the outcome is a currency-driven proxy for landed cost (no freight, duties or part-price changes).
-- Company data is synthetic for privacy; FX and news are live (live in the product; historical in the backtest).
+- Company data is synthetic for privacy; News is cached and dated for reproducibility; ECB FX rates are fetched live (historical in the backtest).
 
 ## Sample inputs and outputs
 
 `input_examples/input_<time>.json` is saved by `main.py` for each run (the command, flags, lanes and Ganga spend read from Zetaris, no secrets);
 `output_examples/brief_<time>.md` is the CFO brief it produced; the trace is `logs/run_<time>.jsonl`. These are real runs; outputs are never edited by hand. **The runs in the table below predate `--demo`, the calculator records and the evidence trail page (older output schema).** The current-schema samples are the `--demo` folders and the live-run folder:
 
+- `output_examples/live_run_20261024_3drivers/` (run `d9decb7d`, 1502 s): 3-driver live run under an overloaded runtime: all three claims verified; two Red Team steps did not complete (pending review). D2 is DECISION CLEARED; D1 and D3 are DECISION PENDING REVIEW with provisional recommendations. See its README. Its brief and evidence trail were re-rendered from the saved world state with the current code (no model calls).
 - `output_examples/live_run_20261024_could_not_verify/` (run `5b82b132`, 422 s, 7 model calls, 0 failed): the **honest COULD NOT VERIFY live run**, with its README. D1 (Taiwan) was sent back for `TOO_FEW_SOURCES` and ended Could not verify; D2 (EUR) was verified at High confidence, got 2 Red Team objections that the Decision Maker defended in writing, and ended at no action.
 - `output_examples/demo_run_20261024_v3/` (input `input_20261024_153350.json`): the **latest complete `--demo` run** (its evidence trail page was re-rendered from the saved world state after the "What would change this decision" section was added; the brief is as the run wrote it). D1 (Taiwan, geopolitics) was sent back by the Evaluator, passed with Low confidence, and the Red Team's 3 objections moved its 100 % hedge to a 20 % second-supplier shift (worst / likely / best +£160,978 / +£80,489 / +£26,830). D2 (Germany, currency, OBSERVED) is a cost fall (-£8,967 / -£10,446 / -£11,926) and ends at NO_ACTION.
 - `output_examples/demo_run_20261024_v2/` (input `input_20261024_144545.json`): the current complete `--demo` run, after the currency and hedge-logic fixes. D1 (Taiwan, geopolitics) was sent back once for `TOO_FEW_SOURCES`, passed, and its 100 % hedge was revised by the Red Team loop to a 20 % second-supplier shift. D2 (Germany, currency) uses GBP/EUR on a row Zetaris prices in EUR, shows only the assumption it used (`FX_PASS_THROUGH_PCT`), and ends at NO_ACTION because the move is a cost fall. In that run the live FX call timed out, so the calculation used the rate stored on the Zetaris row and the brief says so.
@@ -455,10 +461,10 @@ the image sets `VIDHUR_IN_DOCKER=1` and `core/config.py` rewrites `localhost` / 
 ### If a service is down
 
 - **Zetaris not reachable:** the message tells you to start it (the `docker compose up -d` command above) and the program exits without a traceback.
-- **Nightshift busy or offline** (502s, timeouts, connection refused after the automatic retries): Vidhur does not crash. Whatever completed is saved to the World State and the
+- **Nightshift busy or offline** (502s, timeouts, connection refused after the automatic retries): when a component times out, Vidhur records an audit warning and marks the step pending review, rather than crashing or showing it as cleared. Whatever completed is saved to the World State and the
   trace, the brief lists the agents that could not run and why, the console prints `AI runtime busy or offline — partial results saved. Try again later.`
   and the exit code is non-zero (`1` = stopped before the run by the healthcheck, `2` = partial results saved).
-- A decision whose Red Team call failed is labelled **"Red Team review could not run — AI runtime busy. Treat this recommendation as unreviewed."**
+- A decision whose Red Team call failed is labelled **DECISION PENDING REVIEW** and shown as a provisional recommendation (see "Cleared and pending decisions" above).
   A decision the Red Team did review and raised no high or medium objection to says so, in different words.
 
 ## Usage
@@ -486,7 +492,7 @@ One company run limited to three drivers: D1 the Taiwan GPU chip (geopolitics), 
 (the euro-supplied cooling loop; currency) and D3 the South Korean HBM memory stack (supplier & commodity; omitted if Ganga buys no memory part). What is different, and nothing else is:
 
 - **Cached, dated evidence.** The news comes from `data/demo_evidence/` (saved by `python scripts/save_demo_evidence.py` from a real live fetch; `manifest.json`
-  holds the date). The brief and the evidence page say "Evidence cached on <date>". **FX stays live** (Frankfurter / ECB). The Evaluator judges the cached
+  holds the date). The brief and the evidence page say "News is cached and dated for reproducibility (cached <date>); ECB FX rates are fetched live". **FX stays live** (Frankfurter / ECB). The Evaluator judges the cached
   articles' freshness as of the cache date, so the demo keeps working later.
 - **Fixed plan, no Planner call.** The three drivers are picked by a documented rule (`core/demo.py`), so the Planner model is not called in demo mode.
 - **Both demo instructions on.** The Geopolitics Analyst's first attempt cites one source (the Evaluator sends it back), and the first decision is told to be
@@ -576,7 +582,7 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 - **TWD is proxied by USD.** The ECB does not publish a Taiwan dollar rate. Zetaris prices the Taiwan GPU in USD, and the backtest uses USD as the proxy for TWD; Vidhur's own Currency Analyst reports "no data" for TWD and is skipped for that part. A production version would use a treasury or FX provider with direct TWD rates (not built).
 - **Freight is left out.** There is no freight analyst; Ganga's high-value parts mostly ship by air, so freight is a small share of landed cost, but it is not modelled. Duties and part-price changes are not modelled either.
 - **Two analysts today.** Geopolitics and currency only. Commodity, logistics, trade and supplier-health analysts are not built.
-- **The deterministic checks miss 3 of 20 planted claims** (cause not supported, F17; wrong date, F19 and F20). Those need the model check, which is itself one small model.
+- **The deterministic checks miss 3 of 20 planted claims** (cause not supported, F17; wrong date, F19 and F20). Those need the model check, which is itself one small model; in the recorded AI-assisted run it caught 2 of the 3 (F17, F20) and F19 could not be evaluated, so no 3/3 or 20/20 is claimed.
 - **The synthetic data is declared.** Ganga AI Solutions and its purchase history are made up; news and FX are real.
 - **The backtest is future work.** It produced no scored result (see Evaluation); no claim is made that Vidhur beats a baseline.
 - **Decision premiums are assumptions** (`data/decision_assumptions.csv`), not market quotes, and the second supplier is assumed to be unexposed to the claim's driver. Decisions are made per claim, so two claims on one part are not combined. The re-run trigger is advice, not a monitor.

@@ -10,6 +10,10 @@ from core.news import Article
 from core.source_trust import trust_of
 
 
+GBP_RULE = ("The AI never directly generates a GBP amount. It supplies evidence, direction and a labelled percentage range; Python alone converts "
+            "verified inputs and company spend into GBP using recorded formulas and FX rates (`core/calculator.py`).")
+
+
 RED_TEAM_DID_NOT_RUN = "Could not verify: the Red Team review did not run (AI runtime busy). Treat this recommendation as unreviewed."
 
 
@@ -53,7 +57,7 @@ PCT_BASIS_TEXT = {calculator.FORECAST: "a cited source states it", calculator.OB
                   calculator.SCENARIO: "our assumption, no source states a percentage"}
 LEGEND = ("Every number carries a label: **OBSERVED** = read from data (Zetaris purchase rows, ECB rates); **FORECAST** = stated by a cited "
           "source; **SCENARIO** = our assumption (`data/decision_assumptions.csv`). Worst / likely / best is a **scenario range, not a probability**. "
-          "All GBP figures are calculated in Python (`core/calculator.py`), never by the AI.")
+          "" + GBP_RULE)
 
 
 def _why_it_matters(passed):
@@ -125,17 +129,15 @@ def _decisions_section(report, passed, world=None):
         contested = outcome.get("status") == "CONTESTED"
         claim = i["attempts"][-1]["claim"]
         unresolved = dec.is_unresolved(d)
-        not_challenged = outcome.get("status") in ("NOT_CHALLENGED", "UNCHALLENGED") and not unresolved
-        head = ("CONTESTED - needs CFO judgement" if contested else "Proposed, challenge UNRESOLVED" if unresolved
-                else "Proposed, UNREVIEWED" if not_challenged else "Recommended")
+        state = dec.review_state(d)
+        head = dec.STATUS_LABEL[state] + (" - needs CFO judgement" if contested else "")
         out += [f"### {wid}. {claim.part_name} ({claim.supplier_country}) - {head}", ""]
         if contested:
             out += [f"**No confident recommendation.** The Red Team's high-severity objection was still unresolved after {outcome.get('rounds', 0)} "
                     f"round(s). Last proposal: **{_option_label(final['kind'], final['share_pct'])}**.", ""]
-        elif unresolved:
-            out += [f"**{dec.unresolved_label(d)}** Proposal: {_option_label(final['kind'], final['share_pct'])} - {final['rationale']}", ""]
-        elif not_challenged:
-            out += [f"**{RED_TEAM_DID_NOT_RUN}** Proposal: {_option_label(final['kind'], final['share_pct'])} - {final['rationale']}", ""]
+        elif state == dec.PENDING:
+            detail = dec.unresolved_label(d) if unresolved else f"{RED_TEAM_DID_NOT_RUN}"
+            out += [f"**{dec.provisional_line(final['kind'], final['share_pct'])}**", "", f"{detail} Proposal rationale: {final['rationale']}", ""]
         else:
             out += [f"**{_option_label(final['kind'], final['share_pct'])}** - {final['rationale']}", ""]
         rows = dec.compare_options(spend, impact, (final["kind"], final["share_pct"]))
@@ -202,11 +204,12 @@ def console_summary(report):
         if not d["versions"]:
             continue
         o, final = d["outcome"] or {}, d["versions"][-1]
-        if dec.is_unresolved(d):
-            lines.append(f"[DECISION CHALLENGE_UNRESOLVED] {wid}: {_option_label(final['kind'], final['share_pct'])} "
-                         f"({len(d['objections'])} objection(s) raised; the Decision Maker's response did not finish)")
+        state = dec.review_state(d)
+        if state == dec.PENDING:
+            lines.append(f"[{dec.STATUS_LABEL[state]}] {wid}: Provisional recommendation: {_option_label(final['kind'], final['share_pct'])} "
+                         f"({len(d['objections'])} objection(s) raised; Red Team review did not complete)")
             continue
-        lines.append(f"[DECISION {o.get('status', '?')}] {wid}: {_option_label(final['kind'], final['share_pct'])} "
+        lines.append(f"[{dec.STATUS_LABEL[state]}] {wid}: {_option_label(final['kind'], final['share_pct'])} "
                      f"({o.get('objection_count', 0)} objection(s), {o.get('rounds', 0)} round(s)"
                      f"{', revised' if o.get('changed') else ''})")
     return "\n".join(lines)
@@ -223,8 +226,8 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         *(["> **PARTIAL RESULTS.** AI runtime busy or offline: some agents could not run. See \"Agents that could not run\" below.", ""]
           if failures.collect(report) else []),
         "> **SYNTHETIC DATA.** Ganga AI Solutions is a fictional company. Its purchase history is made up for the "
-        "Open Agent Hackathon 2026. " + (f"**Evidence cached on {demo_evidence_date}** (real news saved that day; FX rates are live)."
-                                         if demo_evidence_date else "News and exchange-rate evidence is real, fetched live from free sources."), "",
+        "Open Agent Hackathon 2026. " + (f"**News is cached and dated for reproducibility (cached {demo_evidence_date}); ECB FX rates are fetched live.**"
+                                         if demo_evidence_date else "News is fetched from free sources at run time and dated in the evidence trail; ECB FX rates are fetched live."), "",
         f"- Run `{run.get('run_id', '')}` - {run.get('elapsed_seconds', '?')} s - team: Planner (Vidhur), Geopolitics Analyst, Currency Analyst, Supplier & Commodity Analyst, Evaluator",
         f"- Shared memory (Meterless World Model, {report['event_count']} events): `{report['path'].replace(chr(92), '/').split('/vidhur/')[-1]}`",
         f"- Trace log (every step, model, tokens, latency): `{str(trace_path).replace(chr(92), '/').split('/vidhur/')[-1]}`",
@@ -237,7 +240,7 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
                 f"*\"{DEMO_WEAK_CLAIM_INSTRUCTION}\"* The model calls and Evaluator checks are real."]
 
     if demo_evidence_date:
-        out += [f"- **Demo mode `--demo`:** three drivers only, evidence cached on {demo_evidence_date}, one planted weak claim and one forced-aggressive "
+        out += [f"- **Demo mode `--demo`:** three drivers only, news cached on {demo_evidence_date} (ECB FX live), one planted weak claim and one forced-aggressive "
                 "first decision so the Evaluator send-back and the Red Team challenge are always shown. The Planner model is not called (fixed plan)."]
 
     if demo_untrusted_source:

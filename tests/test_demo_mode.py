@@ -146,7 +146,7 @@ def test_evidence_page_shows_the_whole_chain_and_never_zero_for_unverified(tmp_p
     world.write_error("D2", "APIConnectionError: down")
     html = build_evidence_page(world.report(), world, {"weak": True}, {"llm_ok": 3, "llm_fail": 1},
                                evidence_date="2026-10-24", trace_file="logs/x.jsonl")
-    for needle in ("Evidence cached on 2026-10-24", "Reuters", "Bloomberg", "Tier 1", "SENT BACK", "TOO_FEW_SOURCES", "Deterministic checks",
+    for needle in ("News is cached and dated for reproducibility (cached 2026-10-24)", "Reuters", "Bloomberg", "Tier 1", "SENT BACK", "TOO_FEW_SOURCES", "Deterministic checks",
                    "Could not verify", "APIConnectionError", "NOT zero impact"):
         assert needle in html, needle
     assert "<script" not in html

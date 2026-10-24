@@ -166,6 +166,24 @@ def unresolved_label(d):
             "Treat this proposal as unreviewed.")
 
 
+CLEARED, PENDING, CONTESTED = "cleared", "pending", "contested"
+STATUS_LABEL = {CLEARED: "DECISION CLEARED", PENDING: "DECISION PENDING REVIEW", CONTESTED: "DECISION CONTESTED"}
+WHY_PROVISIONAL = "Red Team review did not complete within the runtime budget; not cleared for CFO action."
+
+
+def review_state(d):
+    """CLEARED when the Red Team loop completed (status RECOMMENDED), CONTESTED when it completed but a high-severity objection still
+    stands, PENDING for everything else (timed out, unresolved, unreviewed, budget hit). None when there is no decision version."""
+    if not d or not d.get("versions"):
+        return None
+    status = (d.get("outcome") or {}).get("status")
+    return CLEARED if status == "RECOMMENDED" else CONTESTED if status == "CONTESTED" else PENDING
+
+
+def provisional_line(kind, share_pct):
+    return f"Provisional recommendation: {describe(kind, share_pct)}. Why provisional: {WHY_PROVISIONAL}"
+
+
 def options_table_text(rows):
     """Plain-text table used inside model prompts. A price lock row carries its risk protected instead of a GBP cost."""
     return "\n".join(

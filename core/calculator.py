@@ -1,4 +1,4 @@
-"""GBP impact, calculated in plain Python. The AI never produces a GBP figure; every GBP number in the CFO brief comes from here.
+"""GBP impact, calculated in plain Python. The AI never directly generates a GBP amount; every GBP number in the CFO brief comes from here.
 
 Inputs are Ganga's purchase rows from Zetaris (part, supplier country, quantity, unit price, currency), a real FX rate with its
 date, and the explicit assumptions in data/decision_assumptions.csv. The result carries a calculation record (inputs, FX rate +

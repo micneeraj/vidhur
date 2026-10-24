@@ -241,7 +241,7 @@ def test_brief_shows_the_unresolved_challenge_not_a_red_team_that_did_not_run():
     report["decisions"]["D1"]["objections"] = [{"id": f"O{i}", "severity": s, "type": "weak_evidence", "evidence_refs": ["S1"], "text": "t", "response": {}, "status": "open"}
                                                for i, s in enumerate(("high", "high", "medium"), 1)]
     text = "\n".join(brief._decisions_section(report, passed))
-    assert "Proposed, challenge UNRESOLVED" in text and "Red Team raised 3 objections (2 high, 1 medium)" in text
+    assert "DECISION PENDING REVIEW" in text and "Provisional recommendation:" in text and "Red Team raised 3 objections (2 high, 1 medium)" in text
     assert "the Red Team review did not run" not in text and "Proposed, UNREVIEWED" not in text
 
 

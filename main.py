@@ -113,7 +113,7 @@ def main():
     world = RunWorld(trace.run_id)
     print(f"Vidhur Day 2 | run {trace.run_id} | trace: {trace.path} | world state: {world.path}")
     if args.demo:
-        print(f"DEMO MODE --demo: 3 drivers, evidence cached on {evidence_date} (FX live), timeouts {demo_mode.CALL_TIMEOUT_SECONDS} s, "
+        print(f"DEMO MODE --demo: 3 drivers, news cached on {evidence_date} (ECB FX live), timeouts {demo_mode.CALL_TIMEOUT_SECONDS} s, "
               f"{demo_mode.CALL_MAX_ATTEMPTS} attempts per call, time budget {demo_mode.TIME_BUDGET_SECONDS} s.")
     if args.demo_red_team:
         print("DEMO MODE --demo-red-team: the first decision for the lowest-confidence verified claim is instructed to be aggressive.")

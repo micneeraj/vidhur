@@ -2,7 +2,7 @@
 
 Evidence below comes from one complete live run, `python main.py --demo` on 2026-10-24
 (`output_examples/demo_run_20261024_v2/`: brief, evidence trail page, and `run_20261024_144545.jsonl`).
-Company data is synthetic for privacy; FX and news are live.
+Company data is synthetic for privacy. News is cached and dated for reproducibility; ECB FX rates are fetched live. The AI never directly generates a GBP amount: it supplies evidence, direction and a labelled percentage range, and Python alone converts verified inputs and company spend into GBP using recorded formulas and FX rates.
 
 ## Zetaris - the data layer
 
