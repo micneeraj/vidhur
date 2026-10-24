@@ -30,7 +30,13 @@ listed above (A1, A2, ...): never cite an id that is not in the list and never c
 development (HBM/DRAM contract or spot prices, supplier capacity or allocation, shortages, supplier concentration or disruption,
 export rules that stop or limit the supplier shipping); a currency move belongs to another analyst, and general tariffs or sanctions
 that do not name memory chips or the supplier's country belong to the geopolitics analyst - never base a claim on them. If the
-articles show no such development affecting this part, reply {"claims": []}."""
+articles show no such development affecting this part, reply {"claims": []}.
+How to argue the claim: argue from what the cited articles say about persistent HBM supply constraints, HBM competing with standard DRAM
+for limited wafer capacity, and supplier pricing power. Do NOT argue "HBM takes a share of capacity, therefore prices rise": a capacity
+share alone is not a price forecast. Take every statement from the cited, fetched articles only, and cite only the listed ids.
+If none of the cited articles gives a quarterly price forecast for this part or this kind of memory, the claim must say so plainly
+(no part-specific quarterly price forecast is available in the cited sources) and that the cost impact therefore uses Ganga's default
+scenario band, not a forecast."""
 
 
 def claims_from_reply(text):

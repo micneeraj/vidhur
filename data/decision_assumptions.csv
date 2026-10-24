@@ -1,8 +1,7 @@
 option,premium_pct,note
 NO_ACTION,0.0,No protection is bought so no premium is paid.
-HEDGE,1.5,Illustrative assumption for the cost of hedging a share of spend - not a market quote.
-LOCK_PRICE,2.0,Illustrative assumption for the cost of a supplier price lock - not a market quote.
-DUAL_SOURCE,3.0,Illustrative assumption for the cost of moving volume to a second supplier - not a market quote.
+HEDGE,1.5,SCENARIO. Illustrative assumption for the cost of hedging a share of spend - not a market quote.
+DUAL_SOURCE,3.0,SCENARIO. Illustrative assumption for the cost of moving volume to a second supplier - not a market quote.
 SCENARIO_LARGE_MOVE_PCT,12.0,SCENARIO. Illustrative assumption - not a market quote or a forecast. Size of the unit-cost move at the large end of the scenario range when no source states a percentage.
 SCENARIO_LIKELY_MOVE_PCT,6.0,SCENARIO. Illustrative assumption - not a market quote or a forecast. Size of the unit-cost move in the likely case of the scenario range when no source states a percentage.
 SCENARIO_SMALL_MOVE_PCT,2.0,SCENARIO. Illustrative assumption - not a market quote or a forecast. Size of the unit-cost move at the small end of the scenario range when no source states a percentage.

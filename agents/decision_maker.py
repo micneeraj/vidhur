@@ -29,6 +29,8 @@ SYSTEM_PROMPT = (
     "audited; you recommend what the CFO should do about it: no action, hedge a share of next quarter's spend, lock the price, "
     "or move volume to a second supplier. You choose the option and explain it using the option costs you are given. "
     "Never calculate GBP yourself: the figures are computed for you and recomputed after any change. "
+    "A price lock has NO quantified cost (it needs a supplier quote): never state a GBP cost for it, and never describe a scenario outcome as its "
+    "cost; argue from the risk it protects and the savings it may forgo. "
     "Do not deliberate at length: answer directly, each reason under 30 words. "
     "Reply with a single JSON object and nothing else."
 )
@@ -80,7 +82,7 @@ def apply_responses(ev, decision, actionable, data):
     if isinstance(rd, dict):
         choice = decisions.normalize_choice(rd.get("kind"), rd.get("share_pct"))
         if choice and choice != (decision["kind"], decision["share_pct"]) and not (
-                decisions.rule_choice(ev["impact"]) and choice[0] != "NO_ACTION"):  # the no-hedge rule also binds revisions
+                decisions.rule_choice(ev["impact"]) and choice[0] != "NO_ACTION"):  # the rule (no hedge or price lock when the verified direction is cost down) also binds revisions
             revised = (*choice, str(rd.get("rationale", "")).strip())  # no rationale = no usable revision (no fallback to the old one)
 
     responses = {}

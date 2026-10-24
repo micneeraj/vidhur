@@ -43,7 +43,9 @@ def _option_label(kind, share):
     return dec.describe(kind, share)
 
 
-def _cost_cells(c):
+def _cost_cells(c, kind=None):
+    if c.get("worst") is None or kind in dec.UNQUOTED:  # an older saved decision may still hold a lock figure: it is not shown
+        return " | ".join([dec.NOT_QUANTIFIED] * 4)
     return f"{dec.gbp(c['worst'])} | {dec.gbp(c['likely'])} | {dec.gbp(c['best'])} | {dec.gbp(c['forecast_wrong'])}"
 
 
@@ -81,6 +83,7 @@ def _calc_section(item):
             "historical rate stored on the rows)",
             f"  - Move ({m['label']}): {m['small']:g}% / {m['likely']:g}% / {m['large']:g}% (small / likely / large) - "
             f"{PCT_BASIS_TEXT.get(m['label'], m['basis'])}",
+            *([f"  - Band: {calculator.band_note(m['small'], m['large'])}"] if m["label"] == calculator.SCENARIO else []),
             (f"  - Pass-through (SCENARIO): {calc['pass_through']['pct']:g}% of the move reaches Ganga's cost" if m["label"] == calculator.OBSERVED
              else "  - Pass-through: none assumed (the move applies to the unit cost as stated)"),
             f"  - Formula: {calc['formula']}",
@@ -103,8 +106,9 @@ def _decisions_section(report, passed, world=None):
         return []
     out = ["", "## Recommended decisions (next quarter)", "",
            f"Options are compared as the change in quarterly cost vs baseline (+ extra cost, - saving). Assumed premiums on the protected "
-           f"spend: hedge {dec.PREMIUM_PCT['HEDGE']}%, price lock {dec.PREMIUM_PCT['LOCK_PRICE']}%, second supplier "
-           f"{dec.PREMIUM_PCT['DUAL_SOURCE']}% (SCENARIO: illustrative assumptions, not market quotes). \"If forecast wrong\" is the mirror of the "
+           f"spend: hedge {dec.PREMIUM_PCT['HEDGE']}%, second supplier "
+           f"{dec.PREMIUM_PCT['DUAL_SOURCE']}% (SCENARIO: illustrative assumptions, not market quotes). A price lock has no documented premium: its "
+           "cost is not quantified (it needs a supplier quote) and the table shows the risk it protects instead. \"If forecast wrong\" is the mirror of the "
            "likely case. The model picks and explains an option; every GBP figure is computed in Python.", ""]
     for i in passed:
         wid = i["delegation"]["work_id"]
@@ -140,6 +144,9 @@ def _decisions_section(report, passed, world=None):
             mark = " **<- proposed**" if (r["kind"], r["share_pct"]) == (final["kind"], final["share_pct"]) else ""
             out.append(f"| {_option_label(r['kind'], r['share_pct'])}{mark} | {dec.gbp(r['premium_gbp'])} | {_cost_cells(r)} |")
         out += ["", f"_{dec.ASSUMPTIONS_NOTE}_"]
+        for r in rows:
+            if r["premium_gbp"] is None and (r["kind"], r["share_pct"]) in {(v["kind"], v["share_pct"]) for v in (first, final)}:
+                out += ["", f"**{_option_label(r['kind'], r['share_pct'])}**", ""] + [f"- {line}" for line in dec.lock_lines(impact, r["share_pct"], final["rationale"])]
 
         objs = sorted(d["objections"], key=lambda o: ({"high": 0, "medium": 1, "low": 2}[o["severity"]], int(o["id"][1:])))
         out += ["", "**Challenged by Red Team**", ""]
@@ -159,8 +166,8 @@ def _decisions_section(report, passed, world=None):
             out += ["", f"**What changed:** first proposal **{_option_label(first['kind'], first['share_pct'])}** became "
                         f"**{_option_label(final['kind'], final['share_pct'])}**.", "",
                     "| | Worst | Likely | Best | If forecast wrong |", "|---|---|---|---|---|",
-                    f"| Before ({_option_label(first['kind'], first['share_pct'])}) | {_cost_cells(first['cost'])} |",
-                    f"| After ({_option_label(final['kind'], final['share_pct'])}) | {_cost_cells(final['cost'])} |"]
+                    f"| Before ({_option_label(first['kind'], first['share_pct'])}) | {_cost_cells(first['cost'], first['kind'])} |",
+                    f"| After ({_option_label(final['kind'], final['share_pct'])}) | {_cost_cells(final['cost'], final['kind'])} |"]
         else:
             out += ["", f"**What changed:** nothing - the first proposal stood ({outcome.get('rounds', 0)} challenge round(s), max {MAX_ROUNDS})."]
         if world is not None:
@@ -264,6 +271,10 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
             out.append(f"| {i['delegation']['work_id']} ({c.analyst}) | {c.part_name} | {c.supplier_country} | {c.direction.replace('_', ' ')} | "
                        f"{c.pct_low:g}-{c.pct_high:g}% ({imp.get('pct_label') or c.pct_label}) | {gbp(imp['worst_gbp'])} | {gbp(imp['likely_gbp'])} | {gbp(imp['best_gbp'])} | {imp['confidence']} |")
         total = [sum(i["impact"][k] for i in passed) for k in ("worst_gbp", "likely_gbp", "best_gbp")]
+        bands = dict.fromkeys(calculator.band_note(i["impact"]["calc"]["move_pct"]["small"], i["impact"]["calc"]["move_pct"]["large"])
+                             for i in passed if ((i["impact"].get("calc") or {}).get("move_pct") or {}).get("label") == calculator.SCENARIO)
+        out += [""] + [f"_Band: {b}_" for b in bands]
+        out += [f"_{i['delegation']['work_id']}: {calculator.MEMORY_LINE}_" for i in passed if i["attempts"][-1]["claim"].analyst == "supplier_commodity"]
         out += ["", f"**Sum of verified claims: worst {gbp(total[0])} / likely {gbp(total[1])} / best {gbp(total[2])} per quarter** "
                     "(claims on the same part from different analysts may overlap)."]
     else:
@@ -288,7 +299,8 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
             continue
         c = i["attempts"][-1]["claim"]
         out += [c.claim, "", f"- Estimate: {c.direction.replace('_', ' ')} {c.pct_low:g}-{c.pct_high:g}% "
-                f"({c.pct_label or 'unlabelled'}: {PCT_BASIS_TEXT.get(c.pct_label, 'no label')})"]
+                f"({c.pct_label or 'unlabelled'}: {PCT_BASIS_TEXT.get(c.pct_label, 'no label')})"
+                + (f". {calculator.band_note(c.pct_low, c.pct_high)}" if c.pct_label == calculator.SCENARIO else "")]
         if c.computed:
             out.append(f"- FX data: {c.computed['currency']} {c.computed['move_30d_pct']:+.2f}% over 30 days, {c.computed['move_90d_pct']:+.2f}% over 90 days "
                        f"({c.computed['start_date']} to {c.computed['end_date']}); pass-through assumed {c.computed['pass_through']}")

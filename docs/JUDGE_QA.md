@@ -72,3 +72,15 @@ No: three analysts today (geopolitics, currency, and a supplier & commodity anal
 (the analyst must fix a claim or give up) and the Decision Maker and Red Team challenge loop (objections must cite evidence; a revision needs a written reason).
 All agents share one event-sourced World State. Adding an analyst is a small registration (write the class, register it in `agents/planner.py` and `main.py`); the third one was added that way and reuses the
 news-evidence pipeline and the Evaluator unchanged. It is not zero code, and no freight analyst is built.
+
+**Why the same 2-12% band for memory?**
+2-12% is Ganga's default SCENARIO band for a verified directional cost driver with no directly comparable, quantified forecast for this part and quarter. It is not a probability and is not part-specific. No number without evidence: no cited article prints a part-specific quarterly price forecast for the HBM stack, so we do not invent one for memory. A memory-specific band will be added once it is anchored to a cited, part-relevant forecast.
+
+**Does Vidhur ever recommend a hedge or price lock when costs are falling?**
+No: no hedge or price lock when the verified expected direction is cost DOWN. A deterministic rule (`decisions.rule_choice`) fixes the decision to no action / monitor before any model is asked. It is not a blanket ban on protection: against a verified cost rise the Decision Maker may propose one.
+
+**What does a price lock cost?**
+Not quantified. No price-lock premium is documented, so Vidhur shows "Cost of action: Not quantified - requires a supplier quote for the price-lock premium and volume commitment." and the risk the lock protects (the worst case times the locked share, calculated in Python), the trade-off (savings may be forgone if prices soften) and what would change the recommendation. Hedge and second-supplier premiums are documented SCENARIO assumptions.
+
+**Why was D3 chosen, and how far did it get?**
+D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. Three drivers cover about 84% of spend. D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run. The Red Team logic is implemented and tested; a completed D3 Red Team run is next work. In the brief and dashboard: "Memory exposure is driven by industry capacity allocation and HBM supply tightness, separate from the Taiwan export-control and FX drivers."

@@ -195,7 +195,8 @@ def test_premiums_come_from_the_csv(tmp_path):
     with pytest.raises(ValueError):
         decisions.load_premiums(csv_file)
     shipped = decisions.load_premiums()
-    assert (shipped["HEDGE"], shipped["LOCK_PRICE"], shipped["DUAL_SOURCE"]) == (1.5, 2.0, 3.0)
+    assert (shipped["HEDGE"], shipped["DUAL_SOURCE"]) == (1.5, 3.0)
+    assert "LOCK_PRICE" not in shipped  # no documented price-lock premium: its cost needs a supplier quote
     notes = decisions.ASSUMPTIONS_FILE.read_text(encoding="utf-8").splitlines()[2:]
     assert all("illustrative assumption" in line.lower() and "not a market quote" in line for line in notes)
 

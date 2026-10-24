@@ -13,12 +13,22 @@ A real run in demo mode (`--demo`: three drivers, evidence cached on 2026-10-24,
 ## What did not finish
 
 - **D1 first proposal:** the demo flag asked for an aggressive hedge, but the model's reply was unusable, so the Decision Maker used its documented fallback, **"no action, monitor"** (trace step `propose:fallback`).
-- **D1 Red Team:** raised **3 objections** (2 high: cheaper alternative, concentration; 1 medium: weak evidence). The Decision Maker's response then failed (one 502, two timeouts), so **the challenge is unresolved**. The brief in this folder was written before the label fix and shows D1 as "Proposed, UNREVIEWED"; the evidence trail here shows the real count and "challenge unresolved".
-- **D3 Red Team:** the challenge call timed out and then hit the run time budget (`RunBudgetExceeded`), so no objections were raised. D3's lock-the-price proposal is **unreviewed**.
+- **D1 Red Team:** Red Team raised 3 objections (2 high: cheaper alternative, concentration; 1 medium: weak evidence); the Decision Maker's response timed out, so the challenge is unresolved.
+- **D3 Red Team:** D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run (the challenge call timed out, then `RunBudgetExceeded`), so no objections were raised and D3's lock-the-price proposal is **unreviewed**. The Red Team logic is implemented and tested; a completed D3 Red Team run is next work.
 - **D2 Red Team:** worked. 2 objections (1 medium: cheaper alternative; 1 low: weak evidence); the Decision Maker defended both; final decision no action, monitor.
+
+## Planner and scenario band
+
+- D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. Three drivers cover about 84% of spend.
+- D1 and D3 used the default scenario band. 2-12% is Ganga's default SCENARIO band for a verified directional cost driver with no directly comparable, quantified forecast for this part and quarter. It is not a probability and is not part-specific.
+- Memory exposure is driven by industry capacity allocation and HBM supply tightness, separate from the Taiwan export-control and FX drivers.
+
+## Price lock (re-rendered view)
+
+The run's Decision Maker proposed locking the price for D3 and its saved rationale quotes a premium of £6,585. That figure was the 2.0% lock-premium assumption times D3's £329,264 baseline spend, and it happens to equal the best-case 2% move, so it was a reused scenario figure, not a quote. It is no longer a lock cost anywhere: the re-rendered brief and evidence trail show "Cost of action: Not quantified - requires a supplier quote for the price-lock premium and volume commitment." and "Risk protected: protects against the full worst-case exposure of £39,512." The saved rationale text itself is original run data and is unchanged; the pages add a note next to it.
 
 ## Files
 
-- `brief_20261024_215151.md`: the CFO brief, copied as the run wrote it (it predates the unresolved-challenge label).
+- `brief_20261024_215151.md`: the CFO brief, **re-rendered, not the original file.** Rebuilt from `world_state_d9decb7d.json` with the current brief code (no model calls): it shows the real Red Team objection count for D1, the default-band label and the price-lock wording. The run's data is unchanged.
 - `run_20261024_212648.jsonl`: the trace of every step. `world_state_d9decb7d.json`: the run's shared memory.
-- `evidence_trail.html`: **re-rendered, not the original file.** It was rebuilt from `world_state_d9decb7d.json` with the current page code (no model calls), so D1 shows the real objection count and "challenge unresolved" instead of the old "not challenged, 0 objections" label.
+- `evidence_trail.html`: **re-rendered, not the original file.** It was rebuilt from `world_state_d9decb7d.json` with the current page code (no model calls), so D1 shows the real objection count and "challenge unresolved" instead of the old "not challenged, 0 objections" label, and the lock and band wording are the current ones.

@@ -168,11 +168,13 @@ Every figure in the CFO brief carries a **calculation record** (input rows, FX r
 |---|---|---|
 | **OBSERVED** | read from data | Zetaris quantity and price, the ECB rate, the baseline spend |
 | **FORECAST** | stated by a cited source | a percentage an article prints (the Evaluator checks it is in the excerpt) |
-| **SCENARIO** | our assumption | the 2% / 6% / 12% move, the FX pass-through, the hedge premium |
+| **SCENARIO** | our assumption | the 2% / 6% / 12% default band, the FX pass-through, the hedge premium |
 
 When no source states a percentage the move comes from the SCENARIO rows of `data/decision_assumptions.csv`. Worst / likely / best is called a **scenario range, not a
 probability**. The brief opens with one line, from the calculator, on why this matters (what a wrong 50% hedge would cost in GBP) and has a **"How this number was
 calculated"** section for every driver. If the live FX call fails the rate stored on the Zetaris row is used and the record says so.
+
+**The default band, and the same band for memory.** Wherever the band is shown for any driver (brief, evidence trail, dashboard, this README) it carries this label: "2-12% is Ganga's default SCENARIO band for a verified directional cost driver with no directly comparable, quantified forecast for this part and quarter. It is not a probability and is not part-specific." D3 (memory) uses the same band as the other drivers; there are no memory-specific scenario rows and no memory-specific calculator logic. A memory-specific band will be added once it can be anchored to a cited, part-relevant forecast.
 
 The Evaluator's deterministic checks (no AI, run before the model check) enforce this; a failed check uses the normal send-back loop (max 2 retries, then UNVERIFIED):
 
@@ -193,10 +195,14 @@ The Evaluator checks the **claims**; the **Red Team** checks the **decision** bu
 
 - **Decision Maker** (`agents/decision_maker.py`) reads the verified claim from the World State and Ganga's spend from Zetaris and picks one option
   with a rationale. **Every GBP figure is computed in Python** (`core/decisions.py`): cost under worst / likely / best and "if the forecast is
-  wrong" (the mirror of the likely case), for no action, a 50% hedge, a price lock and a 30% second-supplier shift. The protection premiums
-  are stated assumptions, not quotes.
-- **No hedge on a cost fall (deterministic rule, before the AI proposal):** if the worst case of the scenario range is not a cost increase (every scenario is a saving),
-  `decisions.rule_choice` fixes the decision to NO_ACTION / monitor, with no model call and no hedge, price lock or second supplier. This holds in the aggressive demo too, and a
+  wrong" (the mirror of the likely case), for no action, a 50% hedge and a 30% second-supplier shift. The hedge (1.5%) and second-supplier (3%) premiums
+  are SCENARIO assumptions in `data/decision_assumptions.csv`, not quotes.
+- **A price lock has no invented cost.** No price-lock premium is documented, so the lock is never given a GBP cost and is never shown with a scenario outcome as its cost. The brief,
+  evidence trail, dashboard and the inputs to the Decision Maker and Red Team show instead: "Cost of action: Not quantified - requires a supplier quote for the price-lock premium and
+  volume commitment."; "Risk protected" (the worst case times the locked share, computed in Python); "Trade-off: locking may forgo savings if prices soften."; and what would change the
+  recommendation (a supplier quote showing the lock premium exceeds the expected avoided cost, or evidence that supply/pricing is easing).
+- **No hedge or price lock when the verified expected direction is cost DOWN (deterministic rule, before the AI proposal):** if the worst case of the scenario range is not a cost increase (every scenario is a saving),
+  `decisions.rule_choice` fixes the decision to NO_ACTION / monitor, with no model call and no hedge, price lock or second supplier. It is not a blanket ban: protection is allowed against a cost rise. This holds in the aggressive demo too, and a
   Red Team revision cannot bring a hedge back. Unit-tested in `tests/test_calculator.py`.
 - **Red Team** (`core/red_team.py`) returns structured JSON objections of five kinds: forecast wrong (opposite scenario), cost of acting vs not
   acting, concentration (supplier / country), weakest evidence, cheaper alternative. Each has a severity and must cite evidence ids (S1.., the
@@ -276,6 +282,12 @@ For Ganga, three exposures cover most of the spend. In the latest quarter in the
 | the other five parts | China, Malaysia, Japan | USD | £409,633 | 16.0% |
 
 So Taiwan chip supply (geopolitics), the EUR-priced German cooling parts (currency) and the South Korean HBM memory stack (supplier and commodity) together are about 84% of spend (52.7% + 18.4% + 12.9%, from the Zetaris data), and `--demo` runs exactly those three drivers, D1, D2 and D3. The Korean part is priced in USD in the data, not KRW, so its currency exposure is GBP/USD; the new analyst covers the risk the other two do not: memory contract prices and the concentration of supply in one supplier (Hanseong Memory Works, S002). In a normal run the Planner chooses which analyst works on which part, with a written reason, from the Zetaris spend.
+
+D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory is a distinct cost mechanism - industry supply and wafer allocation - rather than a repeat of geopolitical or FX analysis. Three drivers cover about 84% of spend.
+
+D3 status: D3 completed claim verification and the GBP scenario calculation; its Red Team step hit the runtime budget in the saved live run. The Red Team logic is implemented and tested; a completed D3 Red Team run is next work.
+
+In the CFO brief and the dashboard D3 card: "Memory exposure is driven by industry capacity allocation and HBM supply tightness, separate from the Taiwan export-control and FX drivers."
 
 Three analysts (geopolitics, currency, supplier & commodity) exist today. **Adding another analyst is a small registration, not a rewrite, but it is not zero code:** write the analyst class, then register it in `ANALYSTS` in `agents/planner.py` and in the `analysts` dict in `main.py`. The Planner prompt, delegation validation and the work-item loop (`agents/workflow.py`) already accept any registered name.
 

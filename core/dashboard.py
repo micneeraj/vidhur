@@ -12,7 +12,7 @@ from html import escape
 from pathlib import Path
 
 from core import decisions as dec
-from core import next_steps, unverified
+from core import calculator, next_steps, unverified
 from core.config import ROOT
 from core.evidence_page import _checks_html, _sources_html, calc_rows, g
 from core.shared_state import RunWorld
@@ -266,6 +266,11 @@ def _card(run, report, item, ok, chain_id):
         m = item["impact"]
         h.append(f'<div><div class="likely">{g(m["likely_gbp"])}</div><div class="range">likely - worst {g(m["worst_gbp"])} / best {g(m["best_gbp"])} - '
                  'scenario range, not a probability</div></div>')
+        mv = (m.get("calc") or {}).get("move_pct") or {}
+        if mv.get("label") == calculator.SCENARIO:
+            h.append(f'<div class="sm">{escape(calculator.band_note(mv["small"], mv["large"]))}</div>')
+        if c and c.analyst == "supplier_commodity":
+            h.append(f'<div class="sm">{escape(calculator.MEMORY_LINE)}</div>')
         conf = m["confidence"]
         h.append(f'<div><span class="badge b-info">{escape(conf)} confidence</span> <span class="sm">{escape(CONFIDENCE_LINE.get(conf, ""))}</span></div>')
         dv, fin = _final(report, item)
@@ -274,6 +279,8 @@ def _card(run, report, item, ok, chain_id):
             extra = (' <span class="pill warn">challenge unresolved</span>' if dec.is_unresolved(dv) else
                      ' <span class="pill bad">contested</span>' if st == "CONTESTED" else ' <span class="pill warn">unreviewed</span>' if st == "NOT_CHALLENGED" else "")
             h.append(f'<div class="rec">{escape(dec.describe(fin["kind"], fin["share_pct"]))}{extra}</div>')
+            if fin["kind"] in dec.UNQUOTED:
+                h.append(f'<div class="sm">{escape(dec.LOCK_COST_LINE)} {escape(dec.lock_lines(m, fin["share_pct"])[1])}</div>')
         how, n = _rt_summary(report, item)
         if how == "changed":
             chips.append('<span class="chip t">Red Team changed it</span>')
@@ -361,6 +368,9 @@ def _chain(run, report, item, ok, chain_id, is_open=False):
         chg = f" (first proposal was {escape(dec.describe(first['kind'], first['share_pct']))})" if out.get("changed") else " (unchanged by the challenge)"
         add("Final decision", f"<p>{status} <b>{escape(dec.describe(fin['kind'], fin['share_pct']))}</b>{chg}</p><p>{escape(fin['rationale'])}</p>"
             f"<p class='sm'>{counts}</p>")
+        lock = next((v for v in (fin, dv["versions"][0]) if v["kind"] in dec.UNQUOTED), None)
+        if lock:
+            add("Price lock: cost not quantified", "".join(f"<p>{escape(line)}</p>" for line in dec.lock_lines(item["impact"], lock["share_pct"], lock["rationale"])))
         gd = next_steps.for_decision(item, world)
         rows = [("Confidence (" + escape(item["impact"]["confidence"]) + ")", gd["confidence_meaning"]), ("Raise confidence", gd["raise"]), ("Re-run trigger", gd["rerun"])]
         add("What would change this decision", "<table>" + "".join(f"<tr><th style='width:160px'>{k}</th><td>{escape(v)}</td></tr>" for k, v in rows) + "</table>")

@@ -31,6 +31,16 @@ FORMULA = ("baseline_gbp = sum(quantity x unit_price / units_of_currency_per_GBP
 RANGE_NOTE = "scenario range, not a probability"
 
 
+MEMORY_LINE = ("Memory exposure is driven by industry capacity allocation and HBM supply tightness, separate from the Taiwan "
+               "export-control and FX drivers.")
+
+
+def band_note(small, large):
+    """The label shown wherever a default SCENARIO band is displayed (brief, evidence trail, dashboard, README)."""
+    return (f"{small:g}-{large:g}% is Ganga's default SCENARIO band for a verified directional cost driver with no directly comparable, "
+            "quantified forecast for this part and quarter. It is not a probability and is not part-specific.")
+
+
 @dataclass
 class PurchaseRow:
     part_id: str

@@ -7,6 +7,7 @@ Then per driver: claim -> sources -> deterministic checks -> Evaluator verdicts 
 
 from html import escape
 
+from core import calculator
 from core import decisions as dec
 from core import next_steps
 from core import unverified
@@ -103,6 +104,7 @@ def calc_rows(item):
             ("Baseline (OBSERVED)", f'£{calc["baseline_gbp"]:,.0f} per quarter'),
             (f'Move ({escape(m["label"])})', f'{m["small"]:g}% / {m["likely"]:g}% / {m["large"]:g}% (small / likely / large)'),
             ("Formula", escape(calc["formula"])),
+            *([("Band", escape(calculator.band_note(m["small"], m["large"])))] if m["label"] == calculator.SCENARIO else []),
             ("Result (SCENARIO range)", f'worst {g(res["worst"])}, likely {g(res["likely"])}, best {g(res["best"])}'),
             ("Assumptions", escape("; ".join(f"{k} = {v:g}" for k, v in calc["assumptions"].items())))]
 
@@ -148,6 +150,11 @@ def _decision_html(item, decs):
     changed = f' (first proposal was {escape(dec.describe(first["kind"], first["share_pct"]))})' if outcome.get("changed") else ""
     out.append(f'<div class="step"><b class="t">Final revision</b>{verdict} <b>{escape(dec.describe(final["kind"], final["share_pct"]))}</b>{changed}'
                f'<br>{escape(final["rationale"])}<div class="sub">{counts}</div></div>')
+    for v in (final, first) if first is not final else (final,):
+        if v["kind"] in dec.UNQUOTED:
+            out.append(f'<div class="step"><b class="t">{escape(dec.describe(v["kind"], v["share_pct"]))}: cost not quantified</b>'
+                       + "".join(f"<div>{escape(line)}</div>" for line in dec.lock_lines(item["impact"], v["share_pct"], v["rationale"])) + "</div>")
+            break
     return "".join(out)
 
 

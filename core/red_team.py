@@ -65,6 +65,15 @@ def calc_line(ev):
             f"{m['basis']}); pass-through {calc['pass_through']['pct']:g}%. The worst / likely / best figures are a scenario range, not a probability.\n")
 
 
+def _decision_cost_text(decision, ev):
+    """'Its cost: ...' for a decision. A price lock has no quantified cost: it states the risk protected instead."""
+    cost = decision["cost"]
+    if decision["kind"] in decisions.UNQUOTED:
+        return " ".join(decisions.lock_lines(ev["impact"], decision["share_pct"])[:2])
+    return (f"Its cost: worst {decisions.gbp(cost['worst'])}, likely {decisions.gbp(cost['likely'])}, best {decisions.gbp(cost['best'])}, "
+            f"if forecast wrong {decisions.gbp(cost['forecast_wrong'])}.")
+
+
 def evidence_block(ev, rows, decision):
     """The text the Red Team and the Decision Maker both see. Numbers in it are what 'specific numbers' means."""
     c = ev["concentration"]
@@ -79,13 +88,12 @@ def evidence_block(ev, rows, decision):
         f"Sources (ids to cite):\n{sources}\n"
         f"Concentration: this part is {c['part_share_pct']}% of Ganga's GBP {c['total_spend_gbp']:,} quarterly spend; {c['country']} is "
         f"{c['country_share_pct']}% and supplier {c['supplier']} is {c['supplier_share_pct']}%.\n"
-        f"Option costs (change in quarterly cost vs baseline, computed in Python; assumed premiums: hedge "
-        f"{decisions.PREMIUM_PCT['HEDGE']}%, price lock {decisions.PREMIUM_PCT['LOCK_PRICE']}%, second supplier "
-        f"{decisions.PREMIUM_PCT['DUAL_SOURCE']}% of the protected spend):\n{decisions.options_table_text(rows)}\n"
+        f"Option costs (change in quarterly cost vs baseline, computed in Python; SCENARIO premium assumptions: hedge "
+        f"{decisions.PREMIUM_PCT['HEDGE']}%, second supplier {decisions.PREMIUM_PCT['DUAL_SOURCE']}% of the protected spend; "
+        f"a price lock has no quoted cost):\n{decisions.options_table_text(rows)}\n"
     ) + ("" if decision is None else
          f"PROPOSED DECISION (version {decision['version']}): {decisions.describe(decision['kind'], decision['share_pct'])}. "
-         f"Its cost: worst {decisions.gbp(decision['cost']['worst'])}, likely {decisions.gbp(decision['cost']['likely'])}, "
-         f"best {decisions.gbp(decision['cost']['best'])}, if forecast wrong {decisions.gbp(decision['cost']['forecast_wrong'])}. "
+         f"{_decision_cost_text(decision, ev)} "
          f"Rationale: {decision['rationale']}")
 
 
@@ -103,11 +111,9 @@ def red_team_block(ev, decision):
     """What the Red Team needs and no more: the decision and its reasons, its GBP scenario range, the claim and an evidence summary.
     No option table (the computed checks already carry the comparisons) and no article text, to keep the call inside the runtime deadline."""
     sources = "; ".join(f"{s['id']} {s['publisher']} Tier {s['tier']} {s['date']}" for s in ev["sources"])
-    cost = decision["cost"]
     return (f"Decision {ev['work_id']} on {ev['part_name']} ({ev['concentration']['country']}), version {decision['version']}: "
             f"{decisions.describe(decision['kind'], decision['share_pct'])}. Rationale: {decision['rationale']}\n"
-            f"Its cost: worst {decisions.gbp(cost['worst'])}, likely {decisions.gbp(cost['likely'])}, best {decisions.gbp(cost['best'])}, "
-            f"if forecast wrong {decisions.gbp(cost['forecast_wrong'])}. Baseline spend GBP {ev['spend_gbp']:,.0f}.\n"
+            f"{_decision_cost_text(decision, ev)} Baseline spend GBP {ev['spend_gbp']:,.0f}.\n"
             f"Claim: {ev['claim']} Confidence {ev['confidence']}; evidence: {ev['strength_line']}. Sources: {sources}")
 
 
@@ -123,15 +129,19 @@ def checklist(ev, rows, decision):
     me = next(r for r in rows if (r["kind"], r["share_pct"]) == (decision["kind"], decision["share_pct"]))
     none = next(r for r in rows if r["kind"] == "NO_ACTION")
     exposure = lambda r: max(r["worst"], r["forecast_wrong"])  # noqa: E731
-    others = [r for r in rows if r is not me]
-    cheaper = [r for r in others if r["likely"] < me["likely"] or exposure(r) < exposure(me)]
+    quoted = me["premium_gbp"] is not None  # a price lock has no quantified cost, so it is not compared in GBP
+    others = [r for r in rows if r is not me and r["premium_gbp"] is not None]
+    cheaper = [r for r in others if r["likely"] < me["likely"] or exposure(r) < exposure(me)] if quoted else []
     weakest = max(ev["sources"], key=lambda s: s["tier"], default=None)
     c = ev["concentration"]
     lines = []
-    if me["share_pct"] > 0 and me["forecast_wrong"] > none["forecast_wrong"]:
+    if quoted and me["share_pct"] > 0 and me["forecast_wrong"] > none["forecast_wrong"]:
         lines.append(f"1. FORECAST WRONG: if the market moves the other way by the likely amount, this decision costs "
                      f"{decisions.gbp(me['forecast_wrong'])} versus {decisions.gbp(none['forecast_wrong'])} with no action.")
-    if me["premium_gbp"] > 0:
+    if not quoted:
+        lines.append(f"2. ACTING VS NOT ACTING: {decisions.LOCK_COST_LINE} {decisions.LOCK_TRADE_OFF} "
+                     f"{decisions.lock_lines(ev['impact'], me['share_pct'])[1]}")
+    elif me["premium_gbp"] > 0:
         lines.append(f"2. ACTING VS NOT ACTING: protection costs a {decisions.gbp(me['premium_gbp'])} premium; likely cost "
                      f"{decisions.gbp(me['likely'])} versus {decisions.gbp(none['likely'])} with no action.")
     if c["country_share_pct"] >= COUNTRY_CONCENTRATION_PCT or c["supplier_share_pct"] >= SUPPLIER_CONCENTRATION_PCT:
