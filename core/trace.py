@@ -55,7 +55,7 @@ class Trace:
             "agent": agent,
             "step": step,
             "input_summary": _short(input_summary),
-            "output_summary": _short(output_summary),
+            "output_summary": _short(output_summary, LLM_REPLY_LIMIT if step.startswith("llm:") else 400),
             "model": model,
             "sources": sources or [],
             "decision": decision,
@@ -84,6 +84,9 @@ class Trace:
         if record["output_summary"]:
             parts.append(f"| {_short(record['output_summary'], 110)}")
         print(" ".join(parts))
+
+
+LLM_REPLY_LIMIT = 8000  # model replies are kept nearly whole so a parsing problem can be diagnosed from the trace
 
 
 def _short(value, limit=400):

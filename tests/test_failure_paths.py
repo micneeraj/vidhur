@@ -198,3 +198,16 @@ def test_premiums_come_from_the_csv(tmp_path):
     assert (shipped["HEDGE"], shipped["LOCK_PRICE"], shipped["DUAL_SOURCE"]) == (1.5, 2.0, 3.0)
     notes = decisions.ASSUMPTIONS_FILE.read_text(encoding="utf-8").splitlines()[2:]
     assert all("illustrative assumption" in line.lower() and "not a market quote" in line for line in notes)
+
+
+def test_llm_trace_keeps_long_replies_but_other_steps_stay_short(tmp_path):
+    import json
+    from core.trace import LLM_REPLY_LIMIT, Trace
+    trace = Trace(log_dir=tmp_path, quiet=True)
+    reply = "x" * 5000
+    trace.event("a", "llm:claim", output_summary=reply)
+    trace.event("a", "other", output_summary=reply)
+    trace.event("a", "llm:claim", output_summary="y" * 20000)
+    rows = [json.loads(line) for line in trace.path.read_text(encoding="utf-8").splitlines()]
+    assert rows[0]["output_summary"] == reply and len(rows[1]["output_summary"]) == 400
+    assert len(rows[2]["output_summary"]) == LLM_REPLY_LIMIT == 8000
