@@ -8,6 +8,8 @@ persisted file and the canonical state shape are directly comparable with the Ty
 import copy
 import json
 import os
+import threading
+from contextlib import contextmanager
 from datetime import datetime, timezone
 
 
@@ -45,6 +47,9 @@ class EventStore:
         self.path = path
         self._subscribers = []
         self._loading = False
+        self._defer = 0  # >0 inside batch(): persist() only marks the store dirty
+        self._dirty = False
+        self._persist_lock = threading.RLock()
         if path and os.path.exists(path):
             self._load()
 
@@ -159,9 +164,30 @@ class EventStore:
         return lambda: self._subscribers.remove(fn)
 
     # ------------------------------------------------------------- persistence
+    @contextmanager
+    def batch(self):
+        """Write the file once for everything appended inside the block (an ingest of 60 articles otherwise rewrites it 200+ times)."""
+        with self._persist_lock:
+            self._defer += 1
+        try:
+            yield
+        finally:
+            with self._persist_lock:
+                self._defer -= 1
+                if self._defer == 0 and self._dirty:
+                    self._dirty = False
+                    self.persist()
+
     def persist(self):
         if not self.path or self._loading:
             return
+        with self._persist_lock:
+            if self._defer:
+                self._dirty = True
+                return
+            self._write()
+
+    def _write(self):
         data = {"events": self.events, "audit": self.audit, "observations": list(self.observations.items()),
                 "stories": list(self.stories.items()), "scores": self.scores, "mergeQueue": self.merge_queue}
         os.makedirs(os.path.dirname(os.path.abspath(self.path)), exist_ok=True)

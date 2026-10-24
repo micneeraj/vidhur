@@ -20,6 +20,8 @@ from core import config
 from core.source_trust import trust_of
 
 CACHE_DIR = config.ROOT / "data" / "news_cache"
+DEMO_DIR = config.ROOT / "data" / "demo_evidence"  # a dated evidence set saved from a real run, replayed by `main.py --demo`
+_demo = {"on": False}
 USER_AGENT = "Mozilla/5.0 (Vidhur hackathon research agent; RSS reader)"
 REQUEST_TIMEOUT = 20
 
@@ -169,6 +171,30 @@ def _cache_path(query):
     return CACHE_DIR / f"{slug}_{digest}.json"
 
 
+def use_demo_evidence(on=True):
+    """In demo mode fetch_news reads only data/demo_evidence/ (no network, no age filter: the set is dated, see demo_evidence_date)."""
+    _demo["on"] = on
+
+
+def demo_evidence_date():
+    """The date the demo evidence was cached (data/demo_evidence/manifest.json), or None."""
+    path = DEMO_DIR / "manifest.json"
+    return json.loads(path.read_text(encoding="utf-8")).get("cached_on") if path.exists() else None
+
+
+def save_demo_evidence(query, publisher_feeds=True, max_age_days=None):
+    """Fetch a query LIVE and store the raw articles in data/demo_evidence/. Returns the number of articles saved."""
+    max_age_days = max_age_days or config.evidence_max_age_days()
+    articles, _ = _fetch_live(query, max_age_days, publisher_feeds)
+    articles = _recent(_dedupe(articles), max_age_days, datetime.now(timezone.utc))
+    if articles:
+        DEMO_DIR.mkdir(parents=True, exist_ok=True)
+        (DEMO_DIR / _cache_path(query).name).write_text(json.dumps(
+            {"query": query, "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+             "articles": [a.to_dict() for a in articles]}, indent=1, ensure_ascii=False), encoding="utf-8")
+    return len(articles)
+
+
 def fetch_news(query, max_age_days=None, refresh=False, publisher_feeds=True):
     """Return (articles, info) for a query.
 
@@ -179,6 +205,13 @@ def fetch_news(query, max_age_days=None, refresh=False, publisher_feeds=True):
     max_age_days = max_age_days or config.evidence_max_age_days()
     now = datetime.now(timezone.utc)
     path = _cache_path(query)
+    if _demo["on"]:
+        saved = DEMO_DIR / path.name
+        if not saved.exists():  # missing evidence is reported (the driver becomes "Could not verify"), never silently fetched
+            return [], {"fetched_at": None, "from_cache": True, "errors": [f"no cached demo evidence for this query"]}
+        cached = json.loads(saved.read_text(encoding="utf-8"))
+        return ([Article(**a) for a in cached["articles"]],
+                {"fetched_at": cached["fetched_at"], "from_cache": True, "errors": []})
     ttl = timedelta(hours=float(config.env("NEWS_CACHE_MAX_AGE_HOURS", "24")))
 
     if path.exists() and not refresh:

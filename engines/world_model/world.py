@@ -144,7 +144,7 @@ class WorldModel:
 
     # ---------------------------------------------------------------- ingest
     def ingest(self, observations):
-        with self._lock:
+        with self._lock, self.store.batch():
             def upsert(obs):
                 src = self._provenance({**obs["source"], "at": obs["at"]})
                 type_ = obs.get("type") or "item"

@@ -1,0 +1,470 @@
+{
+ "query": "Taiwan GPU chips supply chain",
+ "fetched_at": "2026-10-24T03:10:02+00:00",
+ "articles": [
+  {
+   "title": "Taiwan Semiconductor Wants In on SpaceX’s Terafab — but Only If It Runs the Fab",
+   "publisher": "24/7 Wall St.",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOZEozd2RWcmZxcTh6T2QyWFc5eUxsZlZNMjVwWVc4eFdsZjRGUUtSRTlJakowUnVoT1ZmQXBlU0k3SmYwRHllNm5FNFRoNUViUFM1dVA3MUI0OUxRaldKRlVZcFpDZ1FQOW1XbVdVc052X1RxaUJ2T2hDcF9FTjFWOGk0MURITXpBNV9mYkNxbWFLdDR2aVpTV2RXQWo2dzJkd2NQSDJPTDZZRkw2V3JEajh4STFLcjNkazRkaA?oc=5",
+   "published": "2026-10-22T16:28:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "NVIDIA Secures AI Production via Component Investments",
+   "publisher": "조선일보",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPSkhxcTJxVGZiSG5SOEpseWJlWlpRbHlkdmR4NEU4QkhVa2doQ0Jpb2pBUGdVVzFVRm5mY2YtUF85NngzUjhEWVpTMUU4NnhmQUdsS0hnbTFDM0FMbVRfdWkzLV9McWJhRzVkVVNyQ2ZFc2pHNll1UDhpQzNiZk04aFJiZ192blJ5?oc=5",
+   "published": "2026-10-22T06:05:05+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "NVIDIA Commits $1.1 Billion to Chip Testing, Targets 15x Optics Capacity for Vera Rubin",
+   "publisher": "Tech Times",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNTjVBMGEtZFpUVmQ0UGFxbk9RdXNiOTNERGdXWWhURmt6bWdPQmV2XzlFZjBUQmJva1dVV0FyaTdxNHFPZWRMb0lETkViaFNac3dfVEdVdkRpNWtvQ1A0Z0laRzNYRmZkY0V3OXRRZTh0dm5nUS0zTUJid0p4X2ZtWkZHdWxWWkRnZkhiOWtYTE9MaUpWLUZ1WEFZNnBOYWZ0a2hET2NkemxWZFpBOGxaSURlaFhjcG1hVkVscXVucXNiREQyQ3dOeWJzODQ?oc=5",
+   "published": "2026-10-22T05:50:14+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "NVIDIA Expands AI Chip Supply Chain Capacity With Six Partners",
+   "publisher": "Logistics Insider",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPUzZLeFlGSENsNWdGelpqNWEwcGRYTDZ1ajRyRnJ0RWhkX1gtVjREdjlyTkxoLXNyTDVlYWdndFB0OXlBdDREeVlWNzBpa3I2OXlqcWU3cmpNVzU2WUt1T2I4M21Kb01jNWJIWnFCYWpPaUtZajhUbVA3eGFWUmZRVno1aVBUcGhpV0FiYzR3?oc=5",
+   "published": "2026-10-22T05:28:51+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia To Expand Packaging Supply Chain",
+   "publisher": "Semiecosystem",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE4wWWxxcUFZTGVyUFJWdHRhMjRjVzVHOHNrdGVRMGx1cktJbEt1TDBYTnEwVkU4VGxFNFlqb2dxal9pOWRWVXdNV1VfYXVsRFpXeV9vOXlpMFJ1ZERHc1k0dGtwaGtzM3o5Yjh4NkgtOHdnMVR5SXdR?oc=5",
+   "published": "2026-10-21T22:10:02+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia targets high-volume KYEC production for April 2027",
+   "publisher": "Crypto Briefing",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE00S2l4bFRrYlExSGl3dVpsZE83VFI2eUN5cjI2aXo4b2k4RHgyekhaSDBGdzc1d0tqQk15U2djYXllemdlTllSUnBaaFJHOEMxTmR1OEl0UHVwVHVqZVV5YVNqcnAyOTBCMHkyUm5ueW5EcGJxbldRb1RMcE9JZw?oc=5",
+   "published": "2026-10-21T15:58:12+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia and SPIL plan to expand optical engine capacity in Taiwan",
+   "publisher": "Crypto Briefing",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5yZDdQZlI2X0VGOWZjRGczNnBITEJuMWc3M0ZLU3RHZE5sWW55b1ItcjdsLVpFbGV2Q2w5b0NfeXZFRGx4MkhHVm9XVjZZTWE3b2JXNGg0Zm52Rl8tZWFPRlh5UTR0a25aTTJsRHhjVmxITFJ1WEd0N3ln?oc=5",
+   "published": "2026-10-21T11:51:35+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia Planning to Expand Global Manufacturing Capacity Via New Deals With Supply Chain Partners",
+   "publisher": "Yahoo! Finance Canada",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNYmtfeWNFQVg2aUNIZENNV1R1S2Y0N0JnM2dkYl8wRDBnYkhXYnhlbmUyLVZucXBpLTVJRmZZeTBuT0dmd3doQzFKYzRCN0phWlVPdE44UFFaZlQwZDc4MWFOUnprM3hFZDZRRldPV2U2Nkh1U3ZsUmdhX3BleHVVUWNDWlFaZkRVT1FXU3dYc0hneXljLW1v?oc=5",
+   "published": "2026-10-21T11:19:47+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia vs. TSMC: Which Business Depends Less on Picking the Winning AI Chip?",
+   "publisher": "Yahoo Finance",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPTVd6NXl0TlQtMXNKRzJtdnNpUTJvaXhEdlNBVlNiMkdyZUowTUkwTFlqMXVld2RRbVBuR0VoeWM3OHVXblFveGkybUR0ZzduUm42MFRsaF80b29MamVzWDh0dXc2Z29MbHEyRzNydE9vSHpqNkc3RlZ1c3NpYk5EZWVyRWplTTJKN3RocnJocjJrS1k1SU5OWUVoaw?oc=5",
+   "published": "2026-10-20T01:29:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia Dismisses RTX 5090 Discontinuation Rumors: \"Supply Crunch Will Persist\"",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBOaGFHTlJKQm9FUmJDV3pQV2NnWDI3STVZbFRxbmFPYUszWTBXdDJFLUxieENYdzNid1I1dDhCdUtuam5ud1JLMk5NekRQdlRyMVotMlR2TTBUZ1Jlak1ja2pRSlNELTQtNVc4cVliemtRR25DUWc?oc=5",
+   "published": "2026-10-19T09:25:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Samsung to use TSMC process for Nvidia’s next-generation memory chips",
+   "publisher": "Taiwan News",
+   "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1ldmxvQnd2dkdLeThnWnh5RktkVjFWdnhoZ3AweGFkVlRVR05MNk4yS1g0WlE3eWJBU1VwZ0ZQSFhxSkJIM216aVZpWXpROEViX29rRw?oc=5",
+   "published": "2026-10-19T02:24:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan plans $4bn US supplier parks as Nvidia and TSMC face AI supply constraints",
+   "publisher": "India Weekly",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNdjNvTEJoc3pHWC1UeDhNZ3JXdlZ1UDZOV3pZQnBmZ1hGWnhIa0xjeXJpSUg0ZDUtejFzUUtaZG9SdWZHNzJ4eEV6bVpuWmlNRGQ5a1NReHlwdmQ2UWdIbzVwNEgzc29sc3U2STJ5d1dOUEtrb3B6Q0xxNmRJNE1vZ2UzS2NYaTAzbHdlWV9MN2dtTW5la2RsWUNBSTdSb2RaWVB2RVg1OWhUVms3dmc?oc=5",
+   "published": "2026-10-17T15:21:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "NVIDIA Denies RTX 5090 Discontinuation Rumors, Admits Supply Is Tight",
+   "publisher": "TechPowerUp",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQSlVPWFFvdUJKZ3I4N1pwNWNfbkxPOU9rYndHVmJ0bng1NGVvNTJjWnhzci03LW5MaVpLaWhXX0NnczdocUFVVk5DeEpFcVRvbHJRZ1lvdUx1OFozSmxuUHY3aHJJRHpOeTZWZDVpXzFaMjRnOFVvMDdQaVAtSERqVjFicTUzX0VLc01tRTNpR1NYb2RFNUU1Z3dvMGhaZ0ppYk1YOGJR0gGrAUFVX3lxTFBUS1pCUU5XTFBmbm1TMkZrbG0zdFczbHVHMnFObUsyTGpWQnJYRmFySWVwNjAyX053a3hoaTA4SHpicWU3ZmY0U2hkZkJNQjNSeDAweGFhYy05VjNvaHc5TVlCQTRSZ2Vtc1JoajFKbEg5dVVZUG5FLWtlYVVoWU5sSUwzMEpta1FYMkhrV19VZExtZ0k1ZjI3YWZxWUlraHpWQWptdkoxYXRPYw?oc=5",
+   "published": "2026-10-17T14:27:30+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan criminalizes AI server smuggling to China with five-year prison terms",
+   "publisher": "news.lavx.hu",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQM2RqZEtRNC1GRzFlNkx4UXJkMkZobUhEMFdCbFpTaE16X2oza1ZZLXVHZ08ySkRWakJGNUFSY2dtM0s4WVBjMHhuejZkanpXd3ZJUlMxNGotbXNfVnlVdjI1WnZvMVlQbDRFdWRVN240WndGNTRUbDRMUl9oVjFqeTF4RkQ5MU5mUmNqSzNEZ193TTlGTjVnd0liV05qYlN1c0d6UWVpaFk?oc=5",
+   "published": "2026-10-17T12:40:40+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Smuggling Nvidia Chips Into China Is About to Become a Crime in Taiwan",
+   "publisher": "24/7 Wall St.",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOb1pHcU9SeHNnbmpjQlpzVXVDNmNEUTJlTllEdkoySjBFWmJYMEs3ZENORlBpMVpISFBJRFpvZnUzRlhUWUVtLWNJc1gxOWJKRXFsVGExR0xZdjM1X0lHOFdUQTN5T0tuNEZmOHlNWk1TNkk4c3BkRjJZMEFXV1ltNW5lZ2lCX3B2Q0ctWEo2aVd5RVdzYXFZdVV3TXNKQ0J4QU0zc1FrRXd5dktfYVJIR0J5SVk?oc=5",
+   "published": "2026-10-17T12:20:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan plans $4B Texas industrial park for Nvidia, TSMC suppliers",
+   "publisher": "Interesting Engineering",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPWEdrOEZKdF92WExpdUYxMVh5Y1FLMEdmYXdObHJGZVlKTTRPcWhlcjFDRFhCbmt5bjVOZURHRzJrcUU1MFdUaTJuUE1nWGk3SG5aU3dva2QyZnAweW1femxnaUxBOHFneEllOGhvMGtadXZhU0p3RjdBeXFPTzl6NWNoSQ?oc=5",
+   "published": "2026-10-16T21:24:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan is planning U.S. industrial parks for Nvidia's AI suppliers, starting in Texas",
+   "publisher": "Quartz",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9Oay16SE9GR3dQbktjZElxVVowYlIyQnkxU1FZTnFmeTd3RGpHTnBTNnVuUVJSc3dzbHN0cDlQNGJBRms3aVE2d3k5bWVDdW1NU3FMZTktT3pOTGJyVWpScXJXR2Q5TWpyczJ3ZEQxem5ldVp5cWRPTERSaw?oc=5",
+   "published": "2026-10-16T18:20:23+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan to Raise $4 Billion for Texas Industrial Park, Bolstering AI Chip Supply Chain",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFB2QXBrT3JneG1pREtkeXQ4LXJhSHQ1VzRMSlJGLUw5NVZuSHM1dnNQZFJxbk55X05kMlJsd2Z0eURrbVhxY3VMOS1zaEJSLWpyNnNLOXdVWEtfZlNINERLWkxFMVpjZVcwYmVxcWFHV29MUkMtcEE?oc=5",
+   "published": "2026-10-16T18:06:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan Plans $4 Billion Texas AI Hub for Nvidia Supply Chain",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPOURTWEFVTWswbkVuU3Q4bnhSbnp0SnJMNE44cDV5YUwwWElVVlF5Yy1FYW5wcVA1VlFXUE05RWNNR1kxeW9BZ1hoVzY3YzBGLVZldHlrUi1ROWZkUEJqZkQ1RzMybXMxb3VQbkl6dUFnb2Z1VGN6cGh1VGVJSFlSREh1Zzh2ZzA0cnZHUXU0X1hwUTJUa0JPTHU4aTVSa09pSzNEUktxOTBlWDdrb3Z1TGxGcVJNUDhuRUZZ?oc=5",
+   "published": "2026-10-16T12:14:54+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan plans $4B Texas industrial parks to boos...",
+   "publisher": "Pluang",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPakZ4a3FLNzVQYmhtNXFqOVZJcHFwd2hfQ1YzZzgtSlhqd3VyV0FvYzUxeDNpZllxLVRNUl90RnVuV3kwSUQyZlhhODRlWnd1R2Y3U1BmZTNVX0llQVFhNk15Y2t1Q3VVc0g4TVFhejJNQm9lTnNtRFNEOGRZaldSUnBzakNLMkZxQWZRNjJRQmpKTlRBOHRSRzNKMjdIYzc2dGFDNlo5QjVWYTdqWWc?oc=5",
+   "published": "2026-10-16T11:30:29+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan Is Planning $4 Billion Industrial Parks in Texas for Nvidia’s Suppliers",
+   "publisher": "AOL.co.uk",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQOTlvYThLUWdnUWp6aUhWRFRmdS1TQkZ3c3lNUURzM1lvVURSbEthWEl4MFNiQmJJT0RVak1mNTB2YW9EWm5DZU00WmR4ZnFSUHB0aHBhcmx5Y21kdDhiTE51Y01Eb0h3dEQ2TW13N3Zpcm0yZ0dXOEYyMW50a3lSSUZlay1kMVk5dHc?oc=5",
+   "published": "2026-10-16T11:00:01+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan to Join US China Chip Curbs, Seek Criminal Penalties for AI Chip Smuggling",
+   "publisher": "bloomingbit",
+   "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE50VVJ5cUxzd0ZCM0dISnpXTGM2ckZLLUxqbHJaWGhoZ1BscEpTMEY0dTdxMVJqeUVUaFhBT0JYX3lFQ0UtZ1dsLWNJSGlpYmphTXZhMA?oc=5",
+   "published": "2026-10-16T09:31:40+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Kung Ming-hsin Confirms: Criminal Liability for Illegal AI Chip Exports to China; Taiwan Plans to Expand Export Controls",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE04YWtwcGpkVC04QjEtdkhINlZ2TUM3LTZxYm83MlVxc0NzSlY2MmR3Z1IyX3AwcFNCZmxsSlVUNTFqc2NEeHZnUF9VeVJ5ZXhyX3FDSTlWcV93RzRmSE44a0FJWXhjRDF2d09BUkZtM09PSmVmYlE?oc=5",
+   "published": "2026-10-16T09:26:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan Wants to Build Nvidia (NVDA) a Texas Supply Chain Hub",
+   "publisher": "CoinCentral",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxObmNKUWx0UDVoamY2Y3JvbnpmLWUyUHRTSnpCb3hrYnY3X05ES3MwNkZ6V3lzaDBKekZqM1k2M1dzRWE0bnFQbUtvcDAzUHF2b1ZPdGxIRG1fNzJvaFlYMW14VVAxX1dLamdxblpwWkdkeW5OMnJIUHRXT3JoNEFUc2ZGZ3lnOHpETXBF?oc=5",
+   "published": "2026-10-16T09:11:58+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan to build industrial parks in US; Texas site already found",
+   "publisher": "digitimes",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQVGg5cW1oMXROU3NVQTNEN21rNTRfTV9lT0w2RmEyTzN1TWJ6RkJiWWNRcHR0OUh6bkJEQjVJNE5uRjRfSFp4TThpa1NTU0dsazlIdmVrQVhBOTlaVFE5QmZiWk13SjEzb05yYWJFLU1yT3ZCa29HRmY5YlRuc3hoT3Q0SHJpY3A1bUJEUG9nd0JNTWky?oc=5",
+   "published": "2026-10-16T09:08:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia’s AI Supply Chain Gets Support from Taiwan’s Texas Plan",
+   "publisher": "TipRanks",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPY2E4STNTWm5sRGNjUk82b3NqYXpGbGJ1c2ZRWkx6T3lFMUtMQ3VNYmc1WjBnVi1mLWZBcjhHM291S09wRWE2YzhiY01uMG8xdmpqN1Buc0R3T2U3TjZYN0ROMTQ5cGNTdU5hUmlhalBpSlhCOVlZeXZIOTNiTnVmcjUwOUhpX0sxd2dGczlKY0VGenBJ?oc=5",
+   "published": "2026-10-16T08:39:51+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "ByteDance ASIC Deal: Nvidia Funds Chips US Export Controls Meant to Block",
+   "publisher": "Tech Times",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQZ3RwOVdObXc3N0JBU0JUelltRWdfdXgxcDhtMTBockszbkN4VWd6clNZSEhXYXA1T2JrMFFPa1lzbXhYR2FFVDlrSmVWQWF2bjdfakpSUlJPUzlzbVJEcDdLNk1TUi1nRHFEc1ZuRkR3UEhXMVhKUWVOUFN0NjQ3X3dlUHZPamp0VjNKTURUUkFhd2hZenZFRFhPRUgtWU1SbEdJVU1qd3hBNXBUeVA4ZXJ3Nzc0aW9xNF9melBqNjMzUQ?oc=5",
+   "published": "2026-10-16T06:03:24+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "ByteDance in talks with MediaTek on custom AI chips as Nvidia access tightens",
+   "publisher": "디지털투데이",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPTTdReEFULWZsa2d2ZVM1aXJVS05NZUNnZDRjTlZNc2NRU0dBVko1UlM5QXNrVHhQNk5QTG9ZTmpaSVV2RmRrX0JubnU3cXVQMGJITVBiVmc4MGFNR1dYRERRWUlTZzlLUEdPclJXMmtCdzNCbjByR29Xd01tbkZ6bEVpWVpZcmM5d0ttdngyZXo1TzN0VWg4Unk3cWRvY3VyX3h1ZEREQ0VIclNReEs4SUI4S1VBZ29JcThaYUg1ZFM?oc=5",
+   "published": "2026-10-16T04:05:37+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "\"AI Supply Chain Profit Map\" - Who is actually capturing the profits in the AI supply chain?",
+   "publisher": "Moomoo",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNX2Z5Z1pyTGhSbXhfT0RpZERvTXZCZ0ZWeFU0MDIyYUE5X1E4NWwtcFl5VXlpaDA5a0pXN01jam9qODR4V3R6SHdQQ3RkLVhBTnVDcE9CR0lhZ3JLNXN0MkJadWI0VTZfTHI2OG5lSmhTMEREQUQ4Q2YySWlkYTN4Y0U1Zjg4cXltLU9sQS15b3lyME5LaGl3R0oyUEdzVjM0M1h6b2sxTTA4NFBy?oc=5",
+   "published": "2026-10-15T23:43:23+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan reportedly plans $4B Texas complex for Nvidia AI supply chain; tightens China AI chip exports",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNaHQwVTJjMnNVYlRGU1daalVYckJnT2UtWWNoREMzQ1FjOTdXeC1vMGpIeFBpR0tUNHZ3OW5hLXc2ZVVIaF96ellTcFRlRXlMYlVMSEJhYkFIeERLZkNjNWRoMXg4dU9ULUxJOTBVQnZKT0hEYXQ5Mk1FRlMtY0V2M1F5MWNVajh6R2hXZVV2R3VRX2JWVElGNFkzejJ6amhJYU1BazJBOERMcEc2T3c2MA?oc=5",
+   "published": "2026-10-15T23:11:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "ByteDance Nears Custom AI Chip Supply Pact With Taiwan's MediaTek",
+   "publisher": "finance.biggo.com",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1VNnhqOUN3blBBcHRiRS1xVjE4eHZ2Qmo4VkVEX3dNVkE0SU9zVjJiN05tNTZvanZEU2dSVDdCVGZrc3FnUVdRSGdWZEh2ZVJ5SF9XTHpwUURGZE5vR08yUDJxX09rdVdYSE1IOU1MQ3BJNWdtOXc?oc=5",
+   "published": "2026-10-15T18:18:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan to Fund $4 Billion Texas Complex for AI, Nvidia Partners",
+   "publisher": "Bloomberg.com",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQOFNGT3M3T0FkM01lWGVUVllTWV9GOUU2V0hJNHpRNmRQdDNWNk01RXJjRnozSGcwSEUwSHpYMmI3eEVnX3NHSm9aYlpCUWFrRmFheUJpb1pNVHRRNHd4dEc4cDZYWVNtZ3FjMTlwYzRYUVNMbElZLWRhckM4LUV1OXp4QU84RldCb0tLamdzdUZRMUFJcXJMZ1c1SU5fb1AzV1N0czBISWt4eFg2NVBJeWlB?oc=5",
+   "published": "2026-10-15T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan plans $4 bln Texas park to support Nvidia’s AI supply chain - Bloomberg",
+   "publisher": "Yahoo Finance",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNanE5Ni1yTTFzbWVXWVl6bW4tZlRiSVRiVGVfc0xURnR6TnZXc0FPd0hxeFpWM0V3ejg1MzVLZ0JyRzlYSVBrTXV4RUcxMWtLYmxzOWNrQXNhUm1kWlg4UEtQLXVpNTljaElOS1FNbU1ZUjIteVN3WTRJUm1INWVxanB1WDJ1U2RfczNleWZmUTQtUQ?oc=5",
+   "published": "2026-10-15T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan to Curb AI Chip Exports to China as Part of US Trade Deal",
+   "publisher": "Bloomberg.com",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOSU1LakZhV2xQNHBFM0lFWU9pT1JCdGMyTXY4Q01TSjZYd3dNbWZ4Rk50ME1UQnUzVkgta3U0RFpFY0VNZGNaeXZfV25jZm9lMjBDdjVONUhlMmJKLTNwT2xwM1I0Mkl5N2N2c25IQWZwbWtORDRYbUJMMC1hZXhWbzllSFZ2bDJzNThDSFRYYmVyYXJnSVc4V0QzVjFMWHBQWVc4NTlRb1E0WEJsYVl1OV9yZEFBQQ?oc=5",
+   "published": "2026-10-15T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan to fund US$4 bil Texas industrial complex for AI, Nvidia partners",
+   "publisher": "Yahoo Finance Singapore",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE95ZjJLYlpKNnpGT0o5QXg3VzBSby1JRlB6X2s0UHVqOERWdVJwYS0zLUpQa2NKMFg2cnNKZFo4UFM1Zzk5M0N4M1FySGdKVEc1WkFjVEF2R3hJQURXUjgtVjFkbS1jZTc1Y0xYOEp0UHFGYUkzcFZ2YQ?oc=5",
+   "published": "2026-10-15T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Qnity Bets On Local Production To Win More AI Chip Business From Nvidia, TSMC – CEO Touts ‘Local-For-Local’ Strategy",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxPUXNMSG9reXRtWUtmQjNLUFc5bUcwck05eURXSl9wN3NMY2toV0NQclpfNGF3ak10eDdTaGwyUHJWYkJBZkYxM1BORjRGUUxQUHJPOXZFTVc3V3JwQUlia1dHalMyZmFlWFlFdlNTc3N6VzZDRlFXVi1zNmtFaDBVVGFJbFl1YkdlUjk3SWFyVTdoX2VNOUctUXRZOGdjOWw3dHJsSy03SG9YUnBpQ09uTWVid2JGQ2EtbG8xWXkwT2J2djQyRjhCemloS1pabEFBXzBhMThNYnFoS3R4RmRPTGo2WnQzOVpYQ0dLR0szTklKM25jYXNWTjZ2V1ZXZ0lD?oc=5",
+   "published": "2026-10-13T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "TSMC taps U.S. interposers to speed AI chip packaging shift, pressure Korea - CHOSUNBIZ",
+   "publisher": "Chosunbiz",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1mVWI3MXB5aElUdEhFRTJEUEp3c0UzVUZJQkcyakgzN0haSTdlSE16YWpEZHRrSzJXZElqN3FGM243blY4NDJiN2x5eS1jNERyX1d6S1hQWmlwMWIwWHFzMS1iY1Q0OGN4b2RZVFhYM0F1M1JWUnFNTXB30gGOAUFVX3lxTE85QjYzRVBONWM3ZTZkTUM1WjkzZzBsbEZHeWZFdWg4dXBWN21nWm5XbE9zU2dzV05vTHhUQnJRVHh6UFBwY2NqSjJ1SnJJZXdTV1RhMEJQUFc4ZWFwdHd4NFNQREc0QzJISHNXUXJ3NTRmOElYMTBNclEwSFF5RExGOFVrNmotNm40Z2lTMHc?oc=5",
+   "published": "2026-10-12T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD’s Taiwan Capacity Push: Why Lisa Su Is Locking In the Supply Chain for the Next AI Cycle",
+   "publisher": "semivision",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNcTBqSG5PS09GN1dCODhMZnhrZzhybFQ0WnAwOFZQU2dPeDYyeVJTZ1RIT0o3Y0tjVXRabWJGNmk5NEpYeGxBY25nUFRwZkE1RnV0UHJneGxKdGt6dHNlZDhxNlpLaTlEVUsxdnBicU1GS0p6QjV1RGlmaVNDTnNyYw?oc=5",
+   "published": "2026-10-08T01:18:47+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD to ramp up CPU, GPU supply in 2027 as AI demand surges",
+   "publisher": "Network World",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPOHlhQUxpVXAxdEg4djVGYm9pUHNzbnI1UFM3bjhTcjRTRF9sb011SWx2M3lyR2lSN2xlMTNpUk5tQUNmWmJHODM4dVpXc1IwbGdYUDE3aVhtazFOU24xOHBhR0NIV1R2eUxKcU5jM21NMDlJejd1eE5WRlNWcWkydkNqalFFTE5zME5iNHdNT29zY3NJZTRDUU93QldZN2ZMVmNkakg1RQ?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "2026 OCP APAC: Google's Fungible Data Center Blueprint",
+   "publisher": "Simple Tech and Trend",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNUDhaRVB2ZWdScUQwUVhjRDc4NkEwcXNIRHVqT29JeHIyc3FoLWRSek42VTdGTFFvV05TSDVUTEZhUWJ2VVFpS3kxZFkwSTZISTItcEFUSkhWSXNINDV2U3pCV3Y5YmdqazFTMGFDcGM2ckpvbmNncXJQWjVkUlZjem1jd3ZwSzl4SWlDUDM4WQ?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD plans to 'substantially increase' chip supply in 2027, says Lisa Su",
+   "publisher": "electronics.economictimes.indiatimes.com",
+   "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQR3BGVlRWRG9yRTJLbzJHLTBROF81U0gxTWVWMVpmODRYazhOVW92SFdNaExsUHRGSWxDbDNHU0kzNWlEeGFHUm1iUm5rMkc3XzYwVkF3dlZ6SkQ0UThiTDZwaWJrbDJ1eTl4VGhRdHBTRXQ0MnAzTk9WMVZCbk50T3ZBZkdTakRURVBjdkZES3hmbEJNdmhySUh5ZXVEaFZJRnJWS05Gdl9peFhIUTVNTzJvelNLSXEwaTJsWHhYeGZqRW1lMVhhbHBqWWVMSUF5SHR6T05yOGxEeGpfOUHSAeMBQVVfeXFMTVh1MU0xSlNFOVBmWW82S3FxR2ZvSVVobTZxampSUS0yNm1ZSjRzNzZwR3p2V3BMQk02bFZTbXVYTTBnLUJaODJvTmhkZjRLRkxBaEF0d3JwTS1MT0JVd0hSMFhFa3ZKN2FUTlF5YWhFWWpRRnE2NDJ2UVRRZUtBYUN1QVZ5cWNiUk9FU2ZTTFJoYmN6WWEwNzFBWWdUSENYTGFnSXZMNUZxWHkzN2loRlNjMy1CNzdpMU9qQ0ZMa2R5Y0o0QjU1RW9kVzREdGFBX1dwOS1zWGM4R0NzNy1SWnp1RmM?oc=5",
+   "published": "2026-10-07T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su plans major AI chip supply ramp in 2027",
+   "publisher": "Quartz",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1TU1FyZVRweFVLWWRqTWlNY21NVEdrTkVGZzhHT0ZEUFN2SWpOU1V1UUVTdlFDdlNCVUVSdG93UlVuczRrX1lhSzgxZTVwQzBYT19LbVIzdk05TlVsZUhJYlN3Snk4ZWE1XzhVSGVzOA?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD Plans Substantial Chip Supply Increase in 2027 as AI Demand Grows",
+   "publisher": "Yahoo Finance",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPeDhFMnVMeXViYjE0SVQzalR4MXlxcW9IcDNQQTE2WWZpNVF0VllHRkpSNkRSa2w4OVFjdGVZcHl3LTdoNXlHOFFzOW96UzBnWE5QUUZuSVAyQnFCV1Vmb3kwMGJoRklnWkVoV1VIUHd3SzI1TmJ1Q3BaZ1JQOTlZYTRLRmJMWlhnZHltbmVxWEU4Z25PSlM2b1JPektkdw?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD Reportedly Sees AI Chip Demand Outrunning Supply — Lisa Su Plans ‘Substantial’ 2027 Ramp",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPUXRYd2ExM1hvUnc1LXMzUlByOGRJQVhmVFAtWVJ3R2lXM0JxT1IzbXh1VENUQ1gwdVdqbThWQkJBb0IxcVBkdmJGWlpQMng4dWdpSWFhTmlkQjlZTUk0ZURTM1ZUdkluckIxMHRSV20zSU5qdjNWdlotM1E5MEc0SEVyX0hyZmhCVjVhdVo5eDFIaFk2d3d1d2ItMkxPYWZVcEFVV3J5R0xpa3VuRHpKSC16Vjk5RWZCU2J6TnF2SWFqNDVaQTBFQ3FPWk9DQXNRYXJma0s0UTBPN01XbUFpU1c3Zw?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD plans to substantially increase supply in 2027, CEO says",
+   "publisher": "Reuters",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQQW9IX3h3YzRRRWZrX1VNVk02dkd6UDlUUFlDMjdfU1dwUTJEWXhHRkpCZ2EwVXZqLXJqQmJfeHdaU1VLOWpOYlU3Wi1YNmljekVRcHRsZ0dMOHNrTzM3dGlRc1dRNFBhTGlrVzFJcGxtSEVuRjVfeFQzTy1WOFRHMGVROFBIQ2R3LTZkYlVzVnMwWFVCQk9RV1B1emhkRTljS3BsTW53akZwNFRx?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su sees 'very high' chip demand continuing for years, praises TSMC expansion",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOZFgwb0tTSTQ4TEExb3NNbEx1WFV5bTROX25kV3RQaEZiY242WUxUSG91cG5CbndxM1EzZnNmamE3M2QzbjktQm9xQmFTMU9BNDJCSFl1V2ZjYm84TFdDWVBSTktCYTlrd1JDS2ZGRVh0RWNEMW9uQnVlbm84MDQyRnNwal9FeDdjcjR4MzNNUVh0NVppNHJYSXJsRnRzNkpXYzRYQTJYUXZIRmpkTHNSQTAwakI0NW10RkZ2ZjZlQ2FaQjZhcXN4eVVXcThfeHpJWDlrdnAxTVcwbHMwMWNlT1lRZw?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD CEO Lisa Su tours Taiwan and South Korea to secure chip supply for 2027",
+   "publisher": "TweakTown",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPOHF6MlBTUE4yWU9pQ01URFpzS19jdVlXMTVKX2VwT2RBdjBfc05VY09FeXRJaGNKd3BkNExJekNvRkxDa2pwenNzcmhMSDBCOTdRSEF0OThaQVpoRjRUT0taUU9zbFlfdFlTMWlrSExhb3RaR3UweW8xSEpmemJnUUlubHBoZDhRcHk1dnBReUNEaGZxVEpxTVE3ZFpwMzlnY0lhX241QTQtN0o3NVM1UkpSa2xFSEMtTF9LdWNmZ0FNdw?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Global Market: AMD to increase AI chip supply substantially in 2027 to meet rising demand",
+   "publisher": "The Economic Times",
+   "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxNTGJVZWVtZWFLR2h3Mkl2a2VQRXhBOUFmYUdseWRvSS1WNjVtWUthVXpQNWZBbDVyT1l3Z0RwdUdHc2s2MkdjdW9fczg1bkFSdElYUDJFb1hpakpVUFhhekZ1RzdrYWk5MDdDZWdwZGU4SVFZNXB0cHdTd0t2R2U2NFNoeWRRN2UyNlFtQzFXMEp4SGJuaWc2YnppblpZTmxrLU84S3M0b29Xbm5hVHdiZzZaMkdxNWJjTVBlZUdfOUNBb0c4NWhvTlhvTWQ2LUd0ZHNRR2hNa0FiREFwNUpXdkZvMjRfNEFwUUNSTW8zN2VRZEhwb0xoYjhLQkJOLUtxTjVodmw2akNJUdIBjwJBVV95cUxQaTdSZ3JqREwyaWxLeG5fdWpSQnYxMzdPNUN1RWV2bE5jSFlxeXRBdXpsYXktNHE4ajFwaXZtMy1WRkhTSS03ZXNUeDNxeURsWkt3dXFCYkxUQ1ZQbXdLVUVpQVdISXB5d3l6QVJTTFFQMmY4bFl2Uzh4NWpyeGJSUkxIRGJ1M2JnMVc1VUJkeUt2WWlfa2Fna0tMay1qcGFtck4wVEpER1BGRXIzbWtLUHpITjhhdzZEVzAtakpmNWtrY2hfczRrdHhQSE81aUEtbGE5Tm1oRkJ3TzZVV0NJY3NRaDlubDUxQVhERzBvdENNWWNFczhrZVZ1aVpUbWhfal9odHRtcjM4UThkZHpV?oc=5",
+   "published": "2026-10-06T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "AMD's Lisa Su Makes Whirlwind Taiwan Visit to Lock in Capacity, Reportedly Meets TSMC and Top Server ODMs",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9GODg5STZibGtHZFJOUjRhR19OTjFUQkluVjhFbFBHRzd3X1cyUUxlWktGQmFwdF9CLTFiZUNMQm94TzJiZ3FnSGJhOGlwV1Zla1U5TmZUNEJhWlh1MzZrdDlERXdnbDVKRDRIYkxlWF9jUzhCaUE?oc=5",
+   "published": "2026-10-05T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Up 28% in 2026, NVIDIA Just Tapped an All-Time High: Is the Rally Overextended or Just Getting Started?",
+   "publisher": "24/7 Wall St.",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNaV9FcGpLbmRreW9BMWFuWVR6dU1TcjhFMy1ra2VFbW40ZEdKUGIyVFF2ZG5FanFacW9xODFGSmI3ZHE4V3ZWc0ZmbGpHdW9rNThmM1B1QXQ3eW5IX05XNEdsR2J6aDFGbm1Za241V2RfVFhuYTNJLS1FZWoyNmV1ZFhNQWhZVXlBdENnS1FMZE5UZzZTbEVMZ2dxTGZrMXJSbl9sMGtmTDZRdzRDekVEQThqY1ZFZHB3MHVsejdOU29saTJObHJ5d1kzWFZVajh0SllEWWttMTAzSGs?oc=5",
+   "published": "2026-10-05T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Bazillion Nvidia AI Chips Smuggled Into China Via Asia",
+   "publisher": "Businesskorea",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9ybl9WTEJEU0lQaU9sUGwtQ09GRDZlYy1OV2d3LUdrVGIxU1NMX3BjbW10SVByNHlnYUZRTC0wZ05idm5iRlZPTHpkOEd6S3NGejlVcC1yNFhFY2I5S21BV2NCSE4wMWRNdjY4X2tYeERaQUdq?oc=5",
+   "published": "2026-10-02T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Taiwan’s GMI Cloud Raises $668M, With Korean Capital Piling In",
+   "publisher": "Wowtale",
+   "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE0zYkE0ZWUtMXp6UUk0bjlTSmZYNXFQdlViNXRmR2MzYnMyd01iTDRrQUFvZ0FNYW9TcWYydVVhNlhYOXlKdUMyZHNHU3pma25jSUVz?oc=5",
+   "published": "2026-09-30T17:32:39+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "[News] NVIDIA Reportedly Explores Glass Substrates, 2028 Adoption Possible as Taiwan Suppliers Step Up",
+   "publisher": "TrendForce",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOMm9BY2JGZnNoVmdncjdsdkhKZVVQLWc0V2lPUVhWQTF1MDVSLU44SVo1d1NxZWpGQUVOdjdfMFNGUEJTZVFiVGxEa1FjZlBuMWdFa3lhaG10bVRtSExCaGJnLVJ2MlZnUGxVaHZpektibHJZbVpsRGt4TzR4VFh5VkVlQWsyUVRzTVJ6Zy11R2pQd3Ayczc2U2VWOWgwaFV2UDJTc3dtdnBSd0ptVmpfMjBaUDZ4d3ZITGRCTEVVY0FIY2Q1M3p0WjhIbVVHRXFlZDFIeUp1QUFUWjg?oc=5",
+   "published": "2026-09-30T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "TSMC Weighs Adding Six More Fabs in Dallas, Texas, After Arizona",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE04ZURjOGhsLTRPeUFzOTNvNjZuMFhlNlY3ekdYYTNhQ1hiNGxEcVZJMHc5VmpWZnpadVhURWdUVFQweE5LaUpjNjFYb29oNFE1YXhnZnNGaHlwX2xhR2RYVmh5RUlxV05JaV9EcktSR1ZyS25qWWc?oc=5",
+   "published": "2026-09-29T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Apple, Nvidia, TSMC on Philippines wish list as New Clark City eyes ‘Silicon Valley’ future",
+   "publisher": "Gulf News",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNSHRPVzU3RE9nbElJaW54VnBiMDIzZ2o2R21oa05sUmtKVmxNWVUwZERISFRYVV9GTkI4UjZmRi1yYnNGVHlRRHdlTkFDN1ZkZFVIaGxLX2NZb2ZtcWQydkV0dmdJNGxKTkVmQXUyZXBVdWtzZXF3c0hyN191UzZpaW9HWXpLLWhNS1laVTBFLXp3VjZEUHBZMFVSNmVLMUJ2REVqYkNaRDJPc0NvOUI3LWNkZTQ1cDFSLXhhRlMweVVyWGYyTFBiazI1bzM3NGVmQW1zWVFTRjU5ZVE?oc=5",
+   "published": "2026-09-29T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia’s AI Boom Has a Hidden Dependency: One Dutch Company",
+   "publisher": "TradingView",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNZ3pEdmYtYnltbFJRVXQtQzA1cDNuRi1SRXhCdEhHMGJNcXV2MDNsc3pKSThlZG0tUUhnaFR2UGxOa0JUempjbldKMkN5LXFkNjNOaUJsRE5JT2xqMGhxVWVueFpLZjJvVjRRc0QzT3pWRHVEVWxjdXBCajU2THI1Rkk0THlLSXhQRUxOclVFMEpkUUhDajB0MkVXYmNvY3B3UWVMeW5yRDJ5R3RvS0RjU0V0S3NnR2sw?oc=5",
+   "published": "2026-09-28T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia vs. Samsung vs. SK Hynix vs. TSMC: How the Four AI Chip Giants Really Compare in 2026 for Investors",
+   "publisher": "International Business Times Australia",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOcmJndlRpd1Z1WDhTZ0d5M2RUempOVzBwUTZwZjZQNUJsYWRjTDAyQUVIYjBJMkZYMGZaQlhRcTAyX3J1bTBZYl9xTjRZRWMxVHp0a0JvTzRSZU1fMGVaaUE1M1E1S2RpekNtcjh6Z3g4b3RuYTVISzVNT0x5dGlsNzdvYw?oc=5",
+   "published": "2026-09-27T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  },
+  {
+   "title": "Nvidia Teams Up With Supply Chain on Glass Substrates, Next-Gen GPUs Set to Pack More HBM",
+   "publisher": "BigGo Finance",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE0zb1pBNHZwWFNrbThDVExZVFV6SU4yWm8zdk5iSDJVX3hJVlZUb3lxMmltOXlJOUFHd1JnSGlvanNrN0hucjE3Q3JsZklHMW0tVW9ST0dvSEhiUEw0bXY1cXJpMmhuZTVIWndVVVotdmJPUGtCc2c?oc=5",
+   "published": "2026-09-25T07:00:00+00:00",
+   "summary": "",
+   "feed": "google-news-search"
+  }
+ ]
+}

@@ -120,7 +120,7 @@ class RunWorld:
         local = f"{claim.claim_id}-a{claim.attempt}"
         key = self._upsert("verdict", local, {"verdict": verdict.verdict, "reasons": verdict.reasons,
                                                "independent_sources": verdict.independent_sources,
-                                               "strength": verdict.strength, "llm_checked": verdict.llm_checked,
+                                               "strength": verdict.strength, "llm_checked": verdict.llm_checked, "checks": verdict.checks,
                                                "retry_count": retry_count, "claim": claim_key}, by)
         self._link(claim_key, "audited-by", key, by)
         return key

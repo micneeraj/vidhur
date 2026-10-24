@@ -176,7 +176,7 @@ def _decision_report(outcome):
 def test_unreviewed_decision_uses_the_required_wording():
     report, passed = _decision_report({"status": "NOT_CHALLENGED", "error": "InternalServerError: 502", "rounds": 0})
     text = "\n".join(brief._decisions_section(report, passed))
-    assert "Red Team review could not run — AI runtime busy. Treat this recommendation as unreviewed." in text
+    assert "Could not verify: the Red Team review did not run (AI runtime busy). Treat this recommendation as unreviewed." in text
     assert "NOT challenged" not in text and "Assumptions: see data/decision_assumptions.csv" in text
 
 

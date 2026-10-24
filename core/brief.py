@@ -5,12 +5,12 @@ from agents.evaluator import source_profile
 from core import calculator
 from core import decisions as dec
 from agents.geopolitics_analyst import DEMO_UNTRUSTED_INSTRUCTION, DEMO_WEAK_CLAIM_INSTRUCTION
-from core import failures
+from core import failures, unverified
 from core.news import Article
 from core.source_trust import trust_of
 
 
-RED_TEAM_DID_NOT_RUN = "Red Team review could not run — AI runtime busy. Treat this recommendation as unreviewed."
+RED_TEAM_DID_NOT_RUN = "Could not verify: the Red Team review did not run (AI runtime busy). Treat this recommendation as unreviewed."
 
 
 def gbp(value):
@@ -171,11 +171,13 @@ def console_summary(report):
                          f"scenario range {gbp(i['worst_gbp'])} / {gbp(i['likely_gbp'])} / {gbp(i['best_gbp'])}")
             lines.append(f"    {final.claim}")
         elif _outcome(item) == "UNVERIFIED":
-            lines.append(f"[UNVERIFIED] {tag}: {d['part_id']} not quantified. {d.get('note') or ''}".rstrip())
+            lines.append(f"[COULD NOT VERIFY] {tag}: {d['part_id']} - {unverified.NO_FIGURE}. {d.get('note') or ''}".rstrip())
+        elif _outcome(item) == "NO_CLAIM" and not any(u["work_id"] == d["work_id"] for u in unverified.collect(report)):
+            lines.append(f"[NO MATERIAL SIGNAL] {tag}: {d['part_id']} - {d.get('note', '')}")
         elif _outcome(item) == "NO_CLAIM":
-            lines.append(f"[NO CLAIM] {tag}: {d['part_id']} - {d.get('note', '')}")
+            lines.append(f"[COULD NOT VERIFY] {tag}: {d['part_id']} - missing evidence: {d.get('note', '')} ({unverified.NO_FIGURE})")
         else:
-            lines.append(f"[NOT ASSESSED] {tag}: {d['part_id']} - {d.get('error', 'model call failed')}")
+            lines.append(f"[COULD NOT VERIFY] {tag}: {d['part_id']} - agent failed: {d.get('error', 'model call failed')} ({unverified.NO_FIGURE})")
     for wid, d in sorted((report.get("decisions") or {}).items()):
         if not d["versions"]:
             continue
@@ -186,7 +188,7 @@ def console_summary(report):
     return "\n".join(lines)
 
 
-def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untrusted_source=False, demo_red_team=False):
+def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untrusted_source=False, demo_red_team=False, demo_evidence_date=None):
     items = [i for i in report["items"] if i["delegation"].get("action") == "run"]
     skipped = [i["delegation"] for i in report["items"] if i["delegation"].get("action") == "skip"]
     passed = [i for i in items if _outcome(i) == "PASS" and i["impact"]]
@@ -197,7 +199,8 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         *(["> **PARTIAL RESULTS.** AI runtime busy or offline: some agents could not run. See \"Agents that could not run\" below.", ""]
           if failures.collect(report) else []),
         "> **SYNTHETIC DATA.** Ganga AI Solutions is a fictional company. Its purchase history is made up for the "
-        "Open Agent Hackathon 2026. News and exchange-rate evidence is real, fetched live from free sources.", "",
+        "Open Agent Hackathon 2026. " + (f"**Evidence cached on {demo_evidence_date}** (real news saved that day; FX rates are live)."
+                                         if demo_evidence_date else "News and exchange-rate evidence is real, fetched live from free sources."), "",
         f"- Run `{run.get('run_id', '')}` - {run.get('elapsed_seconds', '?')} s - team: Planner (Vidhur), Geopolitics Analyst, Currency Analyst, Evaluator",
         f"- Shared memory (Meterless World Model, {report['event_count']} events): `{report['path'].replace(chr(92), '/').split('/vidhur/')[-1]}`",
         f"- Trace log (every step, model, tokens, latency): `{str(trace_path).replace(chr(92), '/').split('/vidhur/')[-1]}`",
@@ -208,6 +211,10 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
     if demo_weak_claim:
         out += [f"- **Demo flag `--demo-weak-claim` was on.** The Geopolitics Analyst's first attempt was given this extra instruction: "
                 f"*\"{DEMO_WEAK_CLAIM_INSTRUCTION}\"* The model calls and Evaluator checks are real."]
+
+    if demo_evidence_date:
+        out += [f"- **Demo mode `--demo`:** two drivers only, evidence cached on {demo_evidence_date}, one planted weak claim and one forced-aggressive "
+                "first decision so the Evaluator send-back and the Red Team challenge are always shown. The Planner model is not called (fixed plan)."]
 
     if demo_untrusted_source:
         out += [f"- **Demo flag `--demo-untrusted-source` was on.** The Geopolitics Analyst's first attempt was shown the least-trusted articles "
@@ -244,6 +251,12 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
                     "(claims on the same part from different analysts may overlap)."]
     else:
         out.append("No claim passed the Evaluator in this run, so no GBP impact is reported.")
+    cnv = unverified.collect(report)
+    if cnv:
+        out += ["", f"## {unverified.LABEL}", "",
+                f"These drivers were looked at but could not be confirmed. They have {unverified.NO_FIGURE}; do not read the totals above as covering them.", "",
+                "| Work | Analyst | Part | Status | Why |", "|---|---|---|---|---|"]
+        out += [f"| {u['work_id']} | {u['analyst']} | {u['part_id']} {u['part_name']} | **{unverified.LABEL}** ({u['status']}) | {u['reason'].replace('|', '/')} |" for u in cnv]
 
     out += _decisions_section(report, passed)
     out += failures.brief_section(report)
@@ -253,7 +266,7 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
         d = i["delegation"]
         out += [f"### {d['work_id']}. {d['analyst']} on {d['part_id']} - **{_outcome(i)}**", "", f"_Planner's reason: {d.get('reason', '')}_", ""]
         if not i["attempts"]:
-            out += [f"- No claim: {d.get('note') or d.get('error') or 'n/a'}", ""]
+            out += [f"- **{unverified.LABEL}:** {unverified.NO_FIGURE}. {d.get('note') or d.get('error') or 'n/a'}", ""]
             continue
         c = i["attempts"][-1]["claim"]
         out += [c.claim, "", f"- Estimate: {c.direction.replace('_', ' ')} {c.pct_low:g}-{c.pct_high:g}% "
@@ -286,5 +299,5 @@ def build_brief(report, world, trace_path, demo_weak_claim, stats, demo_untruste
             out.append(f"- {d['work_id']} {d['analyst']} on {d['part_id']}: {_outcome(i)} - {d.get('note') or d.get('error') or ''}")
         out.append("")
     if any(_outcome(i) == "UNVERIFIED" for i in items):
-        out += ["## Note", "", "UNVERIFIED claims are listed in the evidence trail for transparency. They have no GBP figure and must not be acted on.", ""]
+        out += ["## Note", "", "Claims marked UNVERIFIED (**Could not verify**) are listed in the evidence trail for transparency. They have no GBP figure, are not zero impact, and must not be acted on.", ""]
     return "\n".join(out) + "\n"

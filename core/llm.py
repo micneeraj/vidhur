@@ -22,6 +22,26 @@ RETRY_WAIT_SECONDS = float(config.env("LLM_RETRY_WAIT_SECONDS", "2"))
 RETRYABLE_ERRORS = (openai.APIConnectionError, openai.APITimeoutError, openai.InternalServerError)
 
 
+class RunBudgetExceeded(openai.OpenAIError):
+    """The run's time budget (demo mode) is spent: no further model call is started. Handled like any other service outage."""
+
+
+_limits = {"timeout": None, "max_attempts": None, "retry_wait": None, "deadline": None, "fast": False}
+
+
+def set_limits(timeout=None, max_attempts=None, retry_wait=None, budget_seconds=None, fast=False):
+    """Tighter limits for a whole run (--demo): per-call timeout, bounded attempts, an overall time budget, and (fast) the model's
+    long private reasoning switched off, which turns a 45-170 s call into a few seconds. The prompts already demand a short JSON answer.
+    Call with no arguments to restore the defaults."""
+    _limits.update(timeout=timeout, max_attempts=max_attempts, retry_wait=retry_wait, fast=fast,
+                   deadline=time.monotonic() + budget_seconds if budget_seconds else None)
+
+
+def budget_left():
+    """Seconds left of the run budget, or None when there is none."""
+    return None if _limits["deadline"] is None else _limits["deadline"] - time.monotonic()
+
+
 @dataclass
 class LLMResult:
     text: str
@@ -78,13 +98,20 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
 
     Logs the agent, requested model, answering model, tokens and latency to the trace.
     """
-    attempts = max_attempts or MAX_ATTEMPTS
+    attempts = min(max_attempts or MAX_ATTEMPTS, _limits["max_attempts"] or 99)
+    timeout = min(timeout or TIMEOUT_SECONDS, _limits["timeout"] or 10**6)
     client = _client(timeout)
     started = time.monotonic()
     for attempt in range(1, attempts + 1):
+        left = budget_left()
+        if left is not None and left <= 0:
+            raise RunBudgetExceeded("run time budget spent; no further model call was started")
+        if left is not None and left < timeout:  # a call may not run past the run budget
+            client = _client(max(left, 5))
         try:
             response = client.chat.completions.create(
-                model=model, messages=messages, max_tokens=max_tokens, temperature=temperature
+                model=model, messages=messages, max_tokens=max_tokens, temperature=temperature,
+                **({"extra_body": {"chat_template_kwargs": {"enable_thinking": False}}} if _limits["fast"] else {}),
             )
             break
         except RETRYABLE_ERRORS as exc:
@@ -95,7 +122,7 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
                             llm_attempt=attempt, **error_details(exc))
             if attempt == attempts:
                 raise
-            time.sleep(RETRY_WAIT_SECONDS)
+            time.sleep(_limits["retry_wait"] if _limits["retry_wait"] is not None else RETRY_WAIT_SECONDS)
 
     latency_ms = int((time.monotonic() - started) * 1000)
     usage = response.usage

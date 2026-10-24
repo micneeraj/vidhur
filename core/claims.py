@@ -38,6 +38,7 @@ class Verdict:
     independent_sources: int = 0
     strength: str = ""  # strong / moderate / weak, from the Evaluator's model check
     llm_checked: bool = False
+    checks: list = field(default_factory=list)  # deterministic check results: [{name, ok, detail}]
 
     def to_dict(self):
         return asdict(self)

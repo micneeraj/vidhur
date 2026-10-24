@@ -6,6 +6,7 @@ Meterless World Model (logs/world_state_<run_id>.json); the brief is built from 
 
 Usage:
     python main.py
+    python main.py --demo               # fast demo: 2 drivers, cached dated evidence, planted weak claim + Red Team challenge, < 5 min
     python main.py --demo-red-team      # the first decision is told to be aggressive so the Red Team visibly challenges it
     python main.py --demo-weak-claim    # the Geopolitics Analyst's first attempt is told to cite only ONE source,
                                         # so you can watch the Evaluator catch it and send it back
@@ -16,7 +17,7 @@ import json
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 import openai
 import requests
@@ -24,13 +25,15 @@ import requests
 from agents.currency_analyst import CurrencyAnalyst
 from agents.decision_maker import run_decisions
 from agents.evaluator import Evaluator
+from agents import geopolitics_analyst
 from agents.geopolitics_analyst import GeopoliticsAnalyst
 from agents.planner import Planner
 from agents.workflow import run_work_item
-from core import config
+from core import config, demo as demo_mode, llm, news
 from core import failures
 from core.calculator import CalcService
 from core.brief import build_brief, console_summary
+from core.evidence_page import build_evidence_page
 from core.ganga_data import part_country_catalog, top_targets
 from core.preflight import RUNTIME_BUSY_EARLY, RUNTIME_BUSY_MESSAGE, ZETARIS_START_HINT, run_checks
 from core.shared_state import RunWorld
@@ -42,11 +45,16 @@ SERVICE_ERRORS = (openai.OpenAIError, ZetarisError, requests.RequestException)
 EXIT_STOPPED_EARLY, EXIT_PARTIAL = 1, 2
 
 OUTPUT_DIR = config.ROOT / "output_examples"
+PAGE_DIR = config.ROOT / "output"  # output/evidence_trail.html, rewritten by every run
 INPUT_DIR = config.ROOT / "input_examples"
 
 
 def parse_args():
     p = argparse.ArgumentParser(description="Vidhur Day 2: Planner + analysts + auditing Evaluator over a shared World Model.")
+    p.add_argument("--demo", action="store_true",
+                   help="FAST DEMO: two drivers only (the biggest-spend part + one currency driver), a dated cached evidence set from "
+                        "data/demo_evidence/ (FX stays live), the weak-claim and Red Team demos both on, timeouts and bounded retries on every "
+                        "AI call. A driver whose call fails is shown as 'Could not verify'. Target: under 5 minutes.")
     p.add_argument("--demo-weak-claim", action="store_true",
                    help="DEMO: instruct the Geopolitics Analyst's first attempt to cite only one source so the Evaluator visibly "
                         "catches it. Real model calls and a real Evaluator check; only the analyst's instruction changes.")
@@ -80,12 +88,27 @@ def preflight():
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     args = parse_args()
+    if args.demo:
+        args.demo_weak_claim = args.demo_red_team = True
+        args.workers = demo_mode.WORKERS
     if not args.skip_healthcheck and not preflight():
         sys.exit(EXIT_STOPPED_EARLY)
     started = time.monotonic()
+    evidence_date = None
+    if args.demo:
+        evidence_date = news.demo_evidence_date()
+        if not evidence_date:
+            sys.exit("No demo evidence saved. Run: python scripts/save_demo_evidence.py")
+        news.use_demo_evidence(True)
+        geopolitics_analyst.MAX_ARTICLES_SHOWN = demo_mode.ARTICLES_SHOWN
+        llm.set_limits(timeout=demo_mode.CALL_TIMEOUT_SECONDS, max_attempts=demo_mode.CALL_MAX_ATTEMPTS,
+                       retry_wait=demo_mode.RETRY_WAIT_SECONDS, budget_seconds=demo_mode.TIME_BUDGET_SECONDS, fast=True)
     trace = Trace()
     world = RunWorld(trace.run_id)
     print(f"Vidhur Day 2 | run {trace.run_id} | trace: {trace.path} | world state: {world.path}")
+    if args.demo:
+        print(f"DEMO MODE --demo: 2 drivers, evidence cached on {evidence_date} (FX live), timeouts {demo_mode.CALL_TIMEOUT_SECONDS} s, "
+              f"{demo_mode.CALL_MAX_ATTEMPTS} attempts per call, time budget {demo_mode.TIME_BUDGET_SECONDS} s.")
     if args.demo_red_team:
         print("DEMO MODE --demo-red-team: the first decision for the lowest-confidence verified claim is instructed to be aggressive.")
     if args.demo_untrusted_source:
@@ -106,7 +129,7 @@ def main():
     except ZetarisError as exc:
         sys.exit(f"Zetaris problem: {exc}")
     by_part = {t.part_id: t for t in targets}
-    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "demo_red_team": args.demo_red_team, "started": datetime.now().isoformat(timespec="seconds"),
+    world.start_run({"run_id": trace.run_id, "demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source, "demo_red_team": args.demo_red_team, "demo": args.demo, "evidence_cached_on": evidence_date, "started": datetime.now().isoformat(timespec="seconds"),
                      "quarter": targets[0].quarter})
 
     # The run's input, saved next to its brief (no secrets: lane ids and flags only)
@@ -115,7 +138,7 @@ def main():
     input_path.write_text(json.dumps({
         "command": "python main.py" + "".join(f" {f}" for f in sys.argv[1:]), "run_id": trace.run_id,
         "flags": {"demo_weak_claim": args.demo_weak_claim, "demo_untrusted_source": args.demo_untrusted_source,
-                  "demo_red_team": args.demo_red_team, "workers": args.workers, "refresh_news": args.refresh_news},
+                  "demo_red_team": args.demo_red_team, "demo": args.demo, "workers": args.workers, "refresh_news": args.refresh_news},
         "config": {"analyst_lane": config.analyst_model(), "evaluator_planner_lane": config.evaluator_model(),
                    "evidence_max_age_days": config.evidence_max_age_days()},
         "ganga_spend_from_zetaris": [t.__dict__ for t in targets], "trace_file": f"logs/{trace.path.name}",
@@ -129,7 +152,9 @@ def main():
         "currency": CurrencyAnalyst(trace, world, pool, refresh_news=args.refresh_news),
     }
     calc = CalcService(zt, targets[0].quarter)  # every GBP figure comes from here (core/calculator.py), never from a model
-    evaluator = Evaluator(catalog, pool, world, trace, calc_fn=calc.for_claim)
+    # The cached demo evidence is dated: judge its freshness as of the day it was saved, so the demo keeps working later.
+    asof = datetime.fromisoformat(evidence_date).replace(tzinfo=timezone.utc) + timedelta(days=1) if evidence_date else None
+    evaluator = Evaluator(catalog, pool, world, trace, now=asof, calc_fn=calc.for_claim)
     planner = Planner(trace, world)
 
     stopped = []  # stages that a service outage cut short: {agent, stage, error}
@@ -145,7 +170,12 @@ def main():
             return None
 
     # 3. Planner decides which analyst works on which part, and why
-    plan = guarded("Planner", "planning", lambda: planner.plan(targets))
+    if args.demo:
+        plan = demo_mode.demo_plan(targets)
+        world.record_plan(plan, [{"part_id": t.part_id, "country": t.country, "spend": t.quarterly_spend_gbp} for t in targets])
+        trace.event("main", "demo-plan", output_summary="; ".join(f"{d['work_id']} {d['analyst']}->{d['part_id']}" for d in plan["delegations"]), decision="RUN")
+    else:
+        plan = guarded("Planner", "planning", lambda: planner.plan(targets))
     delegations = plan["delegations"] if plan else []
 
     # 4. Analysts work in parallel; each work item runs draft -> Evaluator loop -> impact
@@ -159,7 +189,7 @@ def main():
         list(executor.map(process, delegations))
 
     # 5. Planner reviews the world state and may re-delegate once
-    if plan:
+    if plan and not args.demo:
         extra = guarded("Planner", "review", lambda: planner.review(world.report(), targets))
         if extra:
             process(extra)
@@ -179,16 +209,22 @@ def main():
     world.finish_run(summary, status="partial" if partial else "finished")
     report = world.report()
     brief = build_brief(report, world, trace.path, args.demo_weak_claim, trace.stats, args.demo_untrusted_source,
-                        args.demo_red_team)
+                        args.demo_red_team, evidence_date)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     OUTPUT_DIR.mkdir(exist_ok=True)
-    out_path = OUTPUT_DIR / f"brief_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+    out_path = OUTPUT_DIR / f"brief_{stamp}.md"
     out_path.write_text(brief, encoding="utf-8")
+    PAGE_DIR.mkdir(exist_ok=True)
+    page_path = PAGE_DIR / "evidence_trail.html"
+    page_path.write_text(build_evidence_page(report, world, {"weak": args.demo_weak_claim, "red_team": args.demo_red_team}, trace.stats,
+                                             evidence_date, f"logs/{trace.path.name}"), encoding="utf-8")
 
     print("\n" + "=" * 78)
     print(console_summary(report))
     print("=" * 78)
     print(f"Run time: {elapsed} s | model calls: {trace.stats['llm_ok']} ok, {trace.stats['llm_fail']} failed attempts")
     print(f"Brief saved:     {out_path}")
+    print(f"Evidence trail:  {page_path}")
     print(f"Trace file:      {trace.path}")
     print(f"World state:     {world.path} ({report['event_count']} events)")
     if partial:

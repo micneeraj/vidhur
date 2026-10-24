@@ -179,6 +179,7 @@ the image sets `VIDHUR_IN_DOCKER=1` and `core/config.py` rewrites `localhost` / 
 
 ```powershell
 python main.py                            # the full run (15-20 minutes)
+python main.py --demo                     # FAST DEMO: 2 drivers, cached dated evidence, send-back + Red Team challenge (below)
 python main.py --demo-weak-claim          # watch the Evaluator catch a weak claim (below)
 python main.py --demo-untrusted-source    # watch it catch a claim backed only by untrusted sources (below)
 python main.py --demo-red-team            # watch the Red Team challenge an aggressive decision (below)
@@ -192,6 +193,29 @@ python -m pytest tests                    # all tests; integration tests skip if
 
 Env (see `.env.example`): `PLANNER_MAX_DELEGATIONS` (default 4), `LLM_MAX_ATTEMPTS` (default 5), `EVIDENCE_MAX_AGE_DAYS` (default 30).
 Decision premiums: `data/decision_assumptions.csv`.
+
+### `--demo` (fast demo mode)
+
+One company run limited to the two biggest-spend drivers: the Taiwan GPU chip (geopolitics) and the largest-spend part whose currency has ECB data
+(the euro-supplied cooling loop; currency). What is different, and nothing else is:
+
+- **Cached, dated evidence.** The news comes from `data/demo_evidence/` (saved by `python scripts/save_demo_evidence.py` from a real live fetch; `manifest.json`
+  holds the date). The brief and the evidence page say "Evidence cached on <date>". **FX stays live** (Frankfurter / ECB). The Evaluator judges the cached
+  articles' freshness as of the cache date, so the demo keeps working later.
+- **Fixed plan, no Planner call.** The two drivers are picked by a documented rule (`core/demo.py`), so the Planner model is not called in demo mode.
+- **Both demo instructions on.** The Geopolitics Analyst's first attempt cites one source (the Evaluator sends it back), and the first decision is told to be
+  aggressive (the Red Team challenges it and writes its reason). Real model calls, real checks; the flags are printed and recorded in the brief.
+- **Bounded AI calls.** 60 s timeout per call, 3 attempts, a 285 s time budget for the whole run (no call starts after it), and the model's long private
+  reasoning switched off through Nightshift (`chat_template_kwargs.enable_thinking=false`). Demo mode only: normal runs and the evaluations are unchanged.
+- **If a call still fails, the driver says so.** It is labelled **Could not verify** in the brief, the console and the evidence page, with the reason and
+  "no GBP figure - this is NOT zero impact", and the run continues.
+
+### The evidence trail page
+
+Every run (not only `--demo`) writes `output/evidence_trail.html` (`core/evidence_page.py`; one self-contained file, no scripts, no external services,
+light and dark). Top: the CFO summary (drivers, worst / likely / best, confidence, recommendation). Then, per driver: claim -> sources (publisher, tier, date, link)
+-> deterministic check results -> Evaluator verdict and any send-back -> Red Team challenge and reason -> final revision -> the GBP calculation record.
+The page is built from the same world-state report as the brief. `output/` is git-ignored; a copy of a run's page is saved next to its brief when it is kept as a sample.
 
 ### `--demo-weak-claim` (a demo flag, not hidden faking)
 
@@ -265,7 +289,7 @@ assumptions, not market quotes**, and the CFO brief points to the file under eve
 ## Sample inputs and outputs
 
 `input_examples/input_<time>.json` is saved by `main.py` for each run (the command, flags, lanes and Ganga spend read from Zetaris, no secrets);
-`output_examples/brief_<time>.md` is the CFO brief it produced; the trace is `logs/run_<time>.jsonl`. These are real runs; outputs are never edited by hand.
+`output_examples/brief_<time>.md` is the CFO brief it produced; the trace is `logs/run_<time>.jsonl`. These are real runs; outputs are never edited by hand. **They predate `--demo`, the calculator records and the evidence trail page (older output schema); fresh samples are pending, see Known limitations.**
 
 | Input | Output (brief) | What it shows |
 |---|---|---|
@@ -429,6 +453,15 @@ Nemotron model that must answer (`MODEL_*_EXPECTED`). **Every AI call line in th
 and answers 502 when a long reasoning call overruns it, so the client retries automatically (`LLM_MAX_ATTEMPTS`) and logs every failed attempt.
 
 ## Known limitations
+
+- **Demo mode has not yet produced a clean, complete run on the live runtime.** On 2026-10-24 (Nightshift 1.2.3) five consecutive `--demo` attempts each ended
+  partial: Nightshift calls took 30-170 s and several hit the 60 s timeout, so the time budget stopped the run and the affected drivers were correctly shown
+  as **Could not verify** (the degradation paths work; they are covered by `tests/test_demo_mode.py`). The slowest steps were the long geopolitics prompts and
+  the Decision Maker. One attempt finished both analysts and the Evaluator in about 3.5 minutes. The three required sample outputs for the current schema are
+  therefore still to be recorded when the runtime is healthy; the samples below predate the calculator and are labelled as such.
+- **Nemotron Super is not available on this account.** Checked 2026-10-24 on Nightshift 1.2.3: explicit model ids are honoured (a wrong id gets a clean 404), but
+  `nvidia/nemotron-3-super-120b-a12b` answers 502 `nvidia_404 ... Function not found for account` and `nvidia/llama-3.3-nemotron-super-49b-v1.5` answers 410 Gone.
+  `vidhur-evaluator` still resolves to Lightning. Planner and Evaluator therefore stay on `vidhur-analyst`.
 
 - **Two analysts of six.** Commodity, logistics, trade & tariff and supplier-health analysts are not built.
 - **Lightning is used for all agents.** The evaluator lane could not be pinned to a larger Nemotron in Nightshift: `scripts/check_lanes.py` showed `vidhur-evaluator`

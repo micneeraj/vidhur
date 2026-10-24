@@ -352,6 +352,29 @@ def deterministic_checks(claim, pool, catalog, now=None, max_age_days=None, calc
     return findings
 
 
+CHECK_GROUPS = [
+    ("Part and country exist in Ganga's Zetaris data", {"UNKNOWN_PART", "COUNTRY_MISMATCH", "UNKNOWN_COUNTRY"}),
+    ("Direction and % range are well formed", {"BAD_DIRECTION", "BAD_RANGE"}),
+    ("At least 2 sources, all of them actually fetched", {"TOO_FEW_SOURCES", "UNKNOWN_URL"}),
+    ("Sources are fresh", {"STALE_SOURCE", "STALE_SOURCES"}),
+    ("Sources are independent and one is Tier 1 or 2", {"DUPLICATE_SOURCE", "NO_TRUSTED_SOURCE", "SOURCES_NOT_INDEPENDENT"}),
+    ("Every number traces to a source, the data or the calculator", {"NUMBER_NOT_IN_SOURCE", "GBP_MISMATCH"}),
+    ("Currency and FX figures match ECB data", {"CURRENCY_COUNTRY_MISMATCH", "FX_MISMATCH", "FX_NO_DATA"}),
+]
+
+
+def check_results(findings):
+    """The deterministic checks as [{name, ok, detail}] - one row per check group, with the findings that failed it."""
+    rows = []
+    for name, codes in CHECK_GROUPS:
+        failed = [f for f in findings if f.code in codes]
+        rows.append({"name": name, "ok": not failed, "detail": " | ".join(f"{f.code}: {f.message}" for f in failed)})
+    other = [f for f in findings if not any(f.code in codes for _, codes in CHECK_GROUPS)]
+    if other:
+        rows.append({"name": "Other checks", "ok": False, "detail": " | ".join(f"{f.code}: {f.message}" for f in other)})
+    return rows
+
+
 # ---------------------------------------------------------------------------
 # The Evaluator
 # ---------------------------------------------------------------------------
@@ -385,6 +408,7 @@ class Evaluator:
             verdict = (Verdict("PASS", [reason], independent, strength, llm_checked=True) if supported
                        else Verdict("SEND_BACK", [f"NOT_SUPPORTED: {reason}"], independent, strength, llm_checked=True))
             note = ""
+        verdict.checks = check_results(findings)
         self.world.write_verdict(claim_key, verdict, retry_count)
         self.trace.event(
             self.name, "verdict", input_summary=f"{claim.claim_id} attempt {claim.attempt}: {claim.claim}",

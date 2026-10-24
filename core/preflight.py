@@ -52,7 +52,7 @@ def check_nightshift():
     name = "Nightshift (AI runtime)"
     try:
         result = llm.chat([{"role": "user", "content": "Reply with the single word: ok"}], config.analyst_model(),
-                          agent="healthcheck", step="ping", max_tokens=16, max_attempts=2, timeout=CHECK_TIMEOUT_SECONDS,
+                          agent="healthcheck", step="ping", max_tokens=300, max_attempts=2, timeout=CHECK_TIMEOUT_SECONDS,
                           expected_model=config.analyst_expected())
     except openai.AuthenticationError:
         return Check(name, False, "reachable but the token was rejected - check METERLESS_RUNTIME_TOKEN in .env")

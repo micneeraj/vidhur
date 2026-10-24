@@ -1,0 +1,26 @@
+{
+ "cached_on": "2026-10-24",
+ "note": "Raw articles fetched live on this date for `main.py --demo`.",
+ "queries": [
+  {
+   "query": "Taiwan GPU chips export controls OR sanctions OR tariffs OR tensions",
+   "articles": 56,
+   "file": "taiwan-gpu-chips-export-controls-or-sanc_9068645de1.json"
+  },
+  {
+   "query": "Taiwan GPU chips supply chain",
+   "articles": 58,
+   "file": "taiwan-gpu-chips-supply-chain_9f6d7f0098.json"
+  },
+  {
+   "query": "euro pound sterling exchange rate",
+   "articles": 67,
+   "file": "euro-pound-sterling-exchange-rate_40ceccc164.json"
+  },
+  {
+   "query": "Germany economy currency central bank euro sterling",
+   "articles": 39,
+   "file": "germany-economy-currency-central-bank-eu_032ab86439.json"
+  }
+ ]
+}
