@@ -88,6 +88,8 @@ D3 is selected by materiality (Korean HBM memory, 13% of spend) because memory i
 **What does the 3-driver live run show?**
 3-driver live run under an overloaded runtime: all three claims verified; two Red Team steps did not complete (pending review). D2 is DECISION CLEARED; D1 and D3 are DECISION PENDING REVIEW, each shown as a "Provisional recommendation" with the reason it is provisional (`output_examples/live_run_20261024_3drivers/`).
 
+In a focused D3 run, the full Red Team loop closed (3 objections defended in writing, decision cleared) (`output_examples/d3_focused_run_20261024/`).
+
 **Does every recommendation get challenged?**
 Every cleared recommendation has been challenged; incomplete challenges are marked pending review. The label is derived in code from the saved Red Team outcome (`decisions.review_state`), not written by hand.
 

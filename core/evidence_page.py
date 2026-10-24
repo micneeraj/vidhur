@@ -151,6 +151,7 @@ def _decision_html(item, decs):
     changed = f' (first proposal was {escape(dec.describe(first["kind"], first["share_pct"]))})' if outcome.get("changed") else ""
     out.append(f'<div class="step"><b class="t">{"Provisional decision (not cleared)" if state == dec.PENDING else "Final revision"}</b>{verdict} <b>{escape(dec.describe(final["kind"], final["share_pct"]))}</b>{changed}{prov}'
                f'<br>{escape(final["rationale"])}<div class="sub">{counts}</div></div>')
+    out += [f'<div class="step"><b class="t">Number consistency</b>{escape(n)}</div>' for n in dec.premium_notes(item["impact"]["baseline_quarterly_spend_gbp"], d)]
     for v in (final, first) if first is not final else (final,):
         if v["kind"] in dec.UNQUOTED:
             out.append(f'<div class="step"><b class="t">{escape(dec.describe(v["kind"], v["share_pct"]))}: cost not quantified</b>'

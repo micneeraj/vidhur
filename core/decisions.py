@@ -14,6 +14,7 @@ Scenarios: worst / likely / best (the claim's own range) and "forecast_wrong", t
 """
 
 import csv
+import re
 
 from core.config import ROOT
 
@@ -102,6 +103,10 @@ def lock_lines(impact, share_pct=100, rationale=""):
     return [LOCK_COST_LINE, f"Risk protected: {risk}.", LOCK_TRADE_OFF, LOCK_CHANGE_LINE] + ([LOCK_RATIONALE_NOTE] if "£" in rationale else [])
 
 
+def _premium(spend_gbp, kind, share_pct):
+    return spend_gbp * (share_pct / 100) * PREMIUM_PCT[kind] / 100
+
+
 def option_cost(spend_gbp, impact, kind, share_pct):
     """Change in quarterly cost for one option under each scenario, plus the premium paid. Rounded to the pound.
     An option in UNQUOTED (the price lock) has premium_gbp and every scenario cost set to None, and carries risk_protected_gbp instead."""
@@ -109,9 +114,45 @@ def option_cost(spend_gbp, impact, kind, share_pct):
     if kind in UNQUOTED:
         return {"kind": kind, "share_pct": share_pct, "premium_gbp": None, **{name: None for name in SCENARIOS},
                 "risk_protected_gbp": risk_protected_gbp(impact, share_pct), "risk_line": lock_lines(impact, share_pct)[1]}
-    premium = spend_gbp * h * PREMIUM_PCT[kind] / 100
+    premium = _premium(spend_gbp, kind, share_pct)
     cost = {name: round((1 - h) * change + premium) for name, change in scenarios(impact).items()}
     return {"kind": kind, "share_pct": share_pct, "premium_gbp": round(premium), **cost}
+
+
+_AMT = r"£(\d[\d,]*)"
+_QUOTED_PREMIUM = [re.compile(p, re.I) for p in (  # a £ figure the text gives as a premium / cost of action (not a scenario exposure or gain)
+    rf"\bpremium(?:\s+(?:of|is|was|at))?\s*\(?{_AMT}",
+    rf"{_AMT}\)?\s+(?:hedge\s+|protection\s+|insurance\s+)?(?:premium|cost)\b(?!\s+(?:increase|exposure|saving|rise|fall))",
+    rf"\bcosts?\s+(?:of\s+)?{_AMT}")]
+
+
+def quoted_premiums(text):
+    """£ amounts (ints, in order) that `text` quotes as a premium or a cost of action."""
+    found = []
+    for pattern in _QUOTED_PREMIUM:
+        found += [(m.start(), int(m.group(1).replace(",", ""))) for m in pattern.finditer(str(text or ""))]
+    return [amount for _, amount in sorted(found)]
+
+
+def premium_notes(spend_gbp, d):
+    """Number consistency: AI text (Decision Maker rationale, Red Team objection, Decision Maker response) that quotes a premium or cost of
+    action different from the one Python calculated. Rationales are checked against their own version; objections and responses against any
+    version's premium. Returns note lines; the AI text itself is never edited. A price lock has no premium, so it is skipped."""
+    versions = [v for v in (d or {}).get("versions") or [] if v["kind"] not in UNQUOTED and v["kind"] in PREMIUM_PCT and v["kind"] != "NO_ACTION"]
+    if not versions:
+        return []
+    calc = {id(v): round(_premium(spend_gbp, v["kind"], v["share_pct"])) for v in versions}
+    final = calc[id(versions[-1])]
+    texts = [(v["rationale"], {calc[id(v)]}, calc[id(v)]) for v in versions]
+    for o in d.get("objections") or []:
+        texts += [(t, set(calc.values()), final) for t in (o.get("text"), (o.get("response") or {}).get("reason"))]
+    notes = []
+    for text, accepted, shown in texts:
+        for amount in quoted_premiums(text):
+            note = f"Note: AI text quotes £{amount:,}; the calculated premium is £{shown:,} (Python). The calculated figure is the one used."
+            if amount not in accepted and note not in notes:
+                notes.append(note)
+    return notes
 
 
 def compare_options(spend_gbp, impact, chosen=None):

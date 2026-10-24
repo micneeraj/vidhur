@@ -22,6 +22,7 @@ OUT_FILE = ROOT / "output_examples" / "dashboard.html"
 RUNS = [  # (button label, folder relative to output_examples)
     ("v3 run", "demo_run_20261024_v3"),
     ("3-driver run", "live_run_20261024_3drivers"),
+    ("D3 focused run", "d3_focused_run_20261024"),
     ("Live run - could not verify", "live_run_20261024_could_not_verify"),
 ]
 QUESTION = "Why will our quarterly cost change, by how much in GBP, and what should we do?"
@@ -386,6 +387,9 @@ def _chain(run, report, item, ok, chain_id, is_open=False):
         add("Final decision" if state != dec.PENDING else "Provisional decision (not cleared)",
             f"<p>{status} <b>{escape(dec.describe(fin['kind'], fin['share_pct']))}</b>{chg}</p>{prov}<p>{escape(fin['rationale'])}</p>"
             f"<p class='sm'>{counts}</p>")
+        notes = dec.premium_notes(item["impact"]["baseline_quarterly_spend_gbp"], dv)
+        if notes:
+            add("Number consistency", "".join(f"<p>{escape(n)}</p>" for n in notes))
         lock = next((v for v in (fin, dv["versions"][0]) if v["kind"] in dec.UNQUOTED), None)
         if lock:
             add("Price lock: cost not quantified", "".join(f"<p>{escape(line)}</p>" for line in dec.lock_lines(item["impact"], lock["share_pct"], lock["rationale"])))

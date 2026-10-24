@@ -74,7 +74,7 @@ def test_d3_prompt_steers_the_argument():
 @pytest.mark.skipif(not (ROOT / "output_examples" / "live_run_20261024_3drivers" / "world_state_d9decb7d.json").exists(), reason="no saved run")
 def test_saved_3driver_run_shows_label_and_honest_lock():
     runs = dashboard.default_runs()
-    assert [r["label"] for r in runs] == ["v3 run", "3-driver run", "Live run - could not verify"]
+    assert [r["label"] for r in runs] == ["v3 run", "3-driver run", "D3 focused run", "Live run - could not verify"]
     page = dashboard.build_dashboard_html(runs)
     sec = re.search(r'<div class="run" id="run-d9decb7d">(.*?)(?=<div class="run" id=|<footer>)', page, re.S)
     assert sec and "Latest run" not in page
