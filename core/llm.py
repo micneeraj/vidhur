@@ -19,6 +19,7 @@ MAX_ATTEMPTS = int(config.env("LLM_MAX_ATTEMPTS", "5"))
 # Seconds between attempts (default 2). The evaluation jobs set LLM_RETRY_WAIT_SECONDS=60 and LLM_MAX_ATTEMPTS=4
 # (one try + 3 retries) so a busy 1.2.1 runtime gets time to recover.
 RETRY_WAIT_SECONDS = float(config.env("LLM_RETRY_WAIT_SECONDS", "2"))
+THINK_MAX_TOKENS = 8000  # demo-mode budget for think=True calls (4000 and below came back empty)
 RETRYABLE_ERRORS = (openai.APIConnectionError, openai.APITimeoutError, openai.InternalServerError)
 
 
@@ -93,8 +94,12 @@ def _client(timeout=None):
 
 
 def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000, temperature=0.2, retry_count=0,
-         expected_model=None, max_attempts=None, timeout=None):
+         expected_model=None, max_attempts=None, timeout=None, think=False):
     """Send chat messages to Nightshift. Retries automatically on network errors and runtime 5xx errors.
+
+    think=True (Decision Maker, Red Team): in fast/demo mode the model's reasoning stays ON with a larger token budget, because with it
+    off or squeezed these long-prompt calls came back empty (runtime 502 "empty_response"). An empty response is retried with a
+    1.5x larger budget each time.
 
     Logs the agent, requested model, answering model, tokens and latency to the trace.
     """
@@ -102,6 +107,7 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
     timeout = min(timeout or TIMEOUT_SECONDS, _limits["timeout"] or 10**6)
     client = _client(timeout)
     started = time.monotonic()
+    budget = max(max_tokens, THINK_MAX_TOKENS) if think and _limits["fast"] else max_tokens
     for attempt in range(1, attempts + 1):
         left = budget_left()
         if left is not None and left <= 0:
@@ -110,8 +116,8 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
             client = _client(max(left, 5))
         try:
             response = client.chat.completions.create(
-                model=model, messages=messages, max_tokens=max_tokens, temperature=temperature,
-                **({"extra_body": {"chat_template_kwargs": {"enable_thinking": False}}} if _limits["fast"] else {}),
+                model=model, messages=messages, max_tokens=budget, temperature=temperature,
+                **({"extra_body": {"chat_template_kwargs": {"enable_thinking": think}}} if _limits["fast"] else {}),
             )
             break
         except RETRYABLE_ERRORS as exc:
@@ -122,6 +128,8 @@ def chat(messages, model, agent="llm", step="chat", trace=None, max_tokens=4000,
                             llm_attempt=attempt, **error_details(exc))
             if attempt == attempts:
                 raise
+            if "empty_response" in str(exc):
+                budget = int(budget * 1.5)
             time.sleep(_limits["retry_wait"] if _limits["retry_wait"] is not None else RETRY_WAIT_SECONDS)
 
     latency_ms = int((time.monotonic() - started) * 1000)

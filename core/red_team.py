@@ -207,7 +207,7 @@ class RedTeam:
         result = llm.chat([{"role": "system", "content": SYSTEM_PROMPT + BRIEF_REASONING},
                            {"role": "user", "content": prompt}],
                           model=self.model, expected_model=self.expected_model, agent=self.name, step=step,
-                          trace=self.trace, retry_count=retry_count, max_tokens=MAX_TOKENS, max_attempts=MAX_ATTEMPTS)
+                          trace=self.trace, retry_count=retry_count, max_tokens=MAX_TOKENS, max_attempts=MAX_ATTEMPTS, think=True)
         try:
             return llm.extract_json(result.text)
         except ValueError:
