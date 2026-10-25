@@ -24,6 +24,7 @@ RUNS = [  # (button label, folder relative to output_examples)
     ("3-driver run", "live_run_20261024_3drivers"),
     ("D3 focused run", "d3_focused_run_20261024"),
     ("Live run - could not verify", "live_run_20261024_could_not_verify"),
+    ("25 Oct run - D1 contested", "live_run_20261025_3drivers"),
 ]
 QUESTION = "Why will our quarterly cost change, by how much in GBP, and what should we do?"
 CONFIDENCE_LINE = {"Low": "Low = investigate before committing money.", "Medium": "Medium = act with care.",

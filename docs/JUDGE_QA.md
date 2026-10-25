@@ -104,3 +104,6 @@ The Planner prioritises by materiality and delegates only material drivers; othe
 
 **How is this different from RAG plus a spreadsheet?**
 RAG retrieves evidence; Vidhur enforces an audit workflow: deterministic validation, send-back and retry, Python-only GBP calculation, adversarial challenge, and an explicit evidence trail.
+
+**Is the Red Team always right?**
+No. It is an AI reviewer. In one run it cleared a decision on a reason that did not fit the claim. That is listed in the README limitations, and the full debate is in the evidence trail so a human can check it.

@@ -15,7 +15,7 @@ BASE = Path(__file__).resolve().parents[1] / "output_examples"
 V3 = BASE / "demo_run_20261024_v3"
 LIVE = BASE / "live_run_20261024_could_not_verify"
 THREE = BASE / "live_run_20261024_3drivers"
-FOLDERS = {"b25b249f": V3, "d9decb7d": THREE, "334f4e92": BASE / "d3_focused_run_20261024", "5b82b132": LIVE}
+FOLDERS = {"b25b249f": V3, "d9decb7d": THREE, "334f4e92": BASE / "d3_focused_run_20261024", "5b82b132": LIVE, "b896719b": BASE / "live_run_20261025_3drivers"}
 
 pytestmark = pytest.mark.skipif(not (V3 / "world_state_b25b249f.json").exists() or not (LIVE / "world_state_5b82b132.json").exists()
                                 or not (THREE / "world_state_d9decb7d.json").exists(),
@@ -25,7 +25,7 @@ pytestmark = pytest.mark.skipif(not (V3 / "world_state_b25b249f.json").exists() 
 @pytest.fixture(scope="module")
 def runs():
     r = dashboard.default_runs(BASE)
-    assert [x["run_id"] for x in r] == ["b25b249f", "d9decb7d", "334f4e92", "5b82b132"]  # switcher order
+    assert [x["run_id"] for x in r] == ["b25b249f", "d9decb7d", "334f4e92", "5b82b132", "b896719b"]  # switcher order
     return r
 
 
@@ -139,7 +139,7 @@ def test_no_secrets_in_the_page(page):
 
 def test_write_dashboard_is_self_contained(tmp_path, runs):
     out = dashboard.write_dashboard(runs, tmp_path / "dashboard.html")
-    assert out.exists() and out.read_text(encoding="utf-8").count('<div class="run"') == 4
+    assert out.exists() and out.read_text(encoding="utf-8").count('<div class="run"') == 5
 
 
 # ---- empty runs are never shown, and tests never register a run -------------------------------------------
@@ -159,7 +159,7 @@ def test_empty_run_with_no_drivers_or_model_calls_is_not_real(runs):
 
 def test_empty_run_is_left_out_of_the_page(runs, tmp_path):
     page = dashboard.build_dashboard_html(runs + [_fake_run(0)])
-    assert "Latest run (fake)" not in page and page.count('<div class="run"') == 4
+    assert "Latest run (fake)" not in page and page.count('<div class="run"') == 5
     out = dashboard.write_dashboard(runs + [_fake_run(0)], tmp_path / "d.html")
     assert "Latest run (fake)" not in out.read_text(encoding="utf-8")
 
@@ -167,7 +167,7 @@ def test_empty_run_is_left_out_of_the_page(runs, tmp_path):
 def test_default_view_is_the_v3_run(page, runs):
     assert re.search(r'<button type="button" data-run="run-b25b249f" data-default="1">v3 run</button>', page)
     assert page.count("data-default") == 2  # the attribute on the v3 button, and the JS lookup
-    assert re.findall(r'data-run="run-\w+"[^>]*>([^<]+)</button>', page) == ["v3 run", "3-driver run", "D3 focused run", "Live run - could not verify"]
+    assert re.findall(r'data-run="run-\w+"[^>]*>([^<]+)</button>', page) == ["v3 run", "3-driver run", "D3 focused run", "Live run - could not verify", "25 Oct run - D1 contested"]
     assert "Latest run" not in page
 
 

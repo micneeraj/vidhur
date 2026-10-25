@@ -1,0 +1,100 @@
+{
+  "command": "python main.py --demo",
+  "run_id": "a534e88a",
+  "flags": {
+    "demo_weak_claim": true,
+    "demo_untrusted_source": false,
+    "demo_red_team": true,
+    "demo": true,
+    "workers": 2,
+    "refresh_news": false
+  },
+  "config": {
+    "analyst_lane": "vidhur-analyst",
+    "evaluator_planner_lane": "vidhur-analyst",
+    "evidence_max_age_days": 30
+  },
+  "ganga_spend_from_zetaris": [
+    {
+      "part_id": "P001",
+      "part_name": "GangaAccel GA100 GPU Chip",
+      "category": "GPU chips",
+      "country": "Taiwan",
+      "supplier_name": "Formosa Silicon Forge Ltd",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 1344975.0,
+      "currency": "USD"
+    },
+    {
+      "part_id": "P006",
+      "part_name": "GangaCool Direct-to-Chip Loop",
+      "category": "liquid cooling units",
+      "country": "Germany",
+      "supplier_name": "Bavaria Thermal Systems GmbH",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 469237.5,
+      "currency": "EUR"
+    },
+    {
+      "part_id": "P002",
+      "part_name": "GangaHBM-8H Memory Stack",
+      "category": "HBM memory",
+      "country": "South Korea",
+      "supplier_name": "Hanseong Memory Works",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 330120.0,
+      "currency": "USD"
+    },
+    {
+      "part_id": "P007",
+      "part_name": "GangaRare GaN Power Die Mix",
+      "category": "gallium/rare earth components",
+      "country": "China",
+      "supplier_name": "Jiangxi Rare Element Materials",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 145860.0,
+      "currency": "USD"
+    },
+    {
+      "part_id": "P005",
+      "part_name": "GangaPower 3kW PSU",
+      "category": "power supply units",
+      "country": "China",
+      "supplier_name": "Guangdong PowerForge",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 76651.5,
+      "currency": "USD"
+    },
+    {
+      "part_id": "P008",
+      "part_name": "GangaFrame 42U Chassis Rack",
+      "category": "chassis and racks",
+      "country": "Malaysia",
+      "supplier_name": "Penang Chassis & Rack Industries",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 75795.0,
+      "currency": "USD"
+    },
+    {
+      "part_id": "P003",
+      "part_name": "GangaCore ABF Substrate",
+      "category": "chip substrates",
+      "country": "Japan",
+      "supplier_name": "Kanto Substrate Co",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 66975.0,
+      "currency": "USD"
+    },
+    {
+      "part_id": "P004",
+      "part_name": "GangaBoard 8-Layer Server PCB",
+      "category": "server PCBs",
+      "country": "China",
+      "supplier_name": "Shenzhen Circuit Peak",
+      "quarter": "2026-Q3",
+      "quarterly_spend_gbp": 44352.0,
+      "currency": "USD"
+    }
+  ],
+  "trace_file": "logs/run_20261024_163112.jsonl"
+}
