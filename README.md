@@ -8,6 +8,8 @@ Vidhur turns scattered market events and company spend into a CFO-ready (for cle
 
 *Open Agent Hackathon 2026 (GenAI Works), Track 2 - "The Agent That Can Explain Why".*
 
+**Demo video:** https://youtu.be/ES1LQz7ZrkQ
+
 **Professional scepticism.** The **Evaluator** and the **Red Team** are Vidhur's *professional scepticism* layer: the auditor's way of never accepting a
 claim, or a recommendation, without evidence. The Evaluator will not let a claim reach the CFO unless independent, fresh, trusted sources support it and it matches
 Ganga's own data; the Red Team then attacks the resulting decision before the CFO sees it. The Evaluator checks every number in a claim against the cited
@@ -264,7 +266,7 @@ The three Zetaris tables (`ganga.parts`, `ganga.suppliers`, `ganga.purchases`) h
 | `suppliers` | `supplier_id`, `supplier_name`, `country`, `part_category` |
 | `purchases` | `quarter`, `part_id`, `quantity`, `currency`, `unit_price`, `unit_price_gbp`, `gbp_per_currency_unit`, `total_gbp` |
 
-**Ganga AI Solutions is fictional and its data is synthetic**, prepared before the build window. Everything in `data/` (parts, suppliers, quarterly prices
+**Ganga AI Solutions is fictional and its data is synthetic**, generated during the build window. Everything in `data/` (parts, suppliers, quarterly prices
 and quantities) is made up; see `data/README_DATA.md`. The **evidence is real**: news from free RSS feeds (Google News search plus BBC, The Guardian,
 Al Jazeera, NPR, DW) and exchange rates from the free ECB-based Frankfurter API.
 
@@ -313,7 +315,7 @@ Three analysts (geopolitics, currency, supplier & commodity) exist today. **Addi
 
 This is a small test set of builder-written cases with synthetic articles, run once. It shows what the Evaluator catches and what it misses; it is not a benchmark and not a general accuracy figure.
 
-**Tests.** 331 automated tests pass (`python -m pytest tests`); 2 more integration tests skip when Zetaris or Nightshift are down.
+**Tests.** 331 automated tests pass with no `.env` (`python -m pytest tests`); 2 more integration tests skip when Zetaris or Nightshift are down.
 
 Two evaluations were built to test the "professional scepticism" layer honestly. Both use real runs (traces in `logs/`), no mocks and no cached model replies.
 Nightshift 1.2.1 often returned 502 during this work, which limited what could be completed. **All figures below are one run, a small sample, with synthetic company
@@ -580,10 +582,10 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 ## Limitations
 
 - **Nemotron Super is not available on this account (404).** Checked 2026-10-24 on Nightshift 1.2.3: `nvidia/nemotron-3-super-120b-a12b` answers 502 `nvidia_404 ... Function not found for account` and `nvidia/llama-3.3-nemotron-super-49b-v1.5` answers 410 Gone. `vidhur-evaluator` still resolves to Lightning, so every agent runs on Lightning (`vidhur-analyst`). That means **no cross-model check: the same model drafts, audits and challenges.** The separation is of roles and prompts, not of models. If a larger lane is fixed, set `MODEL_EVALUATOR` / `MODEL_EVALUATOR_EXPECTED` in `.env`.
-- **Live runs are slow and the runtime is flaky.** Demo runs took 341-990 s (about 6-16 minutes); full runs take 15-20 minutes on a healthy runtime and longer when it is busy, because there are many sequential model calls against a per-request deadline of about 45 s. Nightshift 502s (`provider_error`, `empty_response`, `provider_deadline`) can stop a step. Vidhur then retries with bounded attempts and timeouts, finishes with **partial results labelled honestly** ("Red Team review could not run", "Could not verify"), saves what completed, and exits non-zero (`2`). The JSONL trace shows where it failed. Several kept sample runs are partial for this reason and are marked so.
+- **Live runs are slow and the runtime is flaky.** Demo runs took about 6-25 minutes (341-1502 s); full runs take 15-20 minutes on a healthy runtime and longer when it is busy, because there are many sequential model calls against a per-request deadline of about 45 s. Nightshift 502s (`provider_error`, `empty_response`, `provider_deadline`) can stop a step. Vidhur then retries with bounded attempts and timeouts, finishes with **partial results labelled honestly** ("Red Team review could not run", "Could not verify"), saves what completed, and exits non-zero (`2`). The JSONL trace shows where it failed. Several kept sample runs are partial for this reason and are marked so.
 - **TWD is proxied by USD.** The ECB does not publish a Taiwan dollar rate. Zetaris prices the Taiwan GPU in USD, and the backtest uses USD as the proxy for TWD; Vidhur's own Currency Analyst reports "no data" for TWD and is skipped for that part. A production version would use a treasury or FX provider with direct TWD rates (not built).
 - **Freight is left out.** There is no freight analyst; Ganga's high-value parts mostly ship by air, so freight is a small share of landed cost, but it is not modelled. Duties and part-price changes are not modelled either.
-- **Two analysts today.** Geopolitics and currency only. Commodity, logistics, trade and supplier-health analysts are not built.
+- **Three analysts today.** Geopolitics, currency, and supplier & commodity. Logistics, trade and supplier-health analysts are not built.
 - **The deterministic checks miss 3 of 20 planted claims** (cause not supported, F17; wrong date, F19 and F20). Those need the model check, which is itself one small model; in the recorded AI-assisted run it caught 2 of the 3 (F17, F20) and F19 could not be evaluated, so no 3/3 or 20/20 is claimed.
 - **The synthetic data is declared.** Ganga AI Solutions and its purchase history are made up; news and FX are real.
 - **The backtest is future work.** It produced no scored result (see Evaluation); no claim is made that Vidhur beats a baseline.

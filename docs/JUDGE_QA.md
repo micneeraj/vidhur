@@ -34,7 +34,7 @@ baselines is future work, so we make no accuracy claim.
 **Why use this instead of an analyst?**
 Before: an analyst checks the news, FX and supplier exposure by hand, builds a spreadsheet and spends hours defending the assumptions. After: Vidhur
 produces a ranked cost-impact brief with citations, a calculation record for every figure, the Red Team's objections and a recommended action,
-in minutes (a live `--demo` run took 341-990 s, about 6-16 minutes). The point is traceability, not replacing the analyst: every GBP figure can be re-derived
+in minutes (a live `--demo` run took about 6-25 minutes (341-1502 s)). The point is traceability, not replacing the analyst: every GBP figure can be re-derived
 from the input rows, FX rate and date, formula and assumptions shown in the brief, every claim shows the sources and tiers behind it, and every
 recommendation shows what was objected to and why it stood or changed. A person still decides.
 

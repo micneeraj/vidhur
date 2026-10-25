@@ -22,6 +22,14 @@ from core.zetaris_client import ZetarisClient, ZetarisUnreachable
 REQ = httpx.Request("POST", "http://127.0.0.1:8088/v1/chat/completions")
 
 
+def _placeholder_env(monkeypatch):
+    """The .env.example placeholders, so these tests pass on a fresh clone with no .env."""
+    for name, value in (("METERLESS_BASE_URL", "http://127.0.0.1:8088/v1"), ("METERLESS_RUNTIME_TOKEN", "your_token_here"),
+                        ("MODEL_ANALYST", "vidhur-analyst"), ("MODEL_ANALYST_EXPECTED", "nvidia/nemotron-3.5-lightning-30b-a3b"),
+                        ("MODEL_EVALUATOR", "vidhur-analyst"), ("MODEL_EVALUATOR_EXPECTED", "nvidia/nemotron-3.5-lightning-30b-a3b")):
+        monkeypatch.setenv(name, value)
+
+
 def busy():
     return openai.InternalServerError("502 provider_error", response=httpx.Response(502, request=REQ), body=None)
 
@@ -121,6 +129,7 @@ def test_main_stops_early_when_a_required_check_fails(monkeypatch, capsys):
 
 # ---- a runtime outage mid-run ------------------------------------------------------------------
 def test_planner_outage_gives_a_partial_brief_and_nonzero_exit(monkeypatch, tmp_path, capsys):
+    _placeholder_env(monkeypatch)
     target = types.SimpleNamespace(part_id="P001", part_name="GPU", category="c", country="Taiwan", supplier_name="Formosa",
                                    quarter="2026Q3", quarterly_spend_gbp=1000.0)
     monkeypatch.setattr(vidhur_main, "run_checks", lambda: [Check("all", True, "ok")])
@@ -246,6 +255,7 @@ def test_brief_shows_the_unresolved_challenge_not_a_red_team_that_did_not_run():
 
 
 def test_run_decisions_records_objections_already_raised_when_the_response_call_fails(tmp_path, monkeypatch):
+    _placeholder_env(monkeypatch)
     import openai
     from agents import decision_maker
     from core.shared_state import RunWorld
