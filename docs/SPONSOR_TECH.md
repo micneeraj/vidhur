@@ -46,5 +46,5 @@ Company data is synthetic for privacy. News is cached and dated for reproducibil
 
 ## Claude Code - the coding tool
 
-Vidhur was written with Claude Code (Anthropic's coding agent) working with the builder. It is a development tool only: Claude is not called
+Vidhur was built with Cursor (Day 1 project skeleton and synthetic data) and Claude Code (the rest of the build), working with the builder. Claude Code is Anthropic's coding agent. It is a development tool only: Claude is not called
 by the product at run time. The organisers made Cursor optional.

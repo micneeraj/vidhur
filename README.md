@@ -152,7 +152,7 @@ What happens in a run (`python main.py`):
 - **Meterless Nightshift - the only AI provider.** Every model call goes through `core/llm.py` to the Nightshift OpenAI-compatible endpoint. There is no other AI provider in the code.
 - **NVIDIA Nemotron - the model.** Nightshift lanes resolve to Nemotron. Every AI call line in the trace records `requested_lane`, `answered_model` and `pin_honoured`,
   so the evidence of which Nemotron model actually answered is in the trace files (`logs/run_*.jsonl`). `python scripts/check_lanes.py` re-tests the lanes.
-- **Built with Claude Code.** The organisers made Cursor optional, so this was built with Claude Code.
+- **Built with Cursor (Day 1 project skeleton and synthetic data) and Claude Code (the rest of the build).** The organisers made Cursor optional.
 
 ### Numbers are calculated in Python
 
@@ -577,7 +577,7 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 
 - **Trusted-source ranking** - evidence is ranked by publisher trust (Reuters, BBC, Bloomberg and similar ranked higher) as well as relevance before it reaches the AI.
 - Zetaris (data layer), Meterless (World Model spec, Nightshift runtime) and NVIDIA (Nemotron) technology as described above.
-- Built for the Open Agent Hackathon 2026 with Claude Code.
+- Built for the Open Agent Hackathon 2026 with Cursor (Day 1 project skeleton and synthetic data) and Claude Code (the rest of the build).
 
 ## Limitations
 
