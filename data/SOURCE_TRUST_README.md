@@ -10,4 +10,3 @@ A **curated, editable config** - not a ground truth. Each row maps a publisher's
 
 Add or change rows freely; subdomains match automatically (`uk.reuters.com` counts as `reuters.com`). Matching by
 `publisher` name is the fallback when a URL is an aggregator link (Google News). Used by `core/source_trust.py`
-

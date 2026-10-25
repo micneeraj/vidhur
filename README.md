@@ -219,7 +219,6 @@ The Evaluator checks the **claims**; the **Red Team** checks the **decision** bu
 
 ### Trusted-source ranking
 
-
 Not every source is equal, so Vidhur ranks evidence by who published it, not only by how relevant it is.
 
 - **The list** is `data/source_trust.csv` (`domain,publisher,tier,score`), a curated, editable config (see `data/SOURCE_TRUST_README.md`).
@@ -574,6 +573,7 @@ and answers 502 when a long reasoning call overruns it, so the client retries au
 
 ## Credits
 
+- **Trusted-source ranking** - evidence is ranked by publisher trust (Reuters, BBC, Bloomberg and similar ranked higher) as well as relevance before it reaches the AI.
 - Zetaris (data layer), Meterless (World Model spec, Nightshift runtime) and NVIDIA (Nemotron) technology as described above.
 - Built for the Open Agent Hackathon 2026 with Claude Code.
 
