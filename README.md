@@ -23,7 +23,7 @@ How well that works is measured, not asserted: see **Initial adversarial evaluat
 | **Before** | An analyst manually checks the news, FX rates and supplier exposure, builds a spreadsheet, and spends hours defending the assumptions in it. |
 | **After** | Vidhur produces a ranked cost-impact brief with citations, calculation records, Red Team objections and a recommended action in minutes. |
 
-The honest number for "minutes": a live `--demo` run (two drivers, before the third analyst was added) took **341 s to 990 s (about 6 to 16 minutes)** across the five recent runs, and the two kept complete runs took 738 s and 905 s. A full run is 15-20 minutes on a healthy runtime and longer when the runtime is busy. That time buys verification (parallel analysts, SQL cross-checks, deterministic checks, a Red Team loop), not just text generation.
+The honest number for "minutes": a live `--demo` run (two drivers, before the third analyst was added) took **341 s to 1502 s (about 6 to 25 minutes)** across the five recent runs, and the two kept complete runs took 738 s and 905 s. A full run is 15-20 minutes on a healthy runtime and longer when the runtime is busy. That time buys verification (parallel analysts, SQL cross-checks, deterministic checks, a Red Team loop), not just text generation.
 
 ## Three proof moments
 

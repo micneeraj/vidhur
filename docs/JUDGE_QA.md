@@ -40,7 +40,7 @@ recommendation shows what was objected to and why it stood or changed. A person 
 
 **Why does a live run take 7-12 minutes?**
 Speed is traded for verification: analysts run in parallel, claims are cross-checked against Zetaris with SQL, the deterministic checks run before any model
-opinion, and the Decision Maker and Red Team loop through up to 2 challenge rounds. Observed demo-run times were 341 to 990 s (about 6-16 minutes; 422, 738 and 905 s for the runs kept as samples), so "7-12 minutes" is a common figure, not
+opinion, and the Decision Maker and Red Team loop through up to 2 challenge rounds. Observed demo-run times were 341 s to 1502 s (about 6 to 25 minutes; 422, 738 and 905 s for the runs kept as samples), so "7-12 minutes" is a common figure, not
 a guarantee; a full run is 15-20 minutes on a healthy runtime. Demo mode uses cached, dated news evidence so the run is reproducible (ECB FX rates are fetched live). We do not
 claim zero hallucination. On our planted-claims set the deterministic checks caught 17 of 20 false claims, and **3 of 20 still slipped through**: one
 "cause not supported" claim (F17) and two "wrong date" claims (F19, F20). Those are about meaning, so they depend on the AI support check: in the recorded AI-assisted run (20261023_220200) it caught 2/3 (F17, F20) and F19 could not be evaluated (502 after retries); it was not evaluated as a separate metric in this 25-case set. The set is small,
