@@ -8,7 +8,7 @@ Vidhur turns scattered market events and company spend into a CFO-ready (for cle
 
 *Open Agent Hackathon 2026 (GenAI Works), Track 2 - "The Agent That Can Explain Why".*
 
-**Demo video:** https://youtu.be/ES1LQz7ZrkQ
+**Demo video:** https://youtu.be/R1WDqeuAmkk
 
 **Professional scepticism.** The **Evaluator** and the **Red Team** are Vidhur's *professional scepticism* layer: the auditor's way of never accepting a
 claim, or a recommendation, without evidence. The Evaluator will not let a claim reach the CFO unless independent, fresh, trusted sources support it and it matches
