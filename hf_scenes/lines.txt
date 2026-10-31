@@ -1,0 +1,18 @@
+01|AI tools can make up numbers, and in finance one wrong number can cost real money.
+02|This is Vidhur, an AI auditor for cost decisions, built for a GPU company called Ganga AI Solutions.
+03|In Vidhur, Zetaris is the evidence room, so every number must match real rows in Zetaris.
+04|Here is Zetaris running live on my laptop, with the company's data and a live web feed from the European Central Bank sitting side by side.
+05|This is Ganga's purchase data, with parts, supplier countries, prices and quantities.
+06|These exchange rates are fetched live from the European Central Bank when the query runs, straight into SQL with no pipeline to build.
+07|One SQL query joins the company data with the live market data and gives the pound exposure for each part, and Taiwan GPUs come out on top at about one point three four million pounds.
+08|As an auditor, I also test the data itself, so I added audit rules in the Zetaris Unified Semantic Layer.
+09|The rule checks every purchase, finds one bad row out of two hundred and forty nine, and shows exactly which one, which here is a planted demo row.
+10|Now an agent claims the Korean memory part costs three point three million pounds, so Vidhur checks it against Zetaris, finds the real figure is about three hundred and twenty eight thousand, and sends the claim back.
+11|A claim that matches Zetaris passes, because there is no number without proof.
+W1|My wow moment with Zetaris came on setup day, when a public web API turned into a SQL table and returned rows in seconds.
+W2|That is when it clicked for me that live market data could sit right next to my company data, with no pipeline to build.
+W3|I am an auditor, not a developer, but I had Zetaris running in Docker on my own laptop and joined both sources with a single query.
+W4|What surprised me most were the audit rules, because I could put my auditor checks on the data itself and Zetaris showed me the exact bad row.
+W5|And when my AI agents produced pound figures ten times too big, checking them against Zetaris is what caught them.
+W6|For me, Zetaris became the auditor's evidence room for AI.
+12|Vidhur was built with Claude Code and Cursor, with Zetaris as the source of truth. No number without proof. Thank you.

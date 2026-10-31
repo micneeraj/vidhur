@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1920, height=1080">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+:root{--navy:#0B1220;--teal:#14B8A6;--ink:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy);font-family:Inter,sans-serif}
+#root{position:relative;width:1920px;height:1080px;background:radial-gradient(ellipse at 50% 35%,#16253d 0%,#0B1220 65%)}
+#stage{position:absolute;left:0;top:0;width:1920px;height:960px;perspective:2200px}
+#panel{position:absolute;left:180px;top:22px;width:1560px;height:915px;border-radius:18px;overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 0 1px rgba(20,184,166,.35);transform-origin:50% 50%;background:#000}
+#v{width:1560px;height:915px;object-fit:cover;display:block}
+#lt{position:absolute;left:60px;top:990px;display:flex;align-items:center;gap:14px;padding:12px 26px 12px 18px;
+  background:rgba(11,18,32,.92);border-left:5px solid var(--teal);border-radius:8px;color:var(--ink);font-weight:600;font-size:30px;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);opacity:0}
+#lt i{width:12px;height:12px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal)}
+</style></head>
+<body>
+<div id="root" data-composition-id="l05" data-start="0" data-duration="8.14" data-width="1920" data-height="1080">
+  <div id="stage"><div id="panel">
+    <video id="v" class="clip" data-start="0" data-duration="8.14" data-track-index="0" src="media/L05.mp4" muted playsinline></video>
+  </div></div>
+  <div id="lt" class="clip" data-start="0" data-duration="8.14" data-track-index="1"><i></i><span></span></div>
+</div>
+<script>
+const D=8.14, tl=gsap.timeline({paused:true});
+tl.fromTo("#panel",{rotationY:-9,rotationX:5,scale:.9,opacity:0},{rotationY:0,rotationX:0,scale:1,opacity:1,duration:1.4,ease:"power3.out"},0);
+tl.to("#panel",{scale:1.02,duration:Math.max(D-1.4,.1),ease:"none"},1.4);
+if(0){tl.fromTo("#lt",{x:-60,opacity:0},{x:0,opacity:1,duration:.6,ease:"power3.out"},0);
+  tl.to("#lt",{opacity:0,duration:.4},Math.max(D-.6,0+1));}
+window.__timelines=window.__timelines||{};window.__timelines["l05"]=tl;tl.seek(0);
+</script></body></html>

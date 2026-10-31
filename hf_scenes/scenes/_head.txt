@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1920, height=1080">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:1920px;height:1080px;overflow:hidden;background:#0B1220;font-family:Inter,sans-serif;color:#fff}
+#root{position:relative;width:1920px;height:1080px}canvas{position:absolute;inset:0;width:1920px;height:1080px}
+.t{position:absolute;left:0;width:1920px;text-align:center;opacity:0}
+.h1{font-size:78px;font-weight:800;letter-spacing:-.02em}.h2{font-size:38px;font-weight:400;color:#b6c4d6}
+.teal{color:#14B8A6}.amber{color:#F59E0B}
+.lbl{position:absolute;transform:translate(-50%,0);font-size:30px;font-weight:600;padding:8px 18px;border-radius:8px;background:rgba(11,18,32,.8);border:1px solid rgba(20,184,166,.5);opacity:0;white-space:nowrap}
+</style></head><body>

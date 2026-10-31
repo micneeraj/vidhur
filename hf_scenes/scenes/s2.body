@@ -1,0 +1,44 @@
+<div id="root" data-composition-id="s2" data-start="0" data-duration="8.4" data-width="1920" data-height="1080">
+<canvas id="c" class="clip" data-start="0" data-duration="8.4" data-track-index="0"></canvas>
+<div id="h" class="t h1 clip" style="top:70px;font-size:64px" data-start="0" data-duration="8.4" data-track-index="1">Zetaris is the <span class="teal">evidence room</span></div>
+<div id="l0" class="lbl clip" data-start="0" data-duration="8.4" data-track-index="2">Ganga purchase records</div>
+<div id="l1" class="lbl clip" data-start="0" data-duration="8.4" data-track-index="3">Live ECB rates</div>
+<div id="l2" class="lbl clip" data-start="0" data-duration="8.4" data-track-index="4">Audit rules</div>
+<div id="l3" class="lbl clip" data-start="0" data-duration="8.4" data-track-index="5" style="color:#5eead4">Zetaris</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#h",{opacity:0,y:20},{opacity:1,y:0,duration:.8},.2);
+["#l0","#l1","#l2"].forEach((s,i)=>tl.fromTo(s,{opacity:0},{opacity:1,duration:.5},1.0+i*.6));
+tl.fromTo("#l3",{opacity:0},{opacity:1,duration:.5},3.0);tl.to("#root .t,#root .lbl",{opacity:0,duration:.4},7.9);
+window.__timelines=window.__timelines||{};window.__timelines["s2"]=tl;tl.seek(0);
+</script>
+<script type="module">
+import {THREE,setup,zetarisCylinder,animateCylinder,shield,recordStack,coinGlobe,ease,clamp01,TEAL} from "./z3d.js";
+const {renderer,scene,camera}=setup(document.getElementById("c"));
+const cyl=zetarisCylinder();cyl.scale.setScalar(.85);cyl.position.set(0,-.35,0);scene.add(cyl);
+const objs=[recordStack(),coinGlobe(),shield()];
+const pos=[[-3.6,.3,.4],[0,1.75,-1.2],[3.6,.3,.4]];
+objs.forEach((o,i)=>{o.scale.setScalar(.8);o.position.set(...pos[i]);scene.add(o);});
+// light beams: tubes + travelling particles
+const beams=[],parts=[];
+objs.forEach((o,i)=>{const a=new THREE.Vector3(...pos[i]),b=new THREE.Vector3(0,-.2,0);
+  const curve=new THREE.QuadraticBezierCurve3(a,new THREE.Vector3((a.x)/2,a.y+.9,(a.z)/2),b);
+  const tube=new THREE.Mesh(new THREE.TubeGeometry(curve,64,.02,8),new THREE.MeshBasicMaterial({color:TEAL,transparent:true,opacity:0}));
+  scene.add(tube);beams.push({tube,curve});
+  for(let k=0;k<6;k++){const p=new THREE.Mesh(new THREE.SphereGeometry(.05,12,12),new THREE.MeshBasicMaterial({color:0x99f6e4,transparent:true}));scene.add(p);parts.push({p,curve,k,i});}});
+const v=new THREE.Vector3();
+function place(id,o,dy,dx=0){v.copy(o.position);v.y+=dy;v.project(camera);const el=document.getElementById(id);
+  el.style.left=((v.x+1)/2*1920+dx)+"px";el.style.top=((1-v.y)/2*1080)+"px";}
+function R(t){
+  camera.position.set(Math.sin(t*.07)*1.5,1.6,10.5-.6*ease(t/8));camera.lookAt(0,.2,0);
+  animateCylinder(cyl,t);
+  objs.forEach((o,i)=>{o.rotation.y=t*.5+i;o.position.y=pos[i][1]+Math.sin(t*1.2+i)*.08; const s=.8*ease((t-.6-i*.5)/.9)+.001;o.scale.setScalar(s);});
+  objs[1].rotation.y=t*.8;
+  beams.forEach((b,i)=>b.tube.material.opacity=.45*clamp01((t-2.2-i*.3)/.8));
+  parts.forEach(({p,curve,k,i})=>{const on=t>2.4+i*.3;p.visible=on;const u=((t-2.4)*.45+k/6)%1;curve.getPoint(u,p.position);p.material.opacity=Math.sin(u*Math.PI);});
+  renderer.render(scene,camera);
+  place("l0",objs[0],-1.1);place("l1",objs[1],0.1,300);place("l2",objs[2],-1.15);place("l3",cyl,1.15);
+}
+addEventListener("hf-seek",e=>R(e.detail.time));R(window.__hfThreeTime||0);
+</script></body></html>

@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1920, height=1080">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:1920px;height:1080px;overflow:hidden;background:#0B1220;font-family:Inter,sans-serif;color:#fff}
+#root{position:relative;width:1920px;height:1080px}canvas{position:absolute;inset:0;width:1920px;height:1080px}
+.t{position:absolute;left:0;width:1920px;text-align:center;opacity:0}
+.h1{font-size:78px;font-weight:800;letter-spacing:-.02em}.h2{font-size:38px;font-weight:400;color:#b6c4d6}
+.teal{color:#14B8A6}.amber{color:#F59E0B}
+.lbl{position:absolute;transform:translate(-50%,0);font-size:30px;font-weight:600;padding:8px 18px;border-radius:8px;background:rgba(11,18,32,.8);border:1px solid rgba(20,184,166,.5);opacity:0;white-space:nowrap}
+</style></head><body>
+<div id="root" data-composition-id="s3" data-start="0" data-duration="2" data-width="1920" data-height="1080">
+<canvas id="c" class="clip" data-start="0" data-duration="2" data-track-index="0"></canvas>
+<div id="sb" class="t h1 clip" style="top:150px;color:#EF4444" data-start="0" data-duration="2" data-track-index="1">SENT BACK</div>
+<div id="ok" class="t h1 clip" style="top:150px;color:#22C55E" data-start="0" data-duration="2" data-track-index="2">PASS</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#sb",{opacity:0,scale:.8},{opacity:1,scale:1,duration:.2},.62).to("#sb",{opacity:0,duration:.15},1.12)
+  .fromTo("#ok",{opacity:0},{opacity:1,duration:.2},1.55);
+window.__timelines=window.__timelines||{};window.__timelines["s3"]=tl;tl.seek(0);
+</script>
+<script type="module">
+import {THREE,setup,zetarisCylinder,animateCylinder,textTex,ease,clamp01} from "./scenes/z3d.js";
+const {renderer,scene,camera}=setup(document.getElementById("c"));
+const cyl=zetarisCylinder();cyl.position.y=-.3;scene.add(cyl);
+const mk=(txt,col)=>new THREE.Mesh(new THREE.PlaneGeometry(2.4,.6),new THREE.MeshBasicMaterial({map:textTex(txt,{color:col,size:170,glow:col}),transparent:true,depthWrite:false,side:THREE.DoubleSide}));
+const big=mk("£3.3m","#ffffff"),bigR=mk("£3.3m","#EF4444"),small=mk("£328k","#22C55E");[big,bigR,small].forEach(m=>scene.add(m));
+camera.position.set(0,.8,8);camera.lookAt(0,0,0);
+function R(t){
+  animateCylinder(cyl,t*2);
+  // £3.3m flies in from left-front, hits at 0.6s, bounces back red
+  const hit=.6;
+  if(t<hit){const u=ease(t/hit);big.position.set(-6+4.6*u,.3,3-2*u);big.rotation.y=.6*(1-u);}
+  else{const u=ease((t-hit)/.6);big.position.set(-1.4-3.2*u,.3+.6*Math.sin(u*Math.PI)*.5,1+1.5*u);big.rotation.z=.4*u;}
+  big.visible=t<hit;bigR.visible=t>=hit&&t<1.25;bigR.position.copy(big.position);bigR.rotation.copy(big.rotation);
+  // £328k passes through to the right
+  small.visible=t>1.15;const s=clamp01((t-1.15)/.85);small.position.set(-5+10*s,.3,1.2);
+  cyl.rings.forEach(r=>r.material.color.set(t>=hit&&t<1.0?0xEF4444:(t>1.5?0x22C55E:0x14B8A6)));
+  renderer.render(scene,camera);
+}
+addEventListener("hf-seek",e=>R(e.detail.time));R(window.__hfThreeTime||0);
+</script></body></html>

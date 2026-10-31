@@ -1,0 +1,5 @@
+Zetaris let a non-coder auditor turn company data and live market data into one SQL source of truth, so my AI agents can't get away with a made-up number.
+
+- Live ECB REST table: the European Central Bank FX feed is registered in Zetaris as a SQL table (ganga_live.fx_live), fetched live at query time with no pipeline.
+- Federated join + USL audit rules: one SQL query joins Ganga's purchase data with the live rates for GBP exposure, and Unified Semantic Layer data-quality rules flag the exact bad row (1 of 249).
+- Evaluator checks claims against Zetaris: Vidhur's Evaluator re-runs the SQL in Zetaris and sends back any agent figure that doesn't match (GBP 3.3m claim vs real GBP 328,502).

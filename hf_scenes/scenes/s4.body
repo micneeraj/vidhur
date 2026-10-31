@@ -1,0 +1,43 @@
+<div id="root" data-composition-id="s4" data-start="0" data-duration="58.5" data-width="1920" data-height="1080">
+<canvas id="c" class="clip" data-start="0" data-duration="58.5" data-track-index="0"></canvas>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});tl.to({},{duration:58.5},0);
+window.__timelines=window.__timelines||{};window.__timelines["s4"]=tl;tl.seek(0);
+</script>
+<script type="module">
+import {THREE,setup,zetarisCylinder,animateCylinder,textPlane,ease,clamp01} from "./z3d.js";
+const {renderer,scene,camera,floor}=setup(document.getElementById("c"));
+const title=textPlane("My WOW moment",6.4,{size:150,weight:800,glow:"#14B8A6",w:2048,h:256});scene.add(title);
+const cyl=zetarisCylinder();cyl.scale.setScalar(.55);cyl.position.set(0,-1,-.5);scene.add(cyl);
+const L=new THREE.TextureLoader(),cards=[];
+["c3","c4","c6","c7"].forEach((n,i)=>{const tex=L.load("assets/"+n+".jpg");tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;
+  const g=new THREE.Group();
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(3.2,1.876),new THREE.MeshBasicMaterial({map:tex,toneMapped:false}));g.add(m);
+  const fr=new THREE.Mesh(new THREE.PlaneGeometry(3.28,1.956),new THREE.MeshBasicMaterial({color:0x14B8A6,transparent:true,opacity:.5}));fr.position.z=-.01;g.add(fr);
+  scene.add(g);cards.push(g);});
+const STARTS=[1.2,11.94,21.27,32.08,43.16,52.32],ACT=[0,1,1,2,3,-1];
+camera.position.set(0,1.2,11);camera.lookAt(0,.4,0);
+function activeAt(t){let a=-1;for(let i=0;i<6;i++)if(t>=STARTS[i])a=i;return a;}
+const tmp=new THREE.Vector3();
+function R(t){
+  animateCylinder(cyl,t);
+  const ti=ease(t/1.5);title.position.set(0,3.25-0.35*ti,1-1*ti);title.material.opacity=ti;title.scale.setScalar(.9+.1*ti);
+  const li=activeAt(t),cur=li>=0?ACT[li]:-1;
+  // weight of "forward" per card, smoothed over 0.8s transitions
+  cards.forEach((g,i)=>{
+    let w=0;for(let j=0;j<6;j++){if(ACT[j]!==i)continue;const s=STARTS[j],e=j<5?STARTS[j+1]:99;
+      w=Math.max(w,Math.min(ease((t-s+.3)/.8),1-ease((t-e+.3)/.8)));}
+    const a=t*.12+i*Math.PI/2;
+    const ox=Math.sin(a)*4.6,oz=Math.cos(a)*2.2-1.2,oy=.3+Math.sin(t*.5+i)*.12;
+    g.position.set(ox+(0-ox)*w,oy+(.25-oy)*w,oz+(3.4-oz)*w);
+    g.scale.setScalar(.62+(1.18-.62)*w);
+    g.rotation.y=(1-w)*(-Math.sin(a)*.5);
+    g.renderOrder=w>0.01?2:0;
+    g.children[0].material.color.setScalar(.55+.45*Math.max(w,cur<0?.8:0.0)+(cur<0?0:0));
+  });
+  camera.position.set(Math.sin(t*.05)*.8,1.2,11);camera.lookAt(0,.4,0);
+  renderer.render(scene,camera);
+}
+addEventListener("hf-seek",e=>R(e.detail.time));R(window.__hfThreeTime||0);
+</script></body></html>

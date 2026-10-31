@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1920, height=1080">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:1920px;height:1080px;overflow:hidden;background:#0B1220;font-family:Inter,sans-serif;color:#fff}
+#root{position:relative;width:1920px;height:1080px}canvas{position:absolute;inset:0;width:1920px;height:1080px}
+.t{position:absolute;left:0;width:1920px;text-align:center;opacity:0}
+.h1{font-size:78px;font-weight:800;letter-spacing:-.02em}.h2{font-size:38px;font-weight:400;color:#b6c4d6}
+.teal{color:#14B8A6}.amber{color:#F59E0B}
+.lbl{position:absolute;transform:translate(-50%,0);font-size:30px;font-weight:600;padding:8px 18px;border-radius:8px;background:rgba(11,18,32,.8);border:1px solid rgba(20,184,166,.5);opacity:0;white-space:nowrap}
+</style></head><body>
+<div id="root" data-composition-id="s5" data-start="0" data-duration="12.2" data-width="1920" data-height="1080">
+<canvas id="c" class="clip" data-start="0" data-duration="12.2" data-track-index="0"></canvas>
+<div id="a" class="t h1 clip" style="top:690px;font-size:84px" data-start="0" data-duration="12.2" data-track-index="1">No number without proof.</div>
+<div id="b" class="t clip teal" style="top:805px;font-size:40px;font-weight:600" data-start="0" data-duration="12.2" data-track-index="2">github.com/micneeraj/vidhur</div>
+<div id="cr" class="t h2 clip" style="top:1010px;font-size:24px" data-start="0" data-duration="12.2" data-track-index="3">Built with Claude Code and Cursor &nbsp;|&nbsp; Data layer: Zetaris</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#a",{opacity:0,y:30},{opacity:1,y:0,duration:1,ease:"power3.out"},.8).fromTo("#b",{opacity:0},{opacity:1,duration:.8},1.6).fromTo("#cr",{opacity:0},{opacity:1,duration:.8},2.2)
+  .to("#root .t",{opacity:0,duration:.8},11.4);
+window.__timelines=window.__timelines||{};window.__timelines["s5"]=tl;tl.seek(0);
+</script>
+<script type="module">
+import {THREE,setup,zetarisCylinder,animateCylinder,shield,ease} from "./scenes/z3d.js";
+const {renderer,scene,camera}=setup(document.getElementById("c"));
+const cyl=zetarisCylinder();cyl.position.set(-.9,.6,0);cyl.scale.setScalar(.8);scene.add(cyl);
+const sh=shield();sh.scale.setScalar(.75);scene.add(sh);
+function R(t){
+  animateCylinder(cyl,t);
+  const s=ease((t-.4)/1.2);sh.position.set(1.4,.7+Math.sin(t*.9)*.06,.8);sh.rotation.y=-.4+Math.sin(t*.5)*.2;sh.scale.setScalar(.75*s+.001);
+  camera.position.set(Math.sin(t*.06)*.6,1.0,10.5-.8*ease(t/12));camera.lookAt(0,-.2,0);
+  const fade=1-ease((t-11.4)/.8);renderer.toneMappingExposure=fade;
+  renderer.render(scene,camera);
+}
+addEventListener("hf-seek",e=>R(e.detail.time));R(window.__hfThreeTime||0);
+</script></body></html>
